@@ -1,4 +1,16 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Mukta&family=Pacifico&family=Raleway&family=Yanone+Kaffeesatz:wght@500&display=swap');
+/* body{
+  font-family: 'Yanone Kaffeesatz', sans-serif !important
+
+} */
+.css-ag7rrr-MuiTypography-root, .css-rkpxaj-MuiTypography-root, .css-1i97mag-MuiTypography-root, .css-rkpxaj-MuiTypography-root {
+  font-family: 'Yanone Kaffeesatz', sans-serif !important
+  /* font-family: "'Raleway', sans-serif" !important */
+  /* font-family: 'Mukta', sans-serif !important */
+}
+
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +47,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
