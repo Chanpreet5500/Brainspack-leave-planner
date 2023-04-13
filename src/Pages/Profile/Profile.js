@@ -21,6 +21,10 @@ function ProfileComponent() {
         marginLeft: "104px",
       };
 
+      const inputFieldsWidth = {
+          width : '45%'
+      }
+
     return (
         <>  
 
@@ -61,26 +65,41 @@ function ProfileComponent() {
                         return (
                             <>
                             <Grid sx={textFields}>
+
+                                <Grid style={{display : "flex", width : '60%', justifyContent : 'space-between'}}>
+
                                 <Input
                                     name = 'firstName'
                                     value={props.values.firstName }
-                                    onChange = {props.handleChange} />
+                                    onChange = {props.handleChange}
+                                    sx={inputFieldsWidth} />
                                 <Input
                                     name = 'lastName'
                                     value={props.values.lastName }
-                                    onChange = {props.handleChange} />
+                                    onChange = {props.handleChange}
+                                    sx={inputFieldsWidth} />
+
+                                </Grid>
+
+                                <Grid style={{display : "flex", width : '60%', justifyContent : 'space-between'}}>
+
                                 <Input
                                     name = 'email'
                                     value={props.values.email }
-                                    onChange = {props.handleChange} />
+                                    onChange = {props.handleChange}
+                                    sx={inputFieldsWidth} />
                                 <Input
                                     name = 'birthday'
                                     value={props.values.birthday }
-                                    onChange = {props.handleChange} />
+                                    onChange = {props.handleChange}
+                                    sx={inputFieldsWidth} />
+
+                                </Grid>
                                 <Input
                                     name = 'designation'
                                     value={props.values.designation }
-                                    onChange = {props.handleChange} />
+                                    onChange = {props.handleChange}
+                                   style={{ width: '60%'}} />
                                </Grid>
                             </>
                         )

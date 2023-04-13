@@ -1,11 +1,18 @@
 import React from "react";
-import { Paper, Typography, Input, Grid, Button, TextField } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Input,
+  Grid,
+  Button,
+  TextField,
+} from "@mui/material";
 import { Formik } from "formik";
 import { RegisterData } from "../ReactQuery/CustomHooks/LeavePlanner";
-import { useNavigate } from 'react-router-dom';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { format } from 'date-fns';
+import { useNavigate } from "react-router-dom";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { format } from "date-fns";
 
 function RegisterComponent() {
   const parentPopup = {
@@ -45,7 +52,6 @@ function RegisterComponent() {
     margin: "44px 0 0 170px",
     borderRadius: "0",
     overflow: "hidden",
-
   };
 
   const pageHeading = {
@@ -73,7 +79,6 @@ function RegisterComponent() {
   const leftFullStop = {
     fontSize: "60px",
     color: "white",
-
   };
 
   const leftDot = {
@@ -146,22 +151,21 @@ function RegisterComponent() {
     zIndex: 12,
     top: "420px",
     right: "15px",
-  }
+  };
 
   const navigate = useNavigate();
-  
+
   const { mutate, data, isSuccess } = RegisterData();
 
   const RegisterDataValues = (props) => {
-
-    console.log(props)
+    console.log(props);
 
     // const stringifyDate = date.toString()
     // const finalDate = stringifyDate.slice(4,15)
-    
-    const date = props.values.birthDate.$d
-    const finalBirthdate = format(date, 'MM/dd/yyyy')
-    console.log(finalBirthdate, "BIRTHDATEEE")
+
+    const date = props.values.birthDate.$d;
+    const finalBirthdate = format(date, "MM/dd/yyyy");
+    console.log(finalBirthdate, "BIRTHDATEEE");
 
     const data = {
       firstName: props.values.firstName,
@@ -170,14 +174,14 @@ function RegisterComponent() {
       designation: props.values.designation,
       email: props.values.email,
       password: props.values.password,
-      birthdate : finalBirthdate 
+      birthdate: finalBirthdate,
     };
 
-  //  const x = mutate(data);.
-  };  
+    //  const x = mutate(data);.
+  };
 
-  if(data && isSuccess){
-    navigate('/')
+  if (data && isSuccess) {
+    navigate("/");
   }
 
   return (
@@ -356,8 +360,6 @@ function RegisterComponent() {
                 _
               </Typography>
             </Grid>
-
-            
           </Grid>
         </Paper>
 
@@ -369,7 +371,7 @@ function RegisterComponent() {
             lastName: "",
             phoneNumber: "",
             designation: "",
-            birthDate : ""
+            birthDate: "",
           }}
           validate={(values) => {
             const errors = {};
@@ -385,8 +387,8 @@ function RegisterComponent() {
               errors.phoneNumber = "Required";
             } else if (!values.designation) {
               errors.designation = "Required";
-            } else if (!values.birthDate){
-              errors.birthDate = "Required"
+            } else if (!values.birthDate) {
+              errors.birthDate = "Required";
             }
             return errors;
           }}
@@ -635,31 +637,30 @@ function RegisterComponent() {
                   </Grid>
 
                   <Grid>
-                      <Typography variant="span" sx={rightFullStop}>
-                        .
-                      </Typography>
-                      <Typography
-                        variant="span"
-                        style={{
-                          fontSize: "40px",
-                          color: "black",
-                          position: "absolute",
-                          left: "31px",
-                          top: "431px"
-                        }}
-                      >
-                        _
-                      </Typography>
+                    <Typography variant="span" sx={rightFullStop}>
+                      .
+                    </Typography>
+                    <Typography
+                      variant="span"
+                      style={{
+                        fontSize: "40px",
+                        color: "black",
+                        position: "absolute",
+                        left: "31px",
+                        top: "431px",
+                      }}
+                    >
+                      _
+                    </Typography>
+                  </Grid>
 
-                    </Grid>
-
-                    {/* <Input
+                  {/* <Input
                       name="birthDate"
                       onChange={props.handleChange}
                       placeholder="Enter Your Birthdate"
                       sx={textFieldEmail}
                     /> */}
-<Grid style={{marginBottom : '10px'}}>
+                  <Grid style={{ marginBottom: "10px" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       {/* <Box style={{ height: "20px" }}></Box> */}
 
@@ -674,7 +675,7 @@ function RegisterComponent() {
                         renderInput={(e) => <TextField {...e} />}
                       />
                     </LocalizationProvider>
-                    </Grid>
+                  </Grid>
                   <Button
                     variant="contained"
                     onClick={() => RegisterDataValues(props)}

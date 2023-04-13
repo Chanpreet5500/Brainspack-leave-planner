@@ -16,6 +16,7 @@ import DataTransformation from "./Pages/ReactQuery/dataTransformation";
 import CustomhookParent from "./Pages/ReactQuery/usingCustomHook";
 import CustomhookParentById from "./Pages/ReactQuery/useQueryById";
 import DashboardComponent from "./Pages/Dashboard/Dashboard";
+import ErrorBoundaries from './ErrorBoundaries/ErrorBoundaries';
 import LeaveComponent from "./Pages/Leave/Leave";
 import RenderingWholeSuperHero from "./Pages/ReactQuery/basePageQueryId";
 import ParalellQuery from "./Pages/ReactQuery/parallelQuery";
@@ -53,9 +54,11 @@ function App() {
 
   return (
     <>
+    
     <BrowserRouter>
     
       <QueryClientProvider client={queryClient}>
+        <ErrorBoundaries>
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/" element={<LoginComponent />} />
@@ -100,6 +103,7 @@ function App() {
             />
           </Routes>
         </ThemeProvider>
+        </ErrorBoundaries>
       </QueryClientProvider>
     </BrowserRouter>
     </>
