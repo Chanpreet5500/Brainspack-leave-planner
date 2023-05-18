@@ -6,7 +6,8 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ListView from "./ListView";
-import { CalenderView } from "./CalenderView";
+import CalendarView from "./CalendarView/CalendarView";
+import { Button } from "@mui/material";
 
 const Timetracker = () => {
   const [value, setValue] = useState("listView");
@@ -16,18 +17,40 @@ const Timetracker = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", typography: "body1", }}>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="List View" value="1" />
-            <Tab label="Calendar View" value="2" />
-          </TabList>
-        </Box>
-        <TabPanel value="1"><ListView/></TabPanel>
-        <TabPanel value="2"><CalenderView/></TabPanel>
-      </TabContext>
-    </Box>
+    <>
+      <Box sx={{ width: "100%", typography: "body1", overflow: "hidden", paddingTop: "15px" }}>
+        <TabContext value={value}>
+          <Box
+            sx={{ borderBottom: 1, borderColor: "divider", display: "flex" }}
+          >
+            <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <Tab label="List View" value="listView" />
+              <Tab label="Calendar View" value="calendarView" />
+            </TabList>
+            <Button sx={{
+              position : "relative",
+              left: "81%",
+              background: "#355edb",
+              color: "#fff",
+              marginTop: "10px",
+              padding: "10px 15px 10px 15px",
+              maxHeight: "30px",
+              textTransform: "capitalize",
+              fontSize: "16px",
+              '&:hover' : {
+                background: "#3547bd"
+              }
+            }}>Add +</Button>
+          </Box>
+          <TabPanel sx={{ padding: "0px" }} value="listView">
+            <ListView />
+          </TabPanel>
+          <TabPanel value="calendarView">
+            <CalendarView />
+          </TabPanel>
+        </TabContext>
+      </Box>
+    </>
   );
 };
 
