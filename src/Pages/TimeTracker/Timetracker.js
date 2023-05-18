@@ -8,7 +8,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import ListView from "./ListView";
 
 const Timetracker = () => {
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState("listView");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
