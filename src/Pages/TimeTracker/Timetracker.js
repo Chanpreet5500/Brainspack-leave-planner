@@ -9,7 +9,7 @@ import ListView from "./ListView";
 import { CalenderView } from "./CalenderView";
 
 const Timetracker = () => {
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState("listView");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
