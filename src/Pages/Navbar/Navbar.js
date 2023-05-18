@@ -21,6 +21,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import BroadcastOnPersonalIcon from "@mui/icons-material/BroadcastOnPersonal";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
+import TimelapseIcon from '@mui/icons-material/Timelapse';
 // import  Alert  from '@mui/material/Alert'
 // import  Snackbar  from '@mui/material/Snackbar'
 
@@ -38,6 +39,7 @@ function NavbarComponent( props ) {
     { name : 'Calendar' , icon : <CalendarMonthIcon/>, value : 'calendar' },
     { name : 'Statistics', icon : <DonutLargeIcon/> , value : 'statistics' },
     { name : 'Dashboard', icon : <BroadcastOnPersonalIcon/> , value : 'dashboard' },
+    { name : 'Time Tracker', icon : <TimelapseIcon/> , value : 'timetracker' },
     { name : 'Add Leave', icon : <SpeedIcon/>, value : 'leave'}]
     
     const navigate = useNavigate();

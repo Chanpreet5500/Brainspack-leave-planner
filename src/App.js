@@ -26,6 +26,7 @@ import ProfileComponent from "./Pages/Profile/Profile";
 import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
 import CreateNewPasswordComponent from "./Pages/CreatePassword/CreatePassword";
 import "./App.css";
+import Timetracker from "./Pages/TimeTracker/Timetracker";
 
 const font = "'Raleway', sans-serif";
 
@@ -96,6 +97,10 @@ function App() {
             <Route
               path="/profile"
               element={<PrivateRouteComponent Component={ProfileComponent} />}
+            />
+            <Route
+              path="/timetracker"
+              element={<PrivateRouteComponent Component={Timetracker} />}
             />
             <Route
               path="/reset-password/:token"
