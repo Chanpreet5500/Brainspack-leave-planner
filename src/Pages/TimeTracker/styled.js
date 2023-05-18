@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { TableCell, Button } from "@mui/material";
+import { TableCell, Button, Box } from "@mui/material";
 
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: "#ededed",
@@ -11,7 +11,7 @@ export const CustomTableHead = styled(TableCell)(({ theme }) => ({
 export const CustomEditButton = styled(Button)(({ theme }) => ({
   background: "#355edb",
   color: "#fff",
-  padding: "5px 15px",
+  padding: "5px 10px",
   minWidth: "0px",
   textTransform: "capitalize",
   cursor: "pointer",
@@ -22,7 +22,7 @@ export const CustomEditButton = styled(Button)(({ theme }) => ({
 export const CustomDeleteButton = styled(Button)(({ theme }) => ({
   background: "#c94328",
   color: "#fff",
-  padding: "5px 15px",
+  padding: "5px 10px",
   cursor: "pointer",
   minWidth: "0px",
   textTransform: "capitalize",
@@ -30,3 +30,18 @@ export const CustomDeleteButton = styled(Button)(({ theme }) => ({
     background: "#ba351a",
   },
 }));
+
+export const Main = styled(Box)(({ theme }) => ({
+  marginTop: "20px",
+  paddingLeft: "20px",
+  display: "flex",
+  alignItems: "center",
+  width: "100%"
+}))
+
+export const Username = styled(Box)(({ theme }) => ({
+  padding: "5px",
+  fontSize: "18px",
+  color: "#7c7c7c",
+  fontWeight: "500",
+}))
