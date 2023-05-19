@@ -14,29 +14,31 @@ const Header = () => {
     setLog(event.target.value);
   };
   return (
-    <Main>
-      <>
-        <>
+    <>
+      <Box sx={{ display: "flex", justifyContent: "space-between", paddingTop: "10px" }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <ArrowBackIosNewIcon sx={{ color: "#174dc2" }} />
           <AccountCircleIcon sx={{ color: "#ebebeb", fontSize: "3rem" }} />
           <Username component="span">C1936 - Vaibhav Maini</Username>
           <KeyboardArrowDownIcon sx={{ padding: "10px" }} />
-        </>
-        <Box sx={{ width: "70%", display: "flex" }} component="div">
-          <ArrowBackIosIcon sx={{ position: "relative", left: "42%" }} />
-          <Box component="span" sx={{ margin: "0 auto", fontSize: "18px" }}>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center"}}>
+          <ArrowBackIosIcon sx={{ }} />
+          <Box component="span" sx={{ margin: "0 auto", fontSize: "18px", margin: "20px" }}>
             Today
           </Box>
-          <ArrowForwardIosIcon sx={{ position: "relative", right: "42%" }} />
+          <ArrowForwardIosIcon sx={{ }} />
         </Box>
-        <FormControl sx={{ width: "8%" }} size="small">
-          <Select value={log} onChange={handleChange}>
-            <MenuItem value="dailyLog">Daily Log</MenuItem>
-            <MenuItem value="weeklyLog">Weekly Log</MenuItem>
-          </Select>
-        </FormControl>
-      </>
-    </Main>
+        <Box sx={{ display: "flex", alignItems: "center", width: "150px"}}>
+          <FormControl sx={{ width: "100%", paddingRight: "15px" }} size="small">
+            <Select value={log} onChange={handleChange}>
+              <MenuItem value="dailyLog">Daily Log</MenuItem>
+              <MenuItem value="weeklyLog">Weekly Log</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Box>
+    </>
   );
 };
 
