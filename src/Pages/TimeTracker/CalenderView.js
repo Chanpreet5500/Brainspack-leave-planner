@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import CalendarViewModal from "./CalenderViewModal";
-
+// import timeGridPlugin from "@fullcalendar/react"
 export const CalenderView = () => {
   const [events, setEvents] = useState([]);
   const [eventOnModal, setEventOnModal] = useState([]);
