@@ -8,7 +8,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import ListView from "./ListView";
 
 const Timetracker = () => {
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState("listView");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -17,14 +17,18 @@ const Timetracker = () => {
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider", display: "flex", justifyContent: 'space-between' }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="List View" value="listView" />
             <Tab label="Calendar View" value="calendarView" />
           </TabList>
+          <TabList onChange={handleChange}>
+            <Tab label='Add Task' value='addtask' />
+          </TabList>
         </Box>
-        <TabPanel value="listView"><ListView/></TabPanel>
+        <TabPanel value="listView"><ListView /></TabPanel>
         <TabPanel value="calendarView">Calendar View</TabPanel>
+        <TabPanel value="addtask">Add Task</TabPanel>
       </TabContext>
     </Box>
   );
