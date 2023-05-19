@@ -8,6 +8,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import ListView from "./ListView";
 import CalendarView from "./CalendarView/CalendarView";
 import { Button } from "@mui/material";
+import Addtask from "./AddTask/Addtask";
 
 const Timetracker = () => {
   const [value, setValue] = useState("listView");
@@ -28,7 +29,7 @@ const Timetracker = () => {
       >
         <TabContext value={value}>
           <Box
-            sx={{ borderBottom: 1, borderColor: "divider", display: "flex" }}
+            sx={{ borderBottom: 1, borderColor: "divider", display: "flex", justifyContent: "space-between"}}
           >
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab
@@ -42,7 +43,14 @@ const Timetracker = () => {
                 value="calendarView"
               />
             </TabList>
-            <Button
+            <TabList onChange={handleChange}>
+              <Tab
+                sx={{ textTransform: "capitalize", fontSize: "16px" }}
+                label="Add Task"
+                value="addTask"
+              />
+            </TabList>
+            {/* <Button
               sx={{
                 position: "relative",
                 left: "81%",
@@ -59,13 +67,16 @@ const Timetracker = () => {
               }}
             >
               Add +
-            </Button>
+            </Button> */}
           </Box>
           <TabPanel sx={{ padding: "0px" }} value="listView">
             <ListView />
           </TabPanel>
           <TabPanel value="calendarView">
             <CalendarView />
+          </TabPanel>
+          <TabPanel value="addTask">
+            <Addtask />
           </TabPanel>
         </TabContext>
       </Box>
