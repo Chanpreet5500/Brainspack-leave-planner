@@ -4,65 +4,39 @@ import {
   DialogContentText,
   DialogTitle,
   DialogContent,
+  Typography,
 } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-// import {
-//   GetLeaveDataById,
-//   DeleteUserEventById,
-// } from "../ReactQuery/CustomHooks/LeavePlanner";
-import {
-  Grid,
-  FormControlLabel,
-  Typography,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-// import CalendarModalComponent from "./CalendarModal";
-// import ToastContainer from "../../Toast/Toast";
-import Alert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
+import CalendarModalComponent from "./CalendarModal";
+import { GetUserData } from "../../ReactQuery/CustomHooks/TimeTracker";
 
 const CalendarView = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [openToast, setOpenToast] = useState(false);
+  const [events, setEvents] = useState([]);
   const [event, setEvent] = useState([]);
-  const [leavesData, setLeavesData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const loggedInUserData = localStorage.getItem("value");
-  const [leaveType, setLeaveType] = useState("my_leave");
   const userFinalData = JSON.parse(loggedInUserData);
-  let allLeaves = [];
   const userId = userFinalData._id;
+  const { data, isSuccess } = GetUserData(userId);
 
-  // const {
-  //   data: apiData,
-  //   refetch,
-  //   isSuccess,
-  //   isError,
-  // } = GetLeaveDataById(userId, leaveType);
-
-  const [resultMessage, setResultMessage] = useState("");
-
-  // useEffect(() => {
-  //   if (apiData) {
-  //     const allLeaves = apiData?.data?.data?.map((e, i) => {
-  //       return {
-  //         start: e.leaveDates,
-  //         title: e.leaveType,
-  //         allDay: true,
-  //         display: e.description,
-  //         constraint: e.userId?.firstName,
-  //         id: e._id,
-  //       };
-  //     });
-  //     setResultMessage(apiData?.data?.message);
-  //     setOpenToast(true);
-  //     setLeavesData(allLeaves);
-  //   }
-  // }, [apiData]);
+  useEffect(() => {
+    let arr = [];
+    data?.data.data.map((element, index) => {
+      arr.push({
+        title: element.projectName,
+        date: element.date,
+        start: element.date,
+        end: element.date,
+        description: element.taskDescription,
+      });
+    });
+    setEvents(arr);
+  }, [data]);
 
   function visibleModal(events) {
     setShowModal(true);
+    console.log(events, "todays Events");
 
     setEvent({
       title: events.event.title,
@@ -73,102 +47,26 @@ const CalendarView = () => {
     });
   }
 
-  const dashboardParent = {
-    backgroundColor: "#26b78a1c",
-    height: "auto",
-    width: "95%",
-    margin: "20px 0 0 31px",
-    borderRadius: "7px",
-    position: "relative",
-  };
-
-  const radioButtonParent = {
-    display: "flex",
-    flexDirection: "row",
-    paddingLeft: "35px",
-  };
-
-  const eventModal = {
-    width: "20rem",
-    height: "185px",
-  };
-
-  const modalTitle = {
-    fontSize: "40px",
-  };
-
-  // const getAllLeaves = (val) => {
-  //   setLeaveType(val);
-  //   refetch({ queryKey: ["get-leave-data-id", userId, val] });
-  // };
-
-  // const { mutate } = DeleteUserEventById();
-
-  // const deleteUserById = (id) => {
-  //   const x = mutate(id);
-  // };
-
   return (
     <>
-      <RadioGroup sx={radioButtonParent}>
-        <FormControlLabel
-          control={
-            <Radio
-              value={"my_leave"}
-              // onChange={() => getAllLeaves("my_leave")}
-              label="My Leave"
-              checked={leaveType === "my_leave" ? true : false}
-            />
-          }
-          label="My Leave"
-        />
-
-        <FormControlLabel
-          control={
-            <Radio
-              value={"all_leaves"}
-              // onChange={() => getAllLeaves("all_user_leave")}
-              label="All Users Leave"
-            />
-          }
-          label="All Users Leave"
-        />
-      </RadioGroup>
-
-      <Grid sx={dashboardParent}>
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          initialView="dayGridMonth"
-          events={leavesData?.length ? leavesData : []}
-          eventClick={(events) => (events ? visibleModal(events) : "")}
-        />
-      </Grid>
-
-      {/* <ToastContainer
-        message={resultMessage}
-        open={openToast}
-        closeToast={() => setOpenToast(false)}
-      /> */}
-
-      <>
-        <Dialog open={showModal} onClose={() => setShowModal(false)}>
-          <DialogTitle>
-            <Typography variant="h5" sx={modalTitle}>
-              Leave Title
-            </Typography>
-          </DialogTitle>
-          <DialogContent sx={eventModal}>
-            <DialogContentText>
-              {/* <CalendarModalComponent
-                eventVal={event}
-                deleteId={deleteUserById}
-              /> */}
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
-      </>
+      <FullCalendar
+        plugins={[dayGridPlugin]}
+        initialView="dayGridMonth"
+        events={events?.length ? events : []}
+        eventClick={(events) => (events ? visibleModal(events) : "")}
+      />
+      <Dialog open={showModal} onClose={() => setShowModal(false)}>
+        <DialogTitle>
+          <Typography variant="h5"></Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <CalendarModalComponent eventVal={event} />
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
     </>
   );
-}
+};
 
 export default CalendarView;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import {
@@ -16,6 +16,7 @@ import { Input, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
+import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
 
 const rows = [
   {
@@ -93,6 +94,21 @@ const ListView = () => {
     });
     setProjectTitle(newArray);
   };
+
+  const loggedInUser = localStorage.getItem("value");
+  const finalData = JSON.parse(loggedInUser);
+  const userId = finalData._id;
+  console.log(userId, "userId");
+  const { data, isSuccess } = GetUserData(userId);
+  const apiData = data?.data?.data;
+  console.log(apiData);
+
+  const ddMMYY = (date) => {
+    const d = new Date(date);
+    const finalDate = d.toLocaleDateString();
+    return finalDate;
+  };
+
   return (
     <>
       <Header />
@@ -116,7 +132,7 @@ const ListView = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {projectTitle.map((row, id) => (
+            {apiData?.map((row, id) => (
               <TableRow
                 key={id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -126,7 +142,7 @@ const ListView = () => {
                 </CustomTableCell>
                 <CustomTableCell>
                   <Input
-                    value={"Leave Planner"} // row.projectName
+                    value={row.projectName} // row.projectName
                     onChange={(e) => handleChange(e, id, "projectName")}
                     disableUnderline={true}
                     disabled
@@ -135,7 +151,7 @@ const ListView = () => {
                 <CustomTableCell>
                   {" "}
                   <Input
-                    value={"May 2023"}
+                    value={ddMMYY(row.date)}
                     onChange={(e) => handleChange(e, id, "date")}
                     disableUnderline={true}
                     disabled
@@ -144,25 +160,25 @@ const ListView = () => {
                 <CustomTableCell>
                   {" "}
                   <Input
-                    value={"Add Table"} // row,taskName
+                    value={row.taskName} // row,taskName
                     onChange={(e) => handleChange(e, id, "taskName")}
                     disableUnderline={true}
-                    disabled
+                    // disabled
                   />
                 </CustomTableCell>
                 <CustomTableCell>
                   {" "}
                   <Input
-                    value={"Added Table Component"} // row.taskDescription
+                    value={row.taskDescription} // row.taskDescription
                     onChange={(e) => handleChange(e, id, "taskDescription")}
                     disableUnderline={true}
-                    disabled
+                    // disabled
                   />
                 </CustomTableCell>
                 <CustomTableCell>
                   {" "}
                   <Input
-                    value={"08:00"} // row.hours
+                    value={row.hours} // row.hours
                     onChange={(e) => handleChange(e, id, "hours")}
                     disableUnderline={true}
                     disabled
@@ -171,7 +187,7 @@ const ListView = () => {
                 <CustomTableCell>
                   {" "}
                   <Input
-                    value={"Pending"}
+                    value={row.status == true ? "Approved" : "Pending"}
                     onChange={(e) => handleChange(e, id, "status")}
                     disableUnderline={true}
                     disabled
@@ -184,7 +200,14 @@ const ListView = () => {
                         fontSize: "24px",
                       }}
                     />
-                    <Box sx={{ paddingLeft: "5px", paddingRight: "15px", fontFamily: "sans-serif" }} component="span">
+                    <Box
+                      sx={{
+                        paddingLeft: "5px",
+                        paddingRight: "15px",
+                        fontFamily: "sans-serif",
+                      }}
+                      component="span"
+                    >
                       Edit
                     </Box>
                   </CustomEditButton>
@@ -192,7 +215,10 @@ const ListView = () => {
                 <CustomTableCell>
                   <CustomDeleteButton>
                     <DeleteIcon />{" "}
-                    <Box sx={{ paddingLeft: "5px", fontFamily: "sans-serif"}} component="span">
+                    <Box
+                      sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
+                      component="span"
+                    >
                       Delete
                     </Box>
                   </CustomDeleteButton>
