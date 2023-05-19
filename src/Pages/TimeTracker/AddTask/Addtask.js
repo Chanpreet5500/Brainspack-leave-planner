@@ -9,7 +9,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Input, Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-// import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
 
 const rows = [
   {
