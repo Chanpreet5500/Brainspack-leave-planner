@@ -7,14 +7,19 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Box, Button } from "@mui/material";
+import { Input, Box, Button, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from 'dayjs';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 // import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
 
 const rows = [
   {
     projectName: "",
-    date: "",
+    date: '',
     taskName: "",
     taskDescription: "",
     status: "",
@@ -30,6 +35,7 @@ const Addtask = () => {
   const [projectReview, setProjectReview] = useState([]);
 
   const handleChange = (e, index, field) => {
+    console.log(e,'value')
     const newArray = projectTitle.map((item, i) => {
       if (index === i) {
         return { ...item, [field]: e.target.value };
@@ -43,7 +49,7 @@ const Addtask = () => {
   const addRowOnClick = () => {
     const data = {
       projectName: "",
-      date: "",
+      date: '',
       taskName: "",
       taskDescription: "",
       status: "",
@@ -52,7 +58,7 @@ const Addtask = () => {
     setProjectTitle([...projectTitle, data]);
   };
 
-  console.log(projectTitle);
+  // console.log(projectTitle);
 
   return (
     <>
@@ -88,6 +94,7 @@ const Addtask = () => {
                     value={row.projectName} // row.projectName
                     onChange={(e) => handleChange(e, id, "projectName")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -96,7 +103,31 @@ const Addtask = () => {
                     value={row.date}
                     onChange={(e) => handleChange(e, id, "date")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
+                  {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer
+                      components={"DatePicker"}
+                    >
+                    <DatePicker
+                      label="Filled picker"
+                      value={row.date}
+                      onChage={(value) => handleChange(value, id, "date")}
+                      renderInput={(props) => (
+                        <TextField
+                          {...props}
+                          size="small"
+                          variant="filled"
+                          helperText={null}
+                          disableUnderline={true}
+                          disabled
+                        />
+                      )}
+                      placeholder="Enter Date"
+                      disabled
+                    />
+                    </DemoContainer>
+                  </LocalizationProvider> */}
                 </CustomTableCell>
                 <CustomTableCell>
                   {" "}
@@ -104,6 +135,7 @@ const Addtask = () => {
                     value={row.taskName} // row,taskName
                     onChange={(e) => handleChange(e, id, "taskName")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -112,6 +144,7 @@ const Addtask = () => {
                     value={row.taskDescription} // row.taskDescription
                     onChange={(e) => handleChange(e, id, "taskDescription")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -120,6 +153,7 @@ const Addtask = () => {
                     value={row.hours} // row.hours
                     onChange={(e) => handleChange(e, id, "hours")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>

@@ -14,29 +14,43 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import CalendarModalComponent from "./CalendarModal";
-import { GetUserData } from "../../ReactQuery/CustomHooks/TimeTracker";
+import {
+  DeleteUserData,
+  GetUserData,
+} from "../../ReactQuery/CustomHooks/TimeTracker";
 import CloseIcon from "@mui/icons-material/Close";
-import { MainContainer } from "./CalenderStyled";
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "300px",
-  bgcolor: "background.paper",
-  borderRadius: "8px",
-  boxShadow: 24,
-  p: 4,
-};
+import {
+  ButtonContainer,
+  ButtonWrapper,
+  Heading,
+  HeadingModal,
+  MainContainer,
+} from "./CalenderStyled";
+import { CustomDeleteButton, CustomEditButton } from "../styled";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const CalendarView = () => {
   const [events, setEvents] = useState([]);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [event, setEvent] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const loggedInUserData = localStorage.getItem("value");
   const userFinalData = JSON.parse(loggedInUserData);
   const userId = userFinalData._id;
   const { data, isSuccess } = GetUserData(userId);
+
+  const { mutate } = DeleteUserData();
+
+  const handleDelete = () => {
+    setShowModal(false);
+    setConfirmDelete(true);
+  };
+
+  const confirmDeleteUser = () => {
+    mutate(userId);
+    setConfirmDelete(false);
+  };
 
   useEffect(() => {
     let arr = [];
@@ -58,6 +72,7 @@ const CalendarView = () => {
         },
       });
     });
+
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth();
@@ -115,28 +130,38 @@ const CalendarView = () => {
         aria-describedby="modal-modal-description"
         sx={{ width: "100%" }}
       >
-        <MainContainer sx={style}>
-          <Box sx={{float:'right',display:'block'}}>
+        <MainContainer>
+          <Box sx={{ float: "right", display: "block" }}>
             <CloseIcon onClick={() => setShowModal(false)} />
           </Box>
-          <Typography
-            id="modal-modal-title"
-            variant="h4"
-            component="h2"
-            align="center"
-            sx={{
-              marginBottom: "20px",
-              fontWeight: 700,
-              fontSize: "28px",
-              lineHeight: "24px",
-            }}
-          >
+          <Heading id="modal-modal-title" variant="h4" component="h2">
             User's Task
-          </Typography>
+          </Heading>
           <CalendarModalComponent
             eventVal={event}
             setShowModal={setShowModal}
+            setConfirmDelete={setConfirmDelete}
+            handleDelete={handleDelete}
           />
+        </MainContainer>
+      </Modal>
+      <Modal
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        sx={{ width: "100%" }}
+      >
+        <MainContainer>
+          <HeadingModal id="modal-modal-title"  component="h4">
+            Are You Sure To Delete this Task ?
+          </HeadingModal>
+          <ButtonContainer>
+            <CustomEditButton onClick={() => setConfirmDelete(false)}>
+              <ButtonWrapper component="span">Cancel</ButtonWrapper>
+            </CustomEditButton>
+            <CustomDeleteButton onClick={() => confirmDeleteUser()}>
+              <ButtonWrapper component="span">Confirm</ButtonWrapper>
+            </CustomDeleteButton>
+          </ButtonContainer>
         </MainContainer>
       </Modal>
     </>

@@ -7,86 +7,51 @@ import { CustomDeleteButton, CustomEditButton } from "../styled";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DeleteUserData } from "../../ReactQuery/CustomHooks/TimeTracker";
-
+import { ButtonContainer, ButtonWrapper, Text } from "./CalenderStyled";
 
 function CalendarModalComponent(props) {
   const navigate = useNavigate();
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const { eventVal, setShowModal} = props;
+  // const [confirmDelete, setConfirmDelete] = useState(false);
+  const { eventVal, setShowModal,setConfirmDelete,handleDelete } = props;
   const { title, start, description, name, hours, eventId, display, end } =
     eventVal;
   console.log(eventVal);
   const formattedDate = format(new Date(start), "yyyy-dd-MM");
 
-  const modalValues = {
-    fontSize: "16px",
-    fontWeight: 400,
-    lineHeight: "28px",
-    textAlign: "left",
-  };
-
   const handleEdit = () => {
-    console.log("hello edit");
     navigate("/edituserdata", { state: { eventId } });
-    navigate(-1)
-    // setShowModal(false);
   };
-  const { mutate } = DeleteUserData();
-  const handleDelete = () => {
-    // mutate(eventId);
-    setShowModal(false);
-    // setConfirmDelete(true)
-  };
+  // const { mutate } = DeleteUserData();
+  // const handleDelete = () => {
+  //   // mutate(eventId);
+  //   // setShowModal(false);
+  //   // setConfirmDelete(true)
+  // };
   return (
     <>
-    
-      <Typography variant="h5" sx={{ ...modalValues }}>
-        Title :- {title}
-      </Typography>
-      <Typography variant="h5" sx={modalValues}>
-        Date :- {formattedDate}
-      </Typography>
-      <Typography variant="h5" sx={modalValues}>
-        Description :- {description}
-      </Typography>
-      <Typography variant="h5" sx={modalValues}>
-        Hours :- {hours}
-      </Typography>
+      <Text variant="h5">Title :- {title}</Text>
+      <Text variant="h5">Date :- {formattedDate}</Text>
+      <Text variant="h5">Description :- {description}</Text>
+      <Text variant="h5">Hours :- {hours}</Text>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          marginTop: "20px",
-        }}
-      >
+      <ButtonContainer>
         <CustomEditButton onClick={() => handleEdit()}>
           <EditIcon
             sx={{
               fontSize: "24px",
             }}
           />
-          <Box
-            sx={{
-              paddingLeft: "5px",
-              paddingRight: "15px",
-              fontFamily: "sans-serif",
-            }}
-            component="span"
-          >
-            Edit
-          </Box>
+          <ButtonWrapper component="span">Edit</ButtonWrapper>
         </CustomEditButton>
         <CustomDeleteButton onClick={() => handleDelete()}>
           <DeleteIcon />{" "}
-          <Box
-            sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
+          <ButtonWrapper
             component="span"
           >
             Delete
-          </Box>
+          </ButtonWrapper>
         </CustomDeleteButton>
-      </Box>
+      </ButtonContainer>
       {/* <Modal
           open={confirmDelete}
           onClose={() => setConfirmDelete(false)}

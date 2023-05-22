@@ -26,59 +26,11 @@ const rows = [
     taskDescription: "",
     status: "",
     hours: "",
-  },
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
+  }
 ];
 
 const ListView = () => {
-  const [projectTitle, setProjectTitle] = useState(rows);
+  const [projectTitle, setProjectTitle] = useState([]);
   const [taskName, setTaskName] = useState([]);
   const [taskDescription, setTaskDescription] = useState([]);
   const [hours, setHours] = useState([]);
@@ -98,10 +50,8 @@ const ListView = () => {
   const loggedInUser = localStorage.getItem("value");
   const finalData = JSON.parse(loggedInUser);
   const userId = finalData._id;
-  console.log(userId, "userId");
   const { data, isSuccess } = GetUserData(userId);
   const apiData = data?.data?.data;
-  console.log(apiData);
 
   const ddMMYY = (date) => {
     const d = new Date(date);

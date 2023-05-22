@@ -11,6 +11,7 @@ export const CustomTableHead = styled(TableCell)(({ theme }) => ({
 export const CustomEditButton = styled(Button)(({ theme }) => ({
   background: "#355edb",
   color: "#fff",
+  alignItems:'center',
   padding: "5px 10px",
   minWidth: "0px",
   textTransform: "capitalize",

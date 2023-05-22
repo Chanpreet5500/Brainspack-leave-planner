@@ -19,27 +19,18 @@ import {
   EditUserData,
   UpdateUserData,
 } from "../../ReactQuery/CustomHooks/TimeTracker";
+import { ButtonContainer, ButtonWrapper } from "./EditStyled";
 // import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
 
-const obj = {
-  projectName: "",
-  date: "",
-  taskName: "",
-  taskDescription: "",
-  status: "",
-  hours: "",
-  userId: "",
-};
 const EditTask = () => {
-  const [projectTitle, setProjectTitle] = useState(obj);
+  const [projectTitle, setProjectTitle] = useState({});
   const [taskName, setTaskName] = useState([]);
   const [taskDescription, setTaskDescription] = useState([]);
   const [hours, setHours] = useState([]);
   const [projectReview, setProjectReview] = useState([]);
   const id = useLocation((state) => state);
-  console.log(id.state.eventId, "user ud");
   const userId = id.state.eventId;
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = (e, id, field) => {
     setProjectTitle({ ...projectTitle, [field]: e.target.value });
@@ -57,15 +48,6 @@ const EditTask = () => {
       taskName,
       userId,
     } = apiData[0];
-    console.log(
-      date,
-      hours,
-      projectName,
-      status,
-      taskDescription,
-      taskName,
-      userId
-    );
   }
 
   useEffect(() => {
@@ -85,7 +67,7 @@ const EditTask = () => {
   const { mutate } = UpdateUserData();
   const saveData = () => {
     mutate(projectTitle);
-    navigate(-1)
+    navigate(-1);
   };
   return (
     <>
@@ -124,7 +106,6 @@ const EditTask = () => {
                 />
               </CustomTableCell>
               <CustomTableCell>
-                {" "}
                 <Input
                   value={projectTitle.date}
                   onChange={(e) => handleChange(e, id, "date")}
@@ -133,7 +114,6 @@ const EditTask = () => {
                 />
               </CustomTableCell>
               <CustomTableCell>
-                {" "}
                 <Input
                   value={projectTitle.taskName} // row,taskName
                   onChange={(e) => handleChange(e, id, "taskName")}
@@ -142,16 +122,14 @@ const EditTask = () => {
                 />
               </CustomTableCell>
               <CustomTableCell>
-                {" "}
                 <Input
-                  value={projectTitle.taskDescription} // row.taskDescription
+                  value={projectTitle.taskDescription}
                   onChange={(e) => handleChange(e, id, "taskDescription")}
                   disableUnderline={true}
                   placeholder="Enter project name"
                 />
               </CustomTableCell>
               <CustomTableCell>
-                {" "}
                 <Input
                   value={projectTitle.hours}
                   onChange={(e) => handleChange(e, id, "hours")}
@@ -160,7 +138,6 @@ const EditTask = () => {
                 />
               </CustomTableCell>
               <CustomTableCell>
-                {" "}
                 <Input
                   value={projectTitle.status == true ? "Approved" : "Pending"}
                   onChange={(e) => handleChange(e, id, "status")}
@@ -172,30 +149,11 @@ const EditTask = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "end",
-          padding: "20px",
-        }}
-      >
-        <Button
-          sx={{
-            background: "#355edb",
-            marginTop: "15px",
-            color: "#fff",
-            textTransform: "capitalize",
-            fontSize: "14px",
-            padding: "5px 25px",
-            "&:hover": {
-              background: "#3547bd",
-            },
-          }}
-          onClick={() => saveData()}
-        >
+      <ButtonWrapper>
+        <ButtonContainer onClick={() => saveData()}>
           Update Task
-        </Button>
-      </Box>
+        </ButtonContainer>
+      </ButtonWrapper>
     </>
   );
 };

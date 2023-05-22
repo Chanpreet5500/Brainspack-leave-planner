@@ -10,6 +10,7 @@ const fetchTimeTracker = (id) => {
 export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
+    refetchOnMount: true,
   });
 };
 
@@ -21,6 +22,7 @@ export const EditUserData = (data) => {
   
   return useQuery("getEditUserData", () => fetchEditData(data), {
     retry: false,
+    refetchOnMount: true,
   });
 };
 
@@ -29,10 +31,6 @@ const postApi =(data) => {
 }
 
 export const UpdateUserData = (data) => {
-  // return useMutation("postuserdata", () => postApi(data), {
-  //   retry: false,
-  // });
-
   const result = useMutation(postApi);
   return result
 };
@@ -43,7 +41,6 @@ const deleteApi =(data) => {
 }
 
 export const DeleteUserData = (data) => {
-  // console.log(data)
   const result = useMutation(deleteApi);
   return result
 };
