@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import {
@@ -17,43 +18,34 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
 import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
-
-const rows = [
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-];
+import { useMutation } from "react-query";
+import Modal from "../Dialog/Modal";
+import { useNavigate } from "react-router-dom";
 
 const ListView = () => {
-  const [projectTitle, setProjectTitle] = useState(rows);
-  const [taskName, setTaskName] = useState([]);
-  const [taskDescription, setTaskDescription] = useState([]);
-  const [hours, setHours] = useState([]);
-  const [projectReview, setProjectReview] = useState([]);
-
-  const handleChange = (e, index, field) => {
-    const newArray = projectTitle.map((item, i) => {
-      if (index === i) {
-        return { ...item, [field]: e.target.value };
-      } else {
-        return item;
-      }
-    });
-    setProjectTitle(newArray);
-  };
+  const [openModal, setOpenModal] = useState(false);
+  const [rowId, setRowId] = useState("");
+  const navigate = useNavigate();
+  const axiosInstance = axios.create();
 
   const loggedInUser = localStorage.getItem("value");
   const finalData = JSON.parse(loggedInUser);
   const userId = finalData._id;
-  console.log(userId, "userId");
   const { data, isSuccess } = GetUserData(userId);
   const apiData = data?.data?.data;
-  console.log(apiData);
+
+  const confirmModal = (id) => {
+    setRowId(id);
+    setOpenModal(true);
+  };
+
+  const deleteProjectData = useMutation(() => {
+    return axiosInstance.delete(`http://localhost:5233/delete-user/${rowId}`);
+  });
+
+  const editTask = (id) => {
+    navigate("/editTask", { state: id});
+  };
 
   const ddMMYY = (date) => {
     const d = new Date(date);
@@ -63,6 +55,21 @@ const ListView = () => {
 
   return (
     <>
+      <Box>
+        {openModal && (
+          <Modal
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            title="Delete Project Detail"
+            message="Are you sure you want to delete?"
+            submit={() => {
+              deleteProjectData.mutate(rowId);
+              setOpenModal(false);
+            }}
+          />
+        )}
+      </Box>
+
       <Header />
       <TableContainer
         component={Paper}
@@ -80,7 +87,7 @@ const ListView = () => {
               <CustomTableHead>Task Description</CustomTableHead>
               <CustomTableHead>Hours</CustomTableHead>
               <CustomTableHead>Status</CustomTableHead>
-              <CustomTableHead colSpan={2}>Actions</CustomTableHead>
+              <CustomTableHead>Actions</CustomTableHead>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -92,61 +99,16 @@ const ListView = () => {
                 <CustomTableCell component="th" scope="row">
                   {id + 1 + "."}
                 </CustomTableCell>
+                <CustomTableCell>{row.projectName}</CustomTableCell>
+                <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
+                <CustomTableCell>{row.taskName}</CustomTableCell>
+                <CustomTableCell>{row.taskDescription}</CustomTableCell>
+                <CustomTableCell>{row.hours}</CustomTableCell>
                 <CustomTableCell>
-                  <Input
-                    value={row.projectName} // row.projectName
-                    onChange={(e) => handleChange(e, id, "projectName")}
-                    disableUnderline={true}
-                    disabled
-                  />
+                  {row.status == true ? "Approved" : "Pending"}
                 </CustomTableCell>
                 <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={ddMMYY(row.date)}
-                    onChange={(e) => handleChange(e, id, "date")}
-                    disableUnderline={true}
-                    disabled
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.taskName} // row,taskName
-                    onChange={(e) => handleChange(e, id, "taskName")}
-                    disableUnderline={true}
-                    // disabled
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.taskDescription} // row.taskDescription
-                    onChange={(e) => handleChange(e, id, "taskDescription")}
-                    disableUnderline={true}
-                    // disabled
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.hours} // row.hours
-                    onChange={(e) => handleChange(e, id, "hours")}
-                    disableUnderline={true}
-                    disabled
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.status == true ? "Approved" : "Pending"}
-                    onChange={(e) => handleChange(e, id, "status")}
-                    disableUnderline={true}
-                    disabled
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  <CustomEditButton>
+                  <CustomEditButton onClick={() => editTask(row._id, row.userId)}>
                     <EditIcon
                       sx={{
                         fontSize: "24px",
@@ -163,9 +125,8 @@ const ListView = () => {
                       Edit
                     </Box>
                   </CustomEditButton>
-                </CustomTableCell>
-                <CustomTableCell>
-                  <CustomDeleteButton>
+
+                  <CustomDeleteButton onClick={() => confirmModal(row._id)}>
                     <DeleteIcon />{" "}
                     <Box
                       sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
