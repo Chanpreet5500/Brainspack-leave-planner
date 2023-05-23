@@ -7,7 +7,6 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ListView from "./ListView";
 import CalendarView from "./CalendarView/CalendarView";
-import { Button } from "@mui/material";
 import Addtask from "./AddTask/Addtask";
 
 
@@ -57,31 +56,12 @@ const Timetracker = () => {
                 value="addTask"
               />
             </TabList>
-            {/* <Button
-              sx={{
-                position: "relative",
-                left: "81%",
-                background: "#355edb",
-                color: "#fff",
-                marginTop: "10px",
-                padding: "10px 15px 10px 15px",
-                maxHeight: "30px",
-                textTransform: "capitalize",
-                fontSize: "16px",
-                "&:hover": {
-                  background: "#3547bd",
-                },
-              }}
-            >
-              Add +
-            </Button> */}
           </Box>
           <TabPanel sx={{ padding: "0px" }} value="listView">
             <ListView />
           </TabPanel>
           <TabPanel value="calendarView">
             <CalendarView />
-            {/* {"hello"} */}
           </TabPanel>
           <TabPanel value="addTask">
             <Addtask />

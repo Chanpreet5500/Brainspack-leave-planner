@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import { CustomTableCell, CustomTableHead } from "../styled";
@@ -9,12 +9,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Input, Box, Button, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from 'dayjs';
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
 
 const rows = [
   {
@@ -29,13 +23,8 @@ const rows = [
 
 const Addtask = () => {
   const [projectTitle, setProjectTitle] = useState(rows);
-  const [taskName, setTaskName] = useState([]);
-  const [taskDescription, setTaskDescription] = useState([]);
-  const [hours, setHours] = useState([]);
-  const [projectReview, setProjectReview] = useState([]);
 
   const handleChange = (e, index, field) => {
-    console.log(e,'value')
     const newArray = projectTitle.map((item, i) => {
       if (index === i) {
         return { ...item, [field]: e.target.value };
@@ -58,7 +47,6 @@ const Addtask = () => {
     setProjectTitle([...projectTitle, data]);
   };
 
-  // console.log(projectTitle);
 
   return (
     <>
@@ -105,29 +93,6 @@ const Addtask = () => {
                     disableUnderline={true}
                     placeholder="Enter project name"
                   />
-                  {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer
-                      components={"DatePicker"}
-                    >
-                    <DatePicker
-                      label="Filled picker"
-                      value={row.date}
-                      onChage={(value) => handleChange(value, id, "date")}
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          size="small"
-                          variant="filled"
-                          helperText={null}
-                          disableUnderline={true}
-                          disabled
-                        />
-                      )}
-                      placeholder="Enter Date"
-                      disabled
-                    />
-                    </DemoContainer>
-                  </LocalizationProvider> */}
                 </CustomTableCell>
                 <CustomTableCell>
                   {" "}

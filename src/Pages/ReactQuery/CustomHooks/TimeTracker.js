@@ -11,6 +11,7 @@ export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
     refetchOnMount: true,
+    refetchInterval:2000,
   });
 };
 
@@ -19,7 +20,6 @@ const fetchEditData = (id) => {
 };
 
 export const EditUserData = (data) => {
-  
   return useQuery("getEditUserData", () => fetchEditData(data), {
     retry: false,
     refetchOnMount: true,
@@ -36,7 +36,6 @@ export const UpdateUserData = (data) => {
 };
 
 const deleteApi =(data) => {
-  console.log(data)
   return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`)
 }
 

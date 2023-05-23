@@ -1,4 +1,4 @@
-import { Box, styled, Button } from "@mui/material";
+import { Box, styled, Button, Typography } from "@mui/material";
 
 export const ButtonWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -17,3 +17,9 @@ export const ButtonContainer = styled(Button)(({ theme }) => ({
     background: "#3547bd",
   },
 }));
+
+export const ErrorText= styled(Typography)(({theme})=>({
+  color:'red',
+  fontSize: "12px",
+  position:'absolute',
+}))

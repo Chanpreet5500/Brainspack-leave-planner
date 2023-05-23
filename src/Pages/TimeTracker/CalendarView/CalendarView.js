@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  Dialog,
-  DialogContentText,
-  DialogTitle,
-  DialogContent,
-  Typography,
   Modal,
   Box,
+  Snackbar,
+  IconButton,
 } from "@mui/material";
-import { formatDate } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -27,29 +23,39 @@ import {
   MainContainer,
 } from "./CalenderStyled";
 import { CustomDeleteButton, CustomEditButton } from "../styled";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+
 
 const CalendarView = () => {
   const [events, setEvents] = useState([]);
+  const [open, setOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [userid, setUserId] = useState();
   const [event, setEvent] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const loggedInUserData = localStorage.getItem("value");
   const userFinalData = JSON.parse(loggedInUserData);
   const userId = userFinalData._id;
-  const { data, isSuccess } = GetUserData(userId);
+  const { data } = GetUserData(userId);
 
-  const { mutate } = DeleteUserData();
+  const { mutate, isError } = DeleteUserData();
 
-  const handleDelete = () => {
+  const handleDelete = (eventId) => {
+    setUserId(eventId)
     setShowModal(false);
     setConfirmDelete(true);
   };
 
   const confirmDeleteUser = () => {
-    mutate(userId);
+    mutate(userid);
     setConfirmDelete(false);
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -112,6 +118,28 @@ const CalendarView = () => {
 
   return (
     <>
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message={
+          isError ? "Something Went Wrong" : "User Task Deleted Successfully"
+        }
+        ContentProps={{
+          sx: { backgroundColor: isError ? "red" : "green" },
+        }}
+        action={
+          <>
+          <IconButton
+              aria-label="close"
+              color="inherit"
+              sx={{ p: 0.5 }}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton></>
+        }
+      ></Snackbar>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
         initialView="dayGridMonth"
@@ -151,7 +179,7 @@ const CalendarView = () => {
         sx={{ width: "100%" }}
       >
         <MainContainer>
-          <HeadingModal id="modal-modal-title"  component="h4">
+          <HeadingModal id="modal-modal-title" component="h4">
             Are You Sure To Delete this Task ?
           </HeadingModal>
           <ButtonContainer>
