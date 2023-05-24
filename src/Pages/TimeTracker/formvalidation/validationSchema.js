@@ -14,7 +14,6 @@ const validationSchema = Yup.object().shape({
     .min(6, "Too Short")
     .required("Field not be empty"),
     hours: Yup.string()
-    .min(2, "Too Short")
     .required("Field not be empty"),
     status: Yup.string()
     .min(2, "Too Short")

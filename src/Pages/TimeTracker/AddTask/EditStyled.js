@@ -1,4 +1,5 @@
 import { Box, styled, Button, Typography } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
 export const ButtonWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -23,3 +24,13 @@ export const ErrorText= styled(Typography)(({theme})=>({
   fontSize: "12px",
   position:'absolute',
 }))
+
+export const PickDate = styled(DatePicker)(({ theme }) => ({
+  "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+    borderWidth: "0px !important",
+  },
+  "& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
+    {
+      borderColor: "#000 !important",
+    },
+}));

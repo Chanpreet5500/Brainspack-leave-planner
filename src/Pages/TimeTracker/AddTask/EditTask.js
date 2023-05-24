@@ -14,12 +14,12 @@ import {
   EditUserData,
   UpdateUserData,
 } from "../../ReactQuery/CustomHooks/TimeTracker";
-import { ButtonContainer, ButtonWrapper, ErrorText } from "./EditStyled";
+import { ButtonContainer, ButtonWrapper, ErrorText, PickDate } from "./EditStyled";
 import { Formik } from "formik";
 import validationSchema from "../formvalidation/validationSchema";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 
 let initialValues = {
   date: "",
@@ -89,16 +89,15 @@ const EditTask = () => {
 
   const { mutate, isError } = UpdateUserData();
   const saveData = (data) => {
-    console.log(data.date);
+    console.log(data);
     mutate(data);
     if (!isError) {
-      setOpen(true);
+     
       setTimeout(() => {
         navigate(-1);
       }, 2000);
-    } else {
-      setOpen(true);
-    }
+    } 
+    setOpen(true);
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -107,6 +106,7 @@ const EditTask = () => {
 
     setOpen(false);
   };
+  
   return (
     <>
       <Snackbar
@@ -117,7 +117,7 @@ const EditTask = () => {
           isError ? "User Data Not Updated" : "User Data Updated Successfully"
         }
         ContentProps={{
-          sx: { backgroundColor: isError ? "red" : "green" },
+          sx: { backgroundColor: isError ? "#F20000" : "#4BB543" },
         }}
         action={
           <>
@@ -137,12 +137,11 @@ const EditTask = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(data) => {
-          // console.log(data, "data of Formik");
           saveData(data);
         }}
       >
         {(props) => {
-          // console.log(props, "propes of Formik");
+         
           return (
             <>
               <TableContainer
@@ -189,18 +188,19 @@ const EditTask = () => {
                       </CustomTableCell>
                       <CustomTableCell>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
+                          <PickDate
                             value={props.values.date}
+                            // varient={"standard"}
                             onChange={(value) =>
                               props.setFieldValue("date", value.$d)
                             }
                             renderInput={(props) => (
-                              <TextField
+                           <TextField
                                 {...props}
                                 size="small"
                                 varient={"standard"}
                                 helperText={null}
-                              />
+                              />   
                             )}
                           />
                         </LocalizationProvider>
@@ -241,6 +241,7 @@ const EditTask = () => {
                         {props.errors.hours && props.touched.hours ? (
                           <ErrorText>{props.errors.hours}</ErrorText>
                         ) : null}
+                      
                       </CustomTableCell>
                       <CustomTableCell>
                         <Input
@@ -261,10 +262,7 @@ const EditTask = () => {
                 </Table>
               </TableContainer>
               <ButtonWrapper>
-                <ButtonContainer
-                  type="submit"
-                  onClick={props.handleSubmit}
-                >
+                <ButtonContainer type="submit" onClick={props.handleSubmit}>
                   Update Task
                 </ButtonContainer>
               </ButtonWrapper>

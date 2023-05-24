@@ -126,7 +126,7 @@ const CalendarView = () => {
           isError ? "Something Went Wrong" : "User Task Deleted Successfully"
         }
         ContentProps={{
-          sx: { backgroundColor: isError ? "red" : "green" },
+          sx: { backgroundColor: isError ? "#F20000" : "#4BB543" },
         }}
         action={
           <>
