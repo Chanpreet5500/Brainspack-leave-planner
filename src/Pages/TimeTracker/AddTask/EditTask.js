@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import { CustomTableCell, CustomTableHead } from "../styled";
@@ -14,12 +14,16 @@ import {
   EditUserData,
   UpdateUserData,
 } from "../../ReactQuery/CustomHooks/TimeTracker";
-import { ButtonContainer, ButtonWrapper, ErrorText, PickDate } from "./EditStyled";
+import {
+  ButtonContainer,
+  ButtonWrapper,
+  ErrorText,
+  PickDate,
+} from "./EditStyled";
 import { Formik } from "formik";
 import validationSchema from "../formvalidation/validationSchema";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 
 let initialValues = {
   date: "",
@@ -32,19 +36,13 @@ let initialValues = {
 };
 
 const EditTask = () => {
-  const [projectTitle, setProjectTitle] = useState({});
-
   const id = useLocation((state) => state);
   const _id = id.state.eventId;
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const handleChange = (e, field) => {
-    setProjectTitle({ ...projectTitle, [field]: e.target.value });
-  };
-
   const { data } = EditUserData(_id);
-  // console.log(userId, "_id");
   const apiData = data?.data?.data;
+
   if (apiData) {
     const {
       date,
@@ -55,8 +53,6 @@ const EditTask = () => {
       taskName,
       userId,
     } = apiData[0];
-    // console.log(date, hours, projectName, status, taskDescription, taskName);
-
     initialValues = {
       date: date,
       hours: hours,
@@ -67,46 +63,27 @@ const EditTask = () => {
       userId: userId,
       _id: _id,
     };
-
-    // setUserInitialValues(initialValues);
   }
-  // const { submitForm } = useFormikContext();
-  // console.log(useFormikContext(),'submit Form')
-
-  useEffect(() => {
-    if (apiData) {
-      setProjectTitle({
-        projectName: apiData[0].projectName,
-        date: apiData[0].date,
-        taskName: apiData[0].taskName,
-        taskDescription: apiData[0].taskDescription,
-        status: apiData[0].status,
-        hours: apiData[0].hours,
-        _id: apiData[0]._id,
-      });
-    }
-  }, [data]);
 
   const { mutate, isError } = UpdateUserData();
+
   const saveData = (data) => {
-    console.log(data);
     mutate(data);
     if (!isError) {
-     
       setTimeout(() => {
         navigate(-1);
       }, 2000);
-    } 
+    }
     setOpen(true);
   };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
-  
+
   return (
     <>
       <Snackbar
@@ -136,12 +113,9 @@ const EditTask = () => {
         enableReinitialize={true}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(data) => {
-          saveData(data);
-        }}
+        onSubmit={saveData}
       >
         {(props) => {
-         
           return (
             <>
               <TableContainer
@@ -179,6 +153,7 @@ const EditTask = () => {
                           value={props.values.projectName}
                           onChange={props.handleChange}
                           disableUnderline={true}
+                          onBlur={props.handleBlur}
                           placeholder="Enter project name"
                         />
                         {props.errors.projectName &&
@@ -190,17 +165,16 @@ const EditTask = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <PickDate
                             value={props.values.date}
-                            // varient={"standard"}
                             onChange={(value) =>
                               props.setFieldValue("date", value.$d)
                             }
                             renderInput={(props) => (
-                           <TextField
+                              <TextField
                                 {...props}
                                 size="small"
                                 varient={"standard"}
                                 helperText={null}
-                              />   
+                              />
                             )}
                           />
                         </LocalizationProvider>
@@ -210,6 +184,7 @@ const EditTask = () => {
                           name={"taskName"}
                           value={props.values.taskName}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                           disableUnderline={true}
                           placeholder="Enter project name"
                         />
@@ -222,6 +197,7 @@ const EditTask = () => {
                           name={"taskDescription"}
                           value={props.values.taskDescription}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                           disableUnderline={true}
                           placeholder="Enter project name"
                         />
@@ -235,19 +211,19 @@ const EditTask = () => {
                           name={"hours"}
                           value={props.values.hours}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                           disableUnderline={true}
                           placeholder="Enter project name"
                         />
                         {props.errors.hours && props.touched.hours ? (
                           <ErrorText>{props.errors.hours}</ErrorText>
                         ) : null}
-                      
                       </CustomTableCell>
                       <CustomTableCell>
                         <Input
                           name={"status"}
                           value={
-                            props.values.status == true ? "Approved" : "Pending"
+                            props.values.status === true ? "Approved" : "Pending"
                           }
                           onChange={props.handleChange}
                           disableUnderline={true}

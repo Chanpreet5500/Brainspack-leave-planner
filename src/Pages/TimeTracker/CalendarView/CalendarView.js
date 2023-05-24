@@ -59,9 +59,9 @@ const CalendarView = () => {
   };
 
   useEffect(() => {
-    let arr = [];
-    data?.data.data.map((element, index) => {
-      arr.push({
+    let arrayOfEvents = [];
+    data?.data.data.map(element => {
+      return arrayOfEvents.push({
         title: element.projectName,
         date: element.date,
         start: element.date,
@@ -83,7 +83,7 @@ const CalendarView = () => {
     const year = today.getFullYear();
     const month = today.getMonth();
     for (let day = 1; day <= 31; day++) {
-      const date = new Date(year, month, day);
+      const date = new Date(year, month , day);
       const dayOfWeek = date.getDay();
       if (dayOfWeek === 6 || dayOfWeek === 0) {
         const event = {
@@ -97,11 +97,10 @@ const CalendarView = () => {
           border: "2px solid black !important",
           textColor: "black",
         };
-        arr.push(event);
+        arrayOfEvents.push(event);
       }
     }
-
-    setEvents(arr);
+    setEvents(arrayOfEvents);
   }, [data]);
 
   function visibleModal(events) {
