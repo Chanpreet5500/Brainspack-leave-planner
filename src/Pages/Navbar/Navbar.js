@@ -25,24 +25,24 @@ import TimelapseIcon from '@mui/icons-material/Timelapse';
 // import  Alert  from '@mui/material/Alert'
 // import  Snackbar  from '@mui/material/Snackbar'
 
-function NavbarComponent( props ) {
+function NavbarComponent(props) {
 
-  const {values} = props
+  const { values } = props
   const firstName = values?.firstName
   const [open, setOpen] = useState(false)
 
   // const loggedInUserName = props?.userData?.name
   const [logoutButton, setLogoutButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const sidebarMenu = [
-    { name : 'Calendar' , icon : <CalendarMonthIcon/>, value : 'calendar' },
-    { name : 'Statistics', icon : <DonutLargeIcon/> , value : 'statistics' },
-    { name : 'Dashboard', icon : <BroadcastOnPersonalIcon/> , value : 'dashboard' },
-    { name : 'Time Tracker', icon : <TimelapseIcon/> , value : 'timetracker' },
-    { name : 'Add Leave', icon : <SpeedIcon/>, value : 'leave'}]
-    
-    const navigate = useNavigate();
+    { name: 'Calendar', icon: <CalendarMonthIcon />, value: 'calendar' },
+    { name: 'Statistics', icon: <DonutLargeIcon />, value: 'statistics' },
+    { name: 'Dashboard', icon: <BroadcastOnPersonalIcon />, value: 'dashboard' },
+    { name: 'Time Tracker', icon: <TimelapseIcon />, value: 'timetracker' },
+    { name: 'Add Leave', icon: <SpeedIcon />, value: 'leave' }]
+
+  const navigate = useNavigate();
 
   const smallSideBar = () => {
     setIsOpen(true);
@@ -63,7 +63,7 @@ function NavbarComponent( props ) {
     //   <Alert severity='success'>Good</Alert>
     // </Snackbar>
 
-    if(value) {
+    if (value) {
       navigate(`/${value}`)
     }
 
@@ -114,17 +114,17 @@ function NavbarComponent( props ) {
     top: "70px",
     right: "23px",
     background: "white",
-    height : '150px',
-    zIndex : "1"
+    height: '150px',
+    zIndex: "1"
   };
 
   const logoutParent = {
-    display : 'flex',
-    flexDirection : 'column',
-    flexWrap : 'wrap',
-    alignContent : 'flex-start'
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    alignContent: 'flex-start'
   }
- 
+
 
   return (
     <>
@@ -150,8 +150,8 @@ function NavbarComponent( props ) {
               open={isOpen}
               onClose={() => setIsOpen(false)}
               anchor="left"
-              style={{marginTop :"85px"}}
->
+              style={{ marginTop: "85px" }}
+            >
               <Stack width={270} >
                 <Grid >
                   <Grid style={{ margin: "20px 0px 5px 7px" }}>
@@ -168,24 +168,27 @@ function NavbarComponent( props ) {
                     </Typography>
                   </Grid>
 
-                  { sidebarMenu.map((e,i) => {
-                    return(
-                      <ListItem onClick={() => navigation(e.value)} key={i}>
-                      <ListItemButton sx={defaultOptionParent}>
-                        <Grid >
-                          {e.icon}
-                        </Grid>
-                        <Typography
-                          variant="span"
-                          style={{
-                            position: "relative",
-                            fontStyle: "17px",
-                            marginLeft: "15px",
-                          }}
-                        >
-                          {e.name}
-                        </Typography>
-                      </ListItemButton>
+                  {sidebarMenu.map((e, i) => {
+                    return (
+                      <ListItem onClick={() => {
+                        setIsOpen(false)
+                        navigation(e.value)
+                      }} key={i}>
+                        <ListItemButton sx={defaultOptionParent}>
+                          <Grid >
+                            {e.icon}
+                          </Grid>
+                          <Typography
+                            variant="span"
+                            style={{
+                              position: "relative",
+                              fontStyle: "17px",
+                              marginLeft: "15px",
+                            }}
+                          >
+                            {e.name}
+                          </Typography>
+                        </ListItemButton>
                       </ListItem>
                     )
                   })}
@@ -214,21 +217,21 @@ function NavbarComponent( props ) {
                   padding: "0px 10px",
                 }}
               >
-                {(firstName ? <PersonIcon/> : '')}
+                {(firstName ? <PersonIcon /> : '')}
               </Typography>
             </Grid>
             {logoutButton && (
               <Paper elevation={20} style={logoutButtonParent} >
-                  <Typography variant="h5" style={{fontSize: "30px", padding : '5px 0 0 13px'}}>Hey , {firstName}</Typography>
+                <Typography variant="h5" style={{ fontSize: "30px", padding: '5px 0 0 13px' }}>Hey , {firstName}</Typography>
                 <ListItem sx={logoutParent}>
-                  <ListItemButton  onClick={logoutUser}>
-                  <LogoutIcon/>
-                <Typography variant="h5" style={{margin : '0 0 0 13px'}}>  Logout</Typography>
-                </ListItemButton>
-                <ListItemButton onClick={() => (navigation('profile'))} >
-                  <PersonOutlineIcon style={{marginRight : '8px'}}/>
-                <Typography variant="h5" style={{margin : '0 0 0 13px'}}> Profile</Typography>
-                </ListItemButton>
+                  <ListItemButton onClick={logoutUser}>
+                    <LogoutIcon />
+                    <Typography variant="h5" style={{ margin: '0 0 0 13px' }}>  Logout</Typography>
+                  </ListItemButton>
+                  <ListItemButton onClick={() => (navigation('profile'))} >
+                    <PersonOutlineIcon style={{ marginRight: '8px' }} />
+                    <Typography variant="h5" style={{ margin: '0 0 0 13px' }}> Profile</Typography>
+                  </ListItemButton>
                 </ListItem>
               </Paper>
             )}

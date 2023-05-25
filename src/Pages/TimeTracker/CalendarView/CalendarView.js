@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Box,
-  Snackbar,
-  IconButton,
-} from "@mui/material";
+import { Modal, Box, Snackbar, IconButton } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -24,7 +19,6 @@ import {
 } from "./CalenderStyled";
 import { CustomDeleteButton, CustomEditButton } from "../styled";
 
-
 const CalendarView = () => {
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
@@ -40,7 +34,7 @@ const CalendarView = () => {
   const { mutate, isError } = DeleteUserData();
 
   const handleDelete = (eventId) => {
-    setUserId(eventId)
+    setUserId(eventId);
     setShowModal(false);
     setConfirmDelete(true);
   };
@@ -60,7 +54,7 @@ const CalendarView = () => {
 
   useEffect(() => {
     let arrayOfEvents = [];
-    data?.data.data.map(element => {
+    data?.data.data.map((element) => {
       return arrayOfEvents.push({
         title: element.projectName,
         date: element.date,
@@ -83,7 +77,7 @@ const CalendarView = () => {
     const year = today.getFullYear();
     const month = today.getMonth();
     for (let day = 1; day <= 31; day++) {
-      const date = new Date(year, month , day);
+      const date = new Date(year, month, day);
       const dayOfWeek = date.getDay();
       if (dayOfWeek === 6 || dayOfWeek === 0) {
         const event = {
@@ -129,14 +123,15 @@ const CalendarView = () => {
         }}
         action={
           <>
-          <IconButton
+            <IconButton
               aria-label="close"
               color="inherit"
               sx={{ p: 0.5 }}
               onClick={handleClose}
             >
               <CloseIcon />
-            </IconButton></>
+            </IconButton>
+          </>
         }
       ></Snackbar>
       <FullCalendar

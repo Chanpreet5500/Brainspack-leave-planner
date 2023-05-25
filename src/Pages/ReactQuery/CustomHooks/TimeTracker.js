@@ -15,6 +15,41 @@ export const GetUserData = (id) => {
   });
 };
 
+const fetchWeekData = (data) => {
+  const id = data.userId;
+  const fDay = data.weekFIrstDay.formatDate;
+  const lDay = data.weekLastDay.formatDate;
+
+  const tempDate = new Date(fDay);
+  const secondTempDate = new Date(lDay);
+
+  const weekFIrstDay = `${tempDate.getFullYear()}-${
+    tempDate.getMonth() + 1
+  }-${tempDate.getDate()}`;
+  const weekLastDay = `${secondTempDate.getFullYear()}-${
+    secondTempDate.getMonth() + 1
+  }-${secondTempDate.getDate() + 1}`;
+
+  return axiosInstance.get(
+    `http://localhost:5233/weekly-datas/${id}/${weekFIrstDay}/${weekLastDay}`
+  );
+};
+
+export const FetchFilterdWeekData = (id) => {
+  return useQuery("logged-user-week-data", () => fetchWeekData(id), {
+    retry: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+};
+
+// const getDAta = (data) => {
+//   const id = data.userId;
+
+//   return axiosInstance.post(`http://localhost:5233/weekly-data/${id}`, data);
+// };
+
 const fetchDataByID = (id) => {
   return axiosInstance.get(`http://localhost:5233/getDataById/${id}`);
 };
@@ -43,7 +78,7 @@ export const EditUserData = (data) => {
 };
 
 const postApi = (data) => {
-  return axiosInstance.patch(`http://localhost:5233/update`, data);
+  return axiosInstance.patch(`http://localhost:5233/updateCalendar`, data);
 };
 
 export const UpdateUserData = (id) => {

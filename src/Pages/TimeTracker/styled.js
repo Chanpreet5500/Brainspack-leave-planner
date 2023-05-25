@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { TableCell, Button, Box } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Field } from "formik";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { TextField, FormControl } from "@mui/material";
 
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: "#ededed",
@@ -65,8 +67,81 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
 
 export const Input = styled(Field)(({ theme }) => ({
   border: "none",
-  fontSize: "16px", 
-  '&:focus-visible' : {
-    outline: "none"
-  }
-}))
+  fontSize: "16px",
+  "&:focus-visible": {
+    outline: "none",
+  },
+}));
+
+export const HoursTextField = styled(TextField)(({ theme }) => ({
+  "& .css-1pw81iq-MuiInputBase-root-MuiFilledInput-root": {
+    background: "transparent !important",
+  },
+}));
+
+export const TableFooterNoRecord = styled(Box)(({ theme }) => ({
+  width: "97%",
+  height: "10rem",
+  borderRadius: "5px",
+  display: "grid",
+  placeItems: "center",
+  boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+  margin: "0 auto",
+}));
+
+export const ButtonTextBox = styled(Box)(({ theme }) => ({
+  paddingLeft: "5px",
+  fontFamily: "sans-serif",
+  // minWidth: "50px",
+}));
+
+export const WeekDayBox = styled(Box)(({ theme }) => ({
+  textAlign: "center",
+  color: "#8080809e",
+  fontSize: "14px",
+}));
+
+export const HeaderMainBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+  paddingTop: "10px",
+}));
+
+export const UserDetailsBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+}));
+
+export const DateBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  gap: "16px",
+  fontWeight: "bold",
+}));
+
+export const ArrowBack = styled(ArrowBackIos)(({ theme }) => ({
+  color: "gray",
+  cursor: "pointer",
+  "&:hover": {
+    color: "black",
+  },
+}));
+
+export const ArrowForward = styled(ArrowForwardIos)(({ theme }) => ({
+  color: "gray",
+  cursor: "pointer",
+  "&:hover": {
+    color: "black",
+  },
+}));
+
+export const FormControlBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  width: "150px",
+}));
+
+export const FormControlPannel = styled(FormControl)(({ theme }) => ({
+  width: "100%",
+  paddingRight: "15px",
+}));

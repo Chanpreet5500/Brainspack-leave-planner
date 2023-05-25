@@ -61,8 +61,7 @@ const Addtask = () => {
     setOpen(false);
   };
 
-  const validateFunction = (value,i) => {
-    console.log(value ,i, "cuurr value");
+  const validateFunction = (value) => {
     let error;
     if (value === "") {
       error = "Field Required";
@@ -110,8 +109,6 @@ const Addtask = () => {
         onSubmit={(values) => handleSubmit(values)}
       >
         {(props) => {
-          console.log(props.touched.row ? props.touched.row[0] : '');
-          console.log(props);
           setRow(props.values);
           return (
             <form onSubmit={props.handleSubmit}>
