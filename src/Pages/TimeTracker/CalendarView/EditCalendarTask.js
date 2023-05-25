@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import { CustomTableCell, CustomTableHead } from "../styled";
@@ -10,19 +10,20 @@ import Paper from "@mui/material/Paper";
 import { Input, Snackbar, IconButton, TextField } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-import { EditUserData, GetDataById } from "../../ReactQuery/CustomHooks/TimeTracker";
+import {
+  GetDataById,
+  UpdateUserData,
+} from "../../ReactQuery/CustomHooks/TimeTracker";
 import {
   ButtonContainer,
   ButtonWrapper,
   ErrorText,
   PickDate,
-} from "./EditStyled";
+} from "../AddTask/EditStyled";
 import { Formik } from "formik";
-import { useMutation } from "react-query";
+import validationSchema from "../formvalidation/validationSchema";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { ValidationSchema } from "./ValidationSchema";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import axios from "axios";
 import moment from "moment";
 
 let initialValues = {
@@ -35,22 +36,14 @@ let initialValues = {
   userId: "",
 };
 
-const EditTask = () => {
-  const [projectTitle, setProjectTitle] = useState({});
+const EditCalendarTask = () => {
+  const id = useLocation((state) => state);
+  const _id = id.state.eventId;
   const navigate = useNavigate();
-  const location = useLocation();
-  const axiosInstance = axios.create();
-  const id = location.state;
-  console.log(id, 'id from location state')
-
   const [open, setOpen] = useState(false);
-
-  const handleChange = (e, field) => {
-    setProjectTitle({ ...projectTitle, [field]: e.target.value });
-  };
-
-  const { data } = EditUserData(id);
+  const { data } = GetDataById(_id);
   const apiData = data?.data?.data;
+
   if (apiData) {
     const {
       date,
@@ -69,32 +62,21 @@ const EditTask = () => {
       taskDescription: taskDescription,
       taskName: taskName,
       userId: userId,
+      _id: _id,
     };
   }
 
-  useEffect(() => {
-    if (apiData) {
-      setProjectTitle({
-        projectName: apiData[0].projectName,
-        date: apiData[0].date,
-        taskName: apiData[0].taskName,
-        taskDescription: apiData[0].taskDescription,
-        status: apiData[0].status,
-        hours: apiData[0].hours,
-        _id: apiData[0]._id,
-      });
-    }
-  }, [data]);
+  const { mutate, isError } = UpdateUserData();
 
-  const UpdateTask = useMutation(id, (data) => {
-    axiosInstance.patch(`http://localhost:5233/update/${id}`, data);
-    if (!UpdateTask.isError) {
+  const saveData = (data) => {
+    mutate(data);
+    if (!isError) {
       setTimeout(() => {
-        navigate('/timetracker');
+        navigate(-1);
       }, 2000);
     }
     setOpen(true);
-  });
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -110,12 +92,10 @@ const EditTask = () => {
         autoHideDuration={2000}
         onClose={handleClose}
         message={
-          UpdateTask.isError
-            ? "User Data Not Updated"
-            : "User Data Updated Successfully"
+          isError ? "User Data Not Updated" : "User Data Updated Successfully"
         }
         ContentProps={{
-          sx: { backgroundColor: UpdateTask.isError ? "#F20000" : "#4BB543" },
+          sx: { backgroundColor: isError ? "#F20000" : "#4BB543" },
         }}
         action={
           <>
@@ -133,8 +113,8 @@ const EditTask = () => {
       <Formik
         enableReinitialize={true}
         initialValues={initialValues}
-        validationSchema={ValidationSchema}
-        onSubmit={(data) => UpdateTask.mutate(data)}
+        validationSchema={validationSchema}
+        onSubmit={saveData}
       >
         {(props) => {
           return (
@@ -174,6 +154,7 @@ const EditTask = () => {
                           value={props.values.projectName}
                           onChange={props.handleChange}
                           disableUnderline={true}
+                          onBlur={props.handleBlur}
                           placeholder="Enter project name"
                         />
                         {props.errors.projectName &&
@@ -184,7 +165,7 @@ const EditTask = () => {
                       <CustomTableCell>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <PickDate
-                            // value={moment(props.values.date)}
+                            value={moment(props.values.date)}
                             onChange={(value) =>
                               props.setFieldValue("date", value.$d)
                             }
@@ -204,6 +185,7 @@ const EditTask = () => {
                           name={"taskName"}
                           value={props.values.taskName}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                           disableUnderline={true}
                           placeholder="Enter project name"
                         />
@@ -216,6 +198,7 @@ const EditTask = () => {
                           name={"taskDescription"}
                           value={props.values.taskDescription}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                           disableUnderline={true}
                           placeholder="Enter project name"
                         />
@@ -229,6 +212,7 @@ const EditTask = () => {
                           name={"hours"}
                           value={props.values.hours}
                           onChange={props.handleChange}
+                          onBlur={props.handleBlur}
                           disableUnderline={true}
                           placeholder="Enter project name"
                         />
@@ -240,7 +224,7 @@ const EditTask = () => {
                         <Input
                           name={"status"}
                           value={
-                            props.values.status == true ? "Approved" : "Pending"
+                            props.values.status === true ? "Approved" : "Pending"
                           }
                           onChange={props.handleChange}
                           disableUnderline={true}
@@ -267,4 +251,4 @@ const EditTask = () => {
   );
 };
 
-export default EditTask;
+export default EditCalendarTask;
