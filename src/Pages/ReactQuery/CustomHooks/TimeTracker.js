@@ -40,7 +40,8 @@ export const FetchFilterdWeekData = (id) => {
     retry: false,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
-    enabled: false,
+    // enabled: false,
+    // refetchInterval: 1000,
   });
 };
 

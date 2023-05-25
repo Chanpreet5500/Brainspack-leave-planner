@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const ValidationSchema = Yup.object().shape({
-  validate: Yup.array().of(
+    tasks: Yup.array().of(
     Yup.object().shape({
       projectName: Yup.string().required("This field is required"),
       taskName: Yup.string().required("This field is required"),
@@ -9,5 +9,5 @@ export const ValidationSchema = Yup.object().shape({
       taskDescription: Yup.string().required("This field is required"),
       hours: Yup.string().required("This field is required"),
     })
-  ),
+    ),
 });

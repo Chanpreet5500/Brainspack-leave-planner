@@ -18,14 +18,20 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import { ValidationSchema } from "./ValidationSchema";
 import { Snackbar, IconButton } from "@mui/material";
-import * as Yup from "yup";
 
 const loggedInUser = localStorage.getItem("value");
 const finalData = JSON.parse(loggedInUser);
 const userId = finalData._id;
-
+const initialValues = {
+  userId: userId,
+  projectName: "",
+  date: "",
+  taskName: "",
+  taskDescription: "",
+  status: false,
+  hours: "",
+};
 const Addtask = () => {
-  const [newRow, setRow] = useState([]);
   const [open, setOpen] = useState(false);
 
   const addProjectData = useMutation(userId, (values) => {
@@ -33,25 +39,8 @@ const Addtask = () => {
   });
 
   const handleSubmit = (values) => {
-    values.row.map((e) => {
-      e.userId = userId;
-    });
-    addProjectData.mutate(values.row);
+    addProjectData.mutate(values.tasks);
     setOpen(true);
-  };
-
-  const addRowOnClick = (props) => {
-    const data = {
-      userId: userId,
-      projectName: "",
-      date: "",
-      taskName: "",
-      taskDescription: "",
-      status: false,
-      hours: "00:00",
-    };
-    props.push(data);
-    setRow([...newRow, data]);
   };
 
   const handleClose = (event, reason) => {
@@ -59,14 +48,6 @@ const Addtask = () => {
       return;
     }
     setOpen(false);
-  };
-
-  const validateFunction = (value) => {
-    let error;
-    if (value === "") {
-      error = "Field Required";
-    }
-    return error;
   };
 
   return (
@@ -93,184 +74,194 @@ const Addtask = () => {
           </>
         }
       />
+
       <Formik
-        initialValues={[
-          {
-            userId: userId,
-            projectName: "",
-            date: "",
-            taskName: "",
-            taskDescription: "",
-            status: false,
-            hours: "00:00",
-          },
-        ]}
-        // validationSchema={ValidationSchema}
+        initialValues={{
+          tasks: [initialValues],
+        }}
+        validationSchema={ValidationSchema}
         onSubmit={(values) => handleSubmit(values)}
       >
         {(props) => {
-          setRow(props.values);
           return (
-            <form onSubmit={props.handleSubmit}>
-              <TableContainer
-                component={Paper}
-                sx={{
-                  padding: "10px",
-                }}
-              >
-                <Table
-                  sx={{ minWidth: 650, flex: 1 }}
-                  aria-label="simple table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <CustomTableHead>S.No</CustomTableHead>
-                      <CustomTableHead>Project Name</CustomTableHead>
-                      <CustomTableHead>Date</CustomTableHead>
-                      <CustomTableHead>Task Name</CustomTableHead>
-                      <CustomTableHead>Task Description</CustomTableHead>
-                      <CustomTableHead>Hours</CustomTableHead>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <FieldArray>
-                      <>
-                        {newRow.map((row, index) => {
-                          console.log(props.errors,"Error")
-                          return (
+            <Form >
+              <FieldArray name="tasks">
+                {(arrayForm) => {
+                  return (
+                    <>
+                      <TableContainer
+                        component={Paper}
+                        sx={{
+                          padding: "10px",
+                        }}
+                      >
+                        <Table
+                          sx={{ minWidth: 650, flex: 1 }}
+                          aria-label="simple table"
+                        >
+                          <TableHead>
+                            <TableRow>
+                              <CustomTableHead>S.No</CustomTableHead>
+                              <CustomTableHead>Project Name</CustomTableHead>
+                              <CustomTableHead>Date</CustomTableHead>
+                              <CustomTableHead>Task Name</CustomTableHead>
+                              <CustomTableHead>
+                                Task Description
+                              </CustomTableHead>
+                              <CustomTableHead>Hours</CustomTableHead>
+                              <CustomTableHead>Action</CustomTableHead>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
                             <>
-                              <TableRow>
-                                <CustomTableCell>
-                                  {index + 1 + "."}
-                                </CustomTableCell>
-                                <CustomTableCell>
-                                  <Field
-                                    as={Input}
-                                    name={`row.${index}.projectName`}
-                                    placeholder="Enter Project Name"
-                                    validate={(value)=>validateFunction(value,index)}
-                                  />
-                                  <Box>
-                                    { !props.errors  ? (
-                                      <ErrorMessage
-                                        name={`row.${index}.projectName`}
-                                      />
-                                    ) : null}
-                                  </Box>
-                                </CustomTableCell>
-                                <CustomTableCell>
-                                  <Field
-                                    as={PickDate}
-                                    value={props.values.date}
-                                    onChange={(value) =>
-                                      props.setFieldValue(
-                                        `row.${index}.date`,
-                                        value.$d
-                                      )
-                                    }
-                                    validate={validateFunction}
-                                  />
-                                  <Box>
-                                    {props.touched ? (
-                                      <ErrorMessage
-                                        name={`row.${index}.date`}
-                                      />
-                                    ) : null}
-                                  </Box>
-                                </CustomTableCell>
-                                <CustomTableCell>
-                                  <Field
-                                    as={Input}
-                                    name={`row.${index}.taskName`}
-                                    placeholder="Enter Task Name"
-                                    validate={validateFunction}
-                                  />
-                                  <Box>
-                                    {props.touched ? (
-                                      <ErrorMessage
-                                        name={`row.${index}.taskName`}
-                                      />
-                                    ) : null}
-                                  </Box>
-                                </CustomTableCell>
-                                <CustomTableCell>
-                                  <Field
-                                    as={Input}
-                                    name={`row.${index}.taskDescription`}
-                                    placeholder="Enter Task Description"
-                                    validate={validateFunction}
-                                  />
-                                  <Box>
-                                    {props.touched ? (
-                                      <ErrorMessage
-                                        name={`row.${index}.taskDescription`}
-                                      />
-                                    ) : null}
-                                  </Box>
-                                </CustomTableCell>
-                                <CustomTableCell>
-                                  <Field
-                                    as={Input}
-                                    name={`row.${index}.hours`}
-                                    placeholder="Enter Hours"
-                                    validate={validateFunction}
-                                  />
-                                  <Box>
-                                    {props.touched ? (
-                                      <ErrorMessage
-                                        name={`row.${index}.hours`}
-                                      />
-                                    ) : null}
-                                  </Box>
-                                </CustomTableCell>
-                              </TableRow>
+                              {props.values.tasks.map((row, index) => {
+                                return (
+                                  <>
+                                    <TableRow key={index}>
+                                      <CustomTableCell>
+                                        {index + 1 + "."}
+                                      </CustomTableCell>
+                                      <CustomTableCell>
+                                        <Field
+                                          as={Input}
+                                          name={`tasks.${index}.projectName`}
+                                          placeholder="Enter Project Name"
+                                        />
+                                        <Box>
+                                          {props.errors && props.touched ?<ErrorMessage
+                                            component={ErrorText}
+                                            name={`tasks.${index}.projectName`}
+                                          />:null}
+                                        </Box>
+                                      </CustomTableCell>
+                                      <CustomTableCell>
+                                        <Field
+                                          as={PickDate}
+                                          value={props.values.date}
+                                          name={`tasks.${index}.date`}
+                                          onChange={(value) =>
+                                            props.setFieldValue(
+                                              `tasks.${index}.date`,
+                                              value.$d
+                                            )
+                                          }
+                                        />
+                                        <Box>
+                                          <ErrorMessage
+                                            name={`tasks.${index}.date`}
+                                            component={ErrorText}
+                                          />
+                                        </Box>
+                                      </CustomTableCell>
+                                      <CustomTableCell>
+                                        <Field
+                                          as={Input}
+                                          name={`tasks.${index}.taskName`}
+                                          placeholder="Enter Task Name"
+                                        />
+                                        <Box>
+                                          <ErrorMessage
+                                            name={`tasks.${index}.taskName`}
+                                            component={ErrorText}
+                                          />
+                                        </Box>
+                                      </CustomTableCell>
+                                      <CustomTableCell>
+                                        <Field
+                                          as={Input}
+                                          name={`tasks.${index}.taskDescription`}
+                                          placeholder="Enter Task Description"
+                                        />
+                                        <Box>
+                                          <ErrorMessage
+                                            name={`tasks.${index}.taskDescription`}
+                                            component={ErrorText}
+                                          />
+                                        </Box>
+                                      </CustomTableCell>
+                                      <CustomTableCell>
+                                        <Field
+                                          as={Input}
+                                          name={`tasks.${index}.hours`}
+                                          placeholder="Enter Hours"
+                                        />
+                                        <Box>
+                                          <ErrorMessage
+                                            name={`tasks.${index}.hours`}
+                                            component={ErrorText}
+                                          />
+                                        </Box>
+                                      </CustomTableCell>
+                                      <CustomTableCell>
+                                        <Button
+                                          onClick={() =>
+                                            arrayForm.remove(index)
+                                          }
+                                          sx={{
+                                            background: "#55AD88",
+                                            marginTop: "15px",
+                                            color: "#fff",
+                                            textTransform: "capitalize",
+                                            fontSize: "14px",
+                                            "&:hover": {
+                                              background: "#4d9b78",
+                                            },
+                                          }}
+                                        >
+                                          Remove Row <AddIcon />{" "}
+                                        </Button>
+                                      </CustomTableCell>
+                                    </TableRow>
+                                  </>
+                                );
+                              })}
                             </>
-                          );
-                        })}
-                      </>
-                    </FieldArray>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Button
+                          onClick={() => arrayForm.push(initialValues)}
+                          sx={{
+                            background: "#55AD88",
+                            marginTop: "15px",
+                            color: "#fff",
+                            textTransform: "capitalize",
+                            fontSize: "14px",
+                            "&:hover": {
+                              background: "#4d9b78",
+                            },
+                          }}
+                        >
+                          Add Row <AddIcon />{" "}
+                        </Button>
+                        <Button
+                          sx={{
+                            background: "#355edb",
+                            marginTop: "15px",
+                            color: "#fff",
+                            textTransform: "capitalize",
+                            fontSize: "14px",
+                            padding: "5px 25px",
+                            "&:hover": {
+                              background: "#3547bd",
+                            },
+                          }}
+                          type="submit"
+                        >
+                          Save
+                        </Button>
+                      </Box>
+                    </>
+                  );
                 }}
-              >
-                <Button
-                  onClick={() => addRowOnClick(props.values)}
-                  sx={{
-                    background: "#55AD88",
-                    marginTop: "15px",
-                    color: "#fff",
-                    textTransform: "capitalize",
-                    fontSize: "14px",
-                    "&:hover": {
-                      background: "#4d9b78",
-                    },
-                  }}
-                >
-                  Add Row <AddIcon />{" "}
-                </Button>
-                <Button
-                  sx={{
-                    background: "#355edb",
-                    marginTop: "15px",
-                    color: "#fff",
-                    textTransform: "capitalize",
-                    fontSize: "14px",
-                    padding: "5px 25px",
-                    "&:hover": {
-                      background: "#3547bd",
-                    },
-                  }}
-                  type="submit"
-                >
-                  Save
-                </Button>
-              </Box>
-            </form>
+              </FieldArray>
+            </Form>
           );
         }}
       </Formik>

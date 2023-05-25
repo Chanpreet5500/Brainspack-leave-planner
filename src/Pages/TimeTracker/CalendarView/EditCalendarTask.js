@@ -7,7 +7,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Snackbar, IconButton, TextField } from "@mui/material";
+import {
+  Input,
+  Snackbar,
+  IconButton,
+  TextField,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -27,9 +34,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
 import axios from "axios";
 import { useMutation } from "react-query";
+import { CircularBar } from "./CalenderStyled";
 
-
-const axiosInstance=axios.create();
+const axiosInstance = axios.create();
 
 let initialValues = {
   date: "",
@@ -105,7 +112,9 @@ const EditCalendarTask = () => {
         autoHideDuration={2000}
         onClose={handleClose}
         message={
-          UpdateTask.isError ? "User Data Not Updated" : "User Data Updated Successfully"
+          UpdateTask.isError
+            ? "User Data Not Updated"
+            : "User Data Updated Successfully"
         }
         ContentProps={{
           sx: { backgroundColor: UpdateTask.isError ? "#F20000" : "#4BB543" },
@@ -127,7 +136,7 @@ const EditCalendarTask = () => {
         enableReinitialize={true}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(data)=>UpdateTask.mutate(data)}
+        onSubmit={(data) => UpdateTask.mutate(data)}
       >
         {(props) => {
           return (
@@ -238,7 +247,9 @@ const EditCalendarTask = () => {
                         <Input
                           name={"status"}
                           value={
-                            props.values.status === true ? "Approved" : "Pending"
+                            props.values.status === true
+                              ? "Approved"
+                              : "Pending"
                           }
                           onChange={props.handleChange}
                           disableUnderline={true}
@@ -253,8 +264,26 @@ const EditCalendarTask = () => {
                 </Table>
               </TableContainer>
               <ButtonWrapper>
-                <ButtonContainer type="submit" onClick={props.handleSubmit}>
-                  Update Task
+                <ButtonContainer
+                  type="submit"
+                  onClick={props.handleSubmit}
+                  disabled={props.isSubmitting}
+                  sx={{
+                    width: "140px",
+                    height: "40px",
+                    opacity: props.isSubmitting ? 0.7 : 1,
+                  }}
+                >
+                  {props.isSubmitting ? (
+                    <>
+                      <CircularBar />
+                      <Typography sx={{ color: "#fff", marginLeft: "4px" }}>
+                        Updating
+                      </Typography>
+                    </>
+                  ) : (
+                    "Update Task"
+                  )}
                 </ButtonContainer>
               </ButtonWrapper>
             </>

@@ -21,8 +21,8 @@ export const ButtonContainer = styled(Button)(({ theme }) => ({
 
 export const ErrorText= styled(Typography)(({theme})=>({
   color:'red',
-  fontSize: "12px",
-  position:'absolute',
+  fontSize: "14px",
+  // position:'absolute',
 }))
 
 export const PickDate = styled(DatePicker)(({ theme }) => ({
