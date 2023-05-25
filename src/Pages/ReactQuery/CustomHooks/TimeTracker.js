@@ -10,6 +10,7 @@ const fetchTimeTracker = (id) => {
 export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
+    refetchOnWindowFocus: true
   });
 };
 
@@ -20,6 +21,7 @@ const fetchDataByID = (id) => {
 export const GetDataById = (id) => {
   return useQuery("getDataById", () => fetchDataByID(id), {
     retry: false,
+    // refetchOnMount: true,
   });
 };
 

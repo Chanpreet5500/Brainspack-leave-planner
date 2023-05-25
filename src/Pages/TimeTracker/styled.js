@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { TableCell, Button, Box } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { Field } from "formik";
 
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: "#ededed",
@@ -61,3 +62,11 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
       borderColor: "#000 !important",
     },
 }));
+
+export const Input = styled(Field)(({ theme }) => ({
+  border: "none",
+  fontSize: "16px", 
+  '&:focus-visible' : {
+    outline: "none"
+  }
+}))

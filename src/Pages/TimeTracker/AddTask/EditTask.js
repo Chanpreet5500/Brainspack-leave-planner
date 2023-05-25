@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GetDataById } from "../../ReactQuery/CustomHooks/TimeTracker";
 import { useState } from "react";
 import Table from "@mui/material/Table";
@@ -34,25 +34,14 @@ const rows = {
 const EditTask = () => {
   const [projectData, setProjectData] = useState(rows);
   const axiosInstance = axios.create();
+  const navigate = useNavigate();
 
   const location = useLocation();
   const id = location.state;
 
-  const { data, isSuccess } = GetDataById(id);
+  const { data, isSuccess, refetch } = GetDataById(id);
   const apiData = data?.data?.data;
-  console.log(apiData);
-
-  if (apiData) {
-    const {
-      date,
-      hours,
-      projectName,
-      status,
-      taskDescription,
-      taskName,
-      userId,
-    } = apiData[0];
-  }
+  // console.log(apiData);
 
   const handleChange = (event, field) => {
     setProjectData({ ...projectData, [field]: event });
@@ -61,23 +50,29 @@ const EditTask = () => {
   useEffect(() => {
     if (apiData) {
       setProjectData({
-        projectName: apiData[0].projectName,
-        date: apiData[0].date,
-        taskName: apiData[0].taskName,
-        taskDescription: apiData[0].taskDescription,
-        status: apiData[0].status,
-        hours: apiData[0].hours,
-        _id: apiData[0]._id,
+        projectName: apiData[0]?.projectName,
+        date: apiData[0]?.date,
+        taskName: apiData[0]?.taskName,
+        taskDescription: apiData[0]?.taskDescription,
+        status: apiData[0]?.status,
+        hours: apiData[0]?.hours,
+        _id: apiData[0]?._id,
       });
+      refetch();
     }
-  }, [data]);
+  }, [apiData]);
 
   const UpdateTask = useMutation((id) => {
-    return axiosInstance.patch(
-      `http://localhost:5233/update/${id}`,
-      projectData
-    );
+    axiosInstance.patch(`http://localhost:5233/update/${id}`, projectData);
+    navigate("/timetracker");
   });
+
+  const ddMMYY = (date) => {
+    const d = new Date(date);
+    const finalDate = d.toLocaleDateString();
+    return finalDate;
+  };
+
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
@@ -114,18 +109,17 @@ const EditTask = () => {
                 </CustomTableCell>
                 <CustomTableCell>
                   {" "}
-                  <Input
+                  <PickDate
                     value={projectData.date}
                     onChange={(e) => handleChange(e.target.value, "date")}
+                    disableUnderline={true}
                   />
                 </CustomTableCell>
                 <CustomTableCell>
                   {" "}
                   <Input
                     value={projectData.taskName}
-                    onChange={(e) =>
-                      handleChange(e.target.value, "taskName")
-                    }
+                    onChange={(e) => handleChange(e.target.value, "taskName")}
                     disableUnderline={true}
                   />
                 </CustomTableCell>

@@ -1,8 +1,8 @@
 import React from "react";
+import ClearIcon from '@mui/icons-material/Clear';
 import "./Modal.css";
 
 function Modal({ setOpenModal, title, message, submit }) {
-  console.log(submit, 'submit from modal')
   return (
     <div className="modalBackground">
       <div className="modalContainer">
@@ -12,7 +12,7 @@ function Modal({ setOpenModal, title, message, submit }) {
               setOpenModal(false);
             }}
           >
-            X
+            <ClearIcon />
           </button>
         </div>
         <div className="title">
@@ -30,7 +30,7 @@ function Modal({ setOpenModal, title, message, submit }) {
           >
             Cancel
           </button>
-          <button onClick={submit}>Continue</button>
+          <button onClick={submit}>Delete</button>
         </div>
       </div>
     </div>

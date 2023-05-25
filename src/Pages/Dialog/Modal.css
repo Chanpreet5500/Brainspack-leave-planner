@@ -1,6 +1,9 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
 .modalBackground {
   width: 100vw;
-  height: 100vh;
+  height: 70vh;
   backdrop-filter: blur(5px);
   position: fixed;
   display: flex;
@@ -60,7 +63,7 @@
   height: 45px;
   margin: 10px;
   border: none;
-  background-color: cornflowerblue;
+  background-color: crimson;
   color: white;
   border-radius: 8px;
   font-size: 20px;
@@ -68,5 +71,5 @@
 }
 
 #cancelBtn {
-  background-color: crimson;
+  background-color: cornflowerblue;
 }
