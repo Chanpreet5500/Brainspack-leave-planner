@@ -49,7 +49,7 @@ const EditTask = () => {
     setProjectTitle({ ...projectTitle, [field]: e.target.value });
   };
 
-  const { data } = EditUserData(id);
+  const { data } = GetDataById(id);
   const apiData = data?.data?.data;
   if (apiData) {
     const {
@@ -184,7 +184,7 @@ const EditTask = () => {
                       <CustomTableCell>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <PickDate
-                            // value={moment(props.values.date)}
+                            value={moment(props.values.date)}
                             onChange={(value) =>
                               props.setFieldValue("date", value.$d)
                             }
@@ -196,6 +196,7 @@ const EditTask = () => {
                                 helperText={null}
                               />
                             )}
+                            disabled
                           />
                         </LocalizationProvider>
                       </CustomTableCell>

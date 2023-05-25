@@ -177,6 +177,7 @@ const EditCalendarTask = () => {
                                 helperText={null}
                               />
                             )}
+                            disabled
                           />
                         </LocalizationProvider>
                       </CustomTableCell>
