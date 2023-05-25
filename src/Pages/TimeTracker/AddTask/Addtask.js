@@ -12,7 +12,7 @@ import { useState } from "react";
 import { CustomTableCell, CustomTableHead, PickDate, Input } from "../styled";
 import { ErrorText } from "./EditStyled";
 import { Box, Button } from "@mui/material";
-import { isError, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
