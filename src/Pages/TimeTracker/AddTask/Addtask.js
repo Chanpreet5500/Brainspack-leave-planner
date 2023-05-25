@@ -29,12 +29,10 @@ const Addtask = () => {
   const [open, setOpen] = useState(false);
 
   const addProjectData = useMutation(userId, (values) => {
-    console.log(userId, values, "values on submit");
     return axios.post(`http://localhost:5233/sendData/${userId}`, values);
   });
 
   const handleSubmit = (values) => {
-    console.log(values.row[0], "values from handle submit");
     values.row.map((e) => {
       e.userId = userId;
     });
@@ -67,7 +65,7 @@ const Addtask = () => {
     console.log(value, "cuurr value");
     let error;
     if (value === "") {
-      error = "Feild Required";
+      error = "Field Required";
     }
     return error;
   };
@@ -152,7 +150,6 @@ const Addtask = () => {
                                     name={`row.${index}.projectName`}
                                     placeholder="Enter Project Name"
                                     validate={validateFunction}
-                                    // helperText={props.touched ? "" : props.errors.}
                                   />
                                   <Box>
                                     {props.touched && props.errors ? (

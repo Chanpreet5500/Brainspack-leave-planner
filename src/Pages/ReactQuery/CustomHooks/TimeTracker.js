@@ -21,12 +21,11 @@ const fetchDataByID = (id) => {
 export const GetDataById = (id) => {
   return useQuery("getDataById", () => fetchDataByID(id), {
     retry: false,
-    // refetchOnMount: true,
+    refetchOnMount: true,
   });
 };
 
 export const DeleteUserData = (data) => {
-  // console.log(data)
   const result = useMutation(deleteApi);
   return result;
 };
