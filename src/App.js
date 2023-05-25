@@ -27,8 +27,7 @@ import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
 import CreateNewPasswordComponent from "./Pages/CreatePassword/CreatePassword";
 import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
-// import EditTask from "./Pages/TimeTracker/AddTask/EditTask";
-import EditTask from "./Pages/TimeTracker/AddTask/EditTask.bak";
+import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 
 const font = "'Raleway', sans-serif";
 
