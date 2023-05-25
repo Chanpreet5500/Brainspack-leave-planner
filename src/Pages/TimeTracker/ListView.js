@@ -7,9 +7,7 @@ import {
   CustomTableHead,
   CustomEditButton,
   CustomDeleteButton,
-  HoursTextField,
   TableFooterNoRecord,
-  DeleteTextBox,
   ButtonTextBox,
   WeekDayBox,
 } from "./styled";
@@ -17,19 +15,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Box, TextField, Typography, TableFooter } from "@mui/material";
+import { Input, Box, Typography, TableFooter } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
 import {
   FetchFilterdWeekData,
-  GetUserData,
-  WeekyUsersData,
+
 } from "../ReactQuery/CustomHooks/TimeTracker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimeField } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+
 
 const rows = [
   {
@@ -94,7 +88,7 @@ const ListView = () => {
     if (log && weekFIrstDay) {
       refetch();
     }
-  }, [log, weekFIrstDay, weekLastDay]);
+  }, [log, weekFIrstDay]);
 
   const ddMMYY = (date) => {
     const d = new Date(date);
@@ -229,8 +223,11 @@ const ListView = () => {
                 : ""}
 
               <CustomTableHead>Status</CustomTableHead>
+              {log == 'daily' ?
 
-              <CustomTableHead colSpan={2}>Actions</CustomTableHead>
+                <CustomTableHead colSpan={2}>Actions</CustomTableHead>
+                : ''}
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -250,7 +247,6 @@ const ListView = () => {
                     disabled
                   />
                 </CustomTableCell>
-
                 <CustomTableCell>
                   {" "}
                   <Input
@@ -320,30 +316,38 @@ const ListView = () => {
                     disabled
                   />
                 </CustomTableCell>
-                <CustomTableCell>
-                  <CustomEditButton>
-                    <EditIcon
-                      sx={{
-                        fontSize: "24px",
-                      }}
-                    />
-                    <ButtonTextBox
-                      component="span"
-                    >
-                      Edit
-                    </ButtonTextBox>
-                  </CustomEditButton>
-                </CustomTableCell>
-                <CustomTableCell>
-                  <CustomDeleteButton>
-                    <DeleteIcon />
-                    <ButtonTextBox
-                      component="span"
-                    >
-                      Delete
-                    </ButtonTextBox>
-                  </CustomDeleteButton>
-                </CustomTableCell>
+
+                {
+                  log == 'daily' ? (
+                    <>
+
+                      <CustomTableCell>
+                        <CustomEditButton>
+                          <EditIcon
+                            sx={{
+                              fontSize: "24px",
+                            }}
+                          />
+                          <ButtonTextBox
+                            component="span"
+                          >
+                            Edit
+                          </ButtonTextBox>
+                        </CustomEditButton>
+                      </CustomTableCell>
+                      <CustomTableCell>
+                        <CustomDeleteButton>
+                          <DeleteIcon />
+                          <ButtonTextBox
+                            component="span"
+                          >
+                            Delete
+                          </ButtonTextBox>
+                        </CustomDeleteButton>
+                      </CustomTableCell>
+                    </>
+                  ) : ""
+                }
               </TableRow>
             ))}
           </TableBody>

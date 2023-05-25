@@ -27,6 +27,7 @@ import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
 import CreateNewPasswordComponent from "./Pages/CreatePassword/CreatePassword";
 import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
+import EditTask from "./Pages/TimeTracker/AddTask/EditTask";
 
 const font = "'Raleway', sans-serif";
 
@@ -101,6 +102,10 @@ function App() {
             <Route
               path="/timetracker"
               element={<PrivateRouteComponent Component={Timetracker} />}
+            />
+            <Route
+              path="/edituserdata"
+              element={<PrivateRouteComponent Component={EditTask} />}
             />
             <Route
               path="/reset-password/:token"

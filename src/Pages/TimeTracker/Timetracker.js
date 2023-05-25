@@ -15,6 +15,7 @@ const Timetracker = () => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    localStorage.setItem("tab", newValue);
   };
 
   return (

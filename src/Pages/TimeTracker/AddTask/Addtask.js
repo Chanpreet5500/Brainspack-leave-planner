@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import { CustomTableCell, CustomTableHead } from "../styled";
@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Box, Button } from "@mui/material";
+import { Input, Box, Button, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 const rows = [
@@ -51,7 +51,6 @@ const Addtask = () => {
     setProjectTitle([...projectTitle, data]);
   };
 
-  console.log(projectTitle);
 
   return (
     <>
@@ -87,6 +86,7 @@ const Addtask = () => {
                     value={row.projectName} // row.projectName
                     onChange={(e) => handleChange(e, id, "projectName")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -95,6 +95,7 @@ const Addtask = () => {
                     value={row.date}
                     onChange={(e) => handleChange(e, id, "date")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -103,6 +104,7 @@ const Addtask = () => {
                     value={row.taskName} // row,taskName
                     onChange={(e) => handleChange(e, id, "taskName")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -111,6 +113,7 @@ const Addtask = () => {
                     value={row.taskDescription} // row.taskDescription
                     onChange={(e) => handleChange(e, id, "taskDescription")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -119,6 +122,7 @@ const Addtask = () => {
                     value={row.hours} // row.hours
                     onChange={(e) => handleChange(e, id, "hours")}
                     disableUnderline={true}
+                    placeholder="Enter project name"
                   />
                 </CustomTableCell>
                 <CustomTableCell>
