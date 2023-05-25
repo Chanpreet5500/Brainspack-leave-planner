@@ -7,7 +7,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ListView from "./ListView";
 import CalendarView from "./CalendarView/CalendarView";
-import Addtask from "./AddTask/Addtask"; 
+import Addtask from "./AddTask/Addtask";
 
 const Timetracker = () => {
   const [value, setValue] = useState("listView");
@@ -16,7 +16,7 @@ const Timetracker = () => {
     setValue(newValue);
     localStorage.setItem("tab", newValue);
   };
-  
+
   return (
     <>
       <Box
@@ -55,7 +55,7 @@ const Timetracker = () => {
                 value="addTask"
               />
             </TabList>
-            </Box>
+          </Box>
           <TabPanel sx={{ padding: "0px" }} value="listView">
             <ListView />
           </TabPanel>
