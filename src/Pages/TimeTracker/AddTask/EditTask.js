@@ -60,7 +60,6 @@ const EditTask = () => {
       taskName,
       userId,
     } = apiData[0];
-
     initialValues = {
       date: date,
       hours: hours,
@@ -100,7 +99,6 @@ const EditTask = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
 

@@ -10,7 +10,7 @@ const fetchTimeTracker = (id) => {
 export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
-    refetchOnWindowFocus: true
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -25,13 +25,32 @@ export const GetDataById = (id) => {
   });
 };
 
-const deleteApi = (data) => {
-  console.log(data);
-  return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`);
-};
-
 export const DeleteUserData = (data) => {
   // console.log(data)
   const result = useMutation(deleteApi);
   return result;
+};
+
+const fetchEditData = (id) => {
+  return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`, id);
+};
+
+export const EditUserData = (data) => {
+  return useQuery("getEditUserData", () => fetchEditData(data), {
+    retry: false,
+    refetchOnMount: true,
+  });
+};
+
+const postApi = (data) => {
+  return axiosInstance.patch(`http://localhost:5233/update`, data);
+};
+
+export const UpdateUserData = (data) => {
+  const result = useMutation(postApi);
+  return result;
+};
+
+const deleteApi = (data) => {
+  return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`);
 };
