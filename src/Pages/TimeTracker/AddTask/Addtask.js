@@ -61,8 +61,8 @@ const Addtask = () => {
     setOpen(false);
   };
 
-  const validateFunction = (value) => {
-    console.log(value, "cuurr value");
+  const validateFunction = (value,i) => {
+    console.log(value ,i, "cuurr value");
     let error;
     if (value === "") {
       error = "Field Required";
@@ -106,10 +106,11 @@ const Addtask = () => {
             hours: "00:00",
           },
         ]}
-        validationSchema={ValidationSchema}
+        // validationSchema={ValidationSchema}
         onSubmit={(values) => handleSubmit(values)}
       >
         {(props) => {
+          console.log(props.touched.row ? props.touched.row[0] : '');
           console.log(props);
           setRow(props.values);
           return (
@@ -138,6 +139,7 @@ const Addtask = () => {
                     <FieldArray>
                       <>
                         {newRow.map((row, index) => {
+                          console.log(props.errors,"Error")
                           return (
                             <>
                               <TableRow>
@@ -149,10 +151,10 @@ const Addtask = () => {
                                     as={Input}
                                     name={`row.${index}.projectName`}
                                     placeholder="Enter Project Name"
-                                    validate={validateFunction}
+                                    validate={(value)=>validateFunction(value,index)}
                                   />
                                   <Box>
-                                    {props.touched && props.errors ? (
+                                    { !props.errors  ? (
                                       <ErrorMessage
                                         name={`row.${index}.projectName`}
                                       />

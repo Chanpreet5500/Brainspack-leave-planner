@@ -11,6 +11,7 @@ export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
     refetchOnWindowFocus: true,
+    refetchOnMount:true,
   });
 };
 
@@ -45,7 +46,7 @@ const postApi = (data) => {
   return axiosInstance.patch(`http://localhost:5233/update`, data);
 };
 
-export const UpdateUserData = (data) => {
+export const UpdateUserData = (id) => {
   const result = useMutation(postApi);
   return result;
 };

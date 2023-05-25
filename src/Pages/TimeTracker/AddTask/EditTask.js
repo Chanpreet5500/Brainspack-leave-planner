@@ -20,7 +20,7 @@ import {
 import { Formik } from "formik";
 import { useMutation } from "react-query";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { ValidationSchema } from "./ValidationSchema";
+import validationSchema  from "../formvalidation/validationSchema"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import moment from "moment";
@@ -49,7 +49,7 @@ const EditTask = () => {
     setProjectTitle({ ...projectTitle, [field]: e.target.value });
   };
 
-  const { data } = EditUserData(id);
+  const { data } = GetDataById(id);
   const apiData = data?.data?.data;
   if (apiData) {
     const {
@@ -85,7 +85,7 @@ const EditTask = () => {
       });
     }
   }, [data]);
-
+  console.log("id",id)
   const UpdateTask = useMutation(id, (data) => {
     axiosInstance.patch(`http://localhost:5233/update/${id}`, data);
     if (!UpdateTask.isError) {
@@ -133,7 +133,7 @@ const EditTask = () => {
       <Formik
         enableReinitialize={true}
         initialValues={initialValues}
-        validationSchema={ValidationSchema}
+        validationSchema={validationSchema}
         onSubmit={(data) => UpdateTask.mutate(data)}
       >
         {(props) => {
@@ -184,10 +184,12 @@ const EditTask = () => {
                       <CustomTableCell>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <PickDate
-                            // value={moment(props.values.date)}
+                            value={moment(props.values.date)}
+                            // value={new Date(props.values.date).toLocaleDateString()}
                             onChange={(value) =>
                               props.setFieldValue("date", value.$d)
                             }
+                            disabled
                             renderInput={(props) => (
                               <TextField
                                 {...props}
