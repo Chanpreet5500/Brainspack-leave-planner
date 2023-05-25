@@ -103,7 +103,6 @@ const Addtask = () => {
         onSubmit={(values) => handleSubmit(values)}
       >
         {(props) => {
-          console.log(props, "props");
           setRow(props.values);
           return (
             <Form>
