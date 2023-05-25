@@ -10,7 +10,10 @@ import Paper from "@mui/material/Paper";
 import { Input, Snackbar, IconButton, TextField } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-import { EditUserData, GetDataById } from "../../ReactQuery/CustomHooks/TimeTracker";
+import {
+  EditUserData,
+  GetDataById,
+} from "../../ReactQuery/CustomHooks/TimeTracker";
 import {
   ButtonContainer,
   ButtonWrapper,
@@ -41,13 +44,8 @@ const EditTask = () => {
   const location = useLocation();
   const axiosInstance = axios.create();
   const id = location.state;
-  console.log(id, 'id from location state')
 
   const [open, setOpen] = useState(false);
-
-  const handleChange = (e, field) => {
-    setProjectTitle({ ...projectTitle, [field]: e.target.value });
-  };
 
   const { data } = GetDataById(id);
   const apiData = data?.data?.data;
@@ -90,7 +88,7 @@ const EditTask = () => {
     axiosInstance.patch(`http://localhost:5233/update/${id}`, data);
     if (!UpdateTask.isError) {
       setTimeout(() => {
-        navigate('/timetracker');
+        navigate("/timetracker");
       }, 2000);
     }
     setOpen(true);

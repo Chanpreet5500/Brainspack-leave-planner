@@ -239,7 +239,6 @@ const ListView = () => {
 
               {log == "weekly"
                 ? weekCleander.map((element) => {
-                    console.log(element.formatDate.getDay());
                     return (
                       <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
                         <Box>

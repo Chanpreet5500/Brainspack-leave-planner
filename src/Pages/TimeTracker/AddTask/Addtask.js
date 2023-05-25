@@ -62,7 +62,6 @@ const Addtask = () => {
   };
 
   const validateFunction = (value) => {
-    console.log(value, "cuurr value");
     let error;
     if (value === "") {
       error = "Field Required";
@@ -110,7 +109,6 @@ const Addtask = () => {
         onSubmit={(values) => handleSubmit(values)}
       >
         {(props) => {
-          console.log(props);
           setRow(props.values);
           return (
             <form onSubmit={props.handleSubmit}>

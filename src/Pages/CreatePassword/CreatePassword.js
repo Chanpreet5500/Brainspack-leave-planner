@@ -1,8 +1,8 @@
 import React from "react";
 import { Input, Grid, Typography, Paper, Button } from "@mui/material";
 import { Formik } from "formik";
-import { useNavigate, useParams } from 'react-router-dom';
-import { CreatingNewPassword } from '../ReactQuery/CustomHooks/LeavePlanner';
+import { useNavigate, useParams } from "react-router-dom";
+import { CreatingNewPassword } from "../ReactQuery/CustomHooks/LeavePlanner";
 
 function CreateNewPasswordComponent() {
   // const userData = JSON.parse(localStorage.getItem('value'))
@@ -11,9 +11,9 @@ function CreateNewPasswordComponent() {
 
   const { token } = useParams();
 
-  const { mutate, isSuccess } = CreatingNewPassword()
+  const { mutate, isSuccess } = CreatingNewPassword();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const parentPopup = {
     width: "60%",
@@ -53,17 +53,15 @@ function CreateNewPasswordComponent() {
   const submitValue = (props) => {
     const userData = {
       newPassword: props.values.password,
-      confirmPassword : props.values.confirmPassword,
-      token : token
+      confirmPassword: props.values.confirmPassword,
+      token: token,
     };
 
-    mutate(userData)
+    mutate(userData);
 
-    if(isSuccess){
-        navigate('/')
+    if (isSuccess) {
+      navigate("/");
     }
-
-    // console.log(userData, "DATA")
   };
 
   return (
@@ -91,8 +89,8 @@ function CreateNewPasswordComponent() {
               const errors = {};
               if (!values.password) {
                 errors.password = "Required";
-              } else if (!values.confirmPassword){
-                  errors.confirmPassword = "Required"
+              } else if (!values.confirmPassword) {
+                errors.confirmPassword = "Required";
               }
               return errors;
             }}

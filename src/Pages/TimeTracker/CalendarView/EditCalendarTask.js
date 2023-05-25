@@ -58,7 +58,7 @@ const EditCalendarTask = () => {
       date: date,
       hours: hours,
       projectName: projectName,
-      status: status,
+      status: false,
       taskDescription: taskDescription,
       taskName: taskName,
       userId: userId,
