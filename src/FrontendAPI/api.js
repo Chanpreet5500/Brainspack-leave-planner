@@ -15,3 +15,5 @@ import { useQuery } from "react-query";
 export const GetUserLoggedData = (id)=>{
     return useQuery('DATA', ()=>loggedUserData(id))
 }
+
+

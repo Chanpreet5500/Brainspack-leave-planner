@@ -1,101 +1,3 @@
-// import * as React from 'react';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Paper from '@mui/material/Paper';
-// import { Avatar, Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-// import { faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
-// import axios from 'axios';
-// import { useQuery } from 'react-query';
-// import { ArrowBackIos, ArrowDownwardOutlined, ArrowForwardIos, DeleteOutline, EditOutlined, ExpandMore, KeyboardArrowDown } from '@mui/icons-material';
-// import { GetUserLoggedData } from '../../FrontendAPI/api';
-// import LogBar from '../LogBar/LogBar';
-
-
-
-
-// export default function ListView() {
-//   const [log, setLog] = React.useState('daily')
-//   const [navBarDate, setNavbarDate] = React.useState({
-//     formatDate: new Date(),
-//     date: 'Today'
-//   })
-//   const [weekFIrstDay, setWeekFirstDay] = React.useState('')
-//   const [weekLastDay, setWeekLastDay] = React.useState('')
-//   const [userTaskData, setUserTaskData] = React.useState([])
-
-//   const userLoggedId = JSON.parse(localStorage.getItem('value'));
-
-
-//   const { data } = GetUserLoggedData(userLoggedId._id)
-
-//   const newData = data?.data
-
-
-//   const date = new Date();
-//   const formatedDate = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`
-
-
-//   React.useEffect(() => {
-//     if (newData) {
-//       setUserTaskData(newData)
-//     }
-   
-//   }, [newData])
-
-
-//   return (
-
-//     <>
-
-
-  
-
-//       <TableContainer component={Paper}>
-//         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-//           <TableHead>
-//             <TableRow>
-//               <TableCell align="center"> Sr.No</TableCell>
-//               <TableCell align="center">Project Name</TableCell>
-//               <TableCell align="center">Task Name</TableCell>
-//               <TableCell align="center">Task Description</TableCell>
-//               <TableCell align="center">Hours</TableCell>
-//               <TableCell align="center">Date</TableCell>
-//               <TableCell align="center">Status</TableCell>
-//               <TableCell align="center">Actions</TableCell>
-//             </TableRow>
-//           </TableHead>
-//           <TableBody>
-//             {userTaskData?.map((row, index) => (
-//               <TableRow
-//                 key={index}
-//                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-//               >
-//                 <TableCell component="th" scope="row" align="right">
-//                   {index + 1}
-//                 </TableCell>
-//                 <TableCell align="center">{row.projectName}</TableCell>
-//                 <TableCell align="center"> {row.taskName}</TableCell>
-//                 <TableCell align="center">{row.taskDescription}</TableCell>
-//                 <TableCell align="center">{row.hours}</TableCell>
-//                 <TableCell align="center">{formatedDate}</TableCell>
-//                 <TableCell align="center">{row.status ? "Approved" : "pending"}</TableCell>
-//                 <TableCell align="center"  >
-//                   <Button sx={{
-//                     textTransform: "capitalize", borderRadius: "50px", minWidth: 0, p: "7px", backgroundColor: "transparent", color: "#4189e1", border: "1px solid #4189e1", mr: "10px",
-//                     '&:hover': {
-//                       backgroundColor: '#4189e1', color: "white",
-//                     }
-//                   }} size='small' variant='contained' ><EditOutlined fontSize='small' />  </Button>
-//                   <Button sx={{
-//                     textTransform: "capitalize", borderRadius: "50px", minWidth: 0, p: "7px", backgroundColor: "transparent", color: "red", border: "1px solid red", '&:hover': {
-//                       backgroundColor: 'red', color: "white",
-//                     }
-//                   }} variant='contained' size='small'  ><DeleteOutline fontSize='small' /></Button>
-//                 </TableCell>
 import * as React from "react";
 import { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
@@ -105,16 +7,29 @@ import {
   CustomTableHead,
   CustomEditButton,
   CustomDeleteButton,
+  HoursTextField,
+  TableFooterNoRecord,
+  DeleteTextBox,
+  ButtonTextBox,
+  WeekDayBox,
 } from "./styled";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Box } from "@mui/material";
+import { Input, Box, TextField, Typography, TableFooter } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
-import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
+import {
+  FetchFilterdWeekData,
+  GetUserData,
+  WeekyUsersData,
+} from "../ReactQuery/CustomHooks/TimeTracker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TimeField } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 const rows = [
   {
@@ -129,19 +44,30 @@ const rows = [
 
 const ListView = () => {
   const [projectTitle, setProjectTitle] = useState(rows);
-  const [taskName, setTaskName] = useState([]);
-  const [taskDescription, setTaskDescription] = useState([]);
-  const [hours, setHours] = useState([]);
-  const [projectReview, setProjectReview] = useState([]);
-  const [log, setLog] = React.useState('daily')
+  const [log, setLog] = React.useState("daily");
   const [navBarDate, setNavbarDate] = React.useState({
     formatDate: new Date(),
-    date: 'Today'
-  })
-  const [weekFIrstDay, setWeekFirstDay] = React.useState('')
-  const [weekLastDay, setWeekLastDay] = React.useState('')
-  const [userTaskData, setUserTaskData] = React.useState([])
-
+    date: "Today",
+  });
+  const dateForWeek = new Date();
+  const [weekFIrstDay, setWeekFirstDay] = React.useState({
+    formatDate: new Date(
+      dateForWeek.getFullYear(),
+      dateForWeek.getMonth(),
+      dateForWeek.getDate()
+    ),
+    date: "Today",
+  });
+  const [weekLastDay, setWeekLastDay] = React.useState({
+    formatDate: new Date(
+      new Date(
+        dateForWeek.getFullYear(),
+        dateForWeek.getMonth(),
+        dateForWeek.getDate() + 1
+      )
+    ),
+    date: "Today",
+  });
 
   const handleChange = (e, index, field) => {
     const newArray = projectTitle.map((item, i) => {
@@ -156,11 +82,19 @@ const ListView = () => {
 
   const loggedInUser = localStorage.getItem("value");
   const finalData = JSON.parse(loggedInUser);
-  const userId = finalData._id;
-  console.log(userId, "userId");
-  const { data, isSuccess } = GetUserData(userId);
-  const apiData = data?.data?.data;
-  console.log(apiData);
+  const userId = finalData?._id;
+
+  const { data: weekDataUser, refetch } = FetchFilterdWeekData({
+    userId,
+    weekFIrstDay,
+    weekLastDay,
+  });
+
+  useEffect(() => {
+    if (log && weekFIrstDay) {
+      refetch();
+    }
+  }, [log, weekFIrstDay, weekLastDay]);
 
   const ddMMYY = (date) => {
     const d = new Date(date);
@@ -168,10 +102,91 @@ const ListView = () => {
     return finalDate;
   };
 
+  const months = [
+    "Jan",
+    "Feb",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const apiData = weekDataUser?.data?.filterdUsers;
+
+  const weekCleander = [
+    {
+      formatDate: new Date(
+        weekFIrstDay.formatDate.getFullYear(),
+        weekFIrstDay.formatDate.getMonth(),
+        weekFIrstDay.formatDate.getDate() + 0
+      ),
+    },
+    {
+      formatDate: new Date(
+        weekFIrstDay.formatDate.getFullYear(),
+        weekFIrstDay.formatDate.getMonth(),
+        weekFIrstDay.formatDate.getDate() + 1
+      ),
+    },
+    {
+      formatDate: new Date(
+        weekFIrstDay.formatDate.getFullYear(),
+        weekFIrstDay.formatDate.getMonth(),
+        weekFIrstDay.formatDate.getDate() + 2
+      ),
+    },
+    {
+      formatDate: new Date(
+        weekFIrstDay.formatDate.getFullYear(),
+        weekFIrstDay.formatDate.getMonth(),
+        weekFIrstDay.formatDate.getDate() + 3
+      ),
+    },
+    {
+      formatDate: new Date(
+        weekFIrstDay.formatDate.getFullYear(),
+        weekFIrstDay.formatDate.getMonth(),
+        weekFIrstDay.formatDate.getDate() + 4
+      ),
+    },
+  ];
+
+  const checkHours = (headerDate, projectDate) => {
+    const [tempDate, tempDate2] = headerDate.date.split("T");
+
+    const [year, month, date] = tempDate.split("-");
+    const year2 = projectDate.formatDate.getFullYear();
+    const month2 = projectDate.formatDate.getMonth() + 1;
+    const date2 = projectDate.formatDate.getDate();
+
+    if (+year == year2 && +month == month2 && +date == date2) {
+      return true;
+    }
+  };
+
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thru", "Fri", "Sat"];
+
   return (
     <>
-    {/* <LogBar data={{log,setLog,navBarDate,setNavbarDate,weekFIrstDay,setWeekFirstDay,weekLastDay,setWeekLastDay}}/> */}
-      <Header />
+      <Header
+        data={{
+          log,
+          setLog,
+          navBarDate,
+          setNavbarDate,
+          weekFIrstDay,
+          setWeekFirstDay,
+          weekLastDay,
+          setWeekLastDay,
+          userId,
+        }}
+      />
       <TableContainer
         component={Paper}
         sx={{
@@ -183,11 +198,38 @@ const ListView = () => {
             <TableRow>
               <CustomTableHead>S.No</CustomTableHead>
               <CustomTableHead>Project Name</CustomTableHead>
-              <CustomTableHead>Date</CustomTableHead>
               <CustomTableHead>Task Name</CustomTableHead>
               <CustomTableHead>Task Description</CustomTableHead>
-              <CustomTableHead>Hours</CustomTableHead>
+              {log == "daily" ? (
+                <>
+                  {" "}
+                  <CustomTableHead>Date</CustomTableHead>
+                  <CustomTableHead>Hours</CustomTableHead>
+                </>
+              ) : (
+                ""
+              )}
+
+              {log == "weekly"
+                ? weekCleander.map((element) => {
+                  console.log(element.formatDate.getDay());
+                  return (
+                    <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
+                      <Box>
+                        {`${months[element.formatDate.getMonth()]
+                          } - ${element.formatDate.getDate()}`}
+                      </Box>
+                      <WeekDayBox
+                      >
+                        {`(${weekDays[element.formatDate.getDay()]})`}
+                      </WeekDayBox>
+                    </CustomTableHead>
+                  );
+                })
+                : ""}
+
               <CustomTableHead>Status</CustomTableHead>
+
               <CustomTableHead colSpan={2}>Actions</CustomTableHead>
             </TableRow>
           </TableHead>
@@ -208,22 +250,14 @@ const ListView = () => {
                     disabled
                   />
                 </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={ddMMYY(row.date)}
-                    onChange={(e) => handleChange(e, id, "date")}
-                    disableUnderline={true}
-                    disabled
-                  />
-                </CustomTableCell>
+
                 <CustomTableCell>
                   {" "}
                   <Input
                     value={row.taskName} // row,taskName
                     onChange={(e) => handleChange(e, id, "taskName")}
                     disableUnderline={true}
-                    // disabled
+                  // disabled
                   />
                 </CustomTableCell>
                 <CustomTableCell>
@@ -232,18 +266,51 @@ const ListView = () => {
                     value={row.taskDescription} // row.taskDescription
                     onChange={(e) => handleChange(e, id, "taskDescription")}
                     disableUnderline={true}
-                    // disabled
+                  // disabled
                   />
                 </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.hours} // row.hours
-                    onChange={(e) => handleChange(e, id, "hours")}
-                    disableUnderline={true}
-                    disabled
-                  />
-                </CustomTableCell>
+                {log == "daily" ? (
+                  <>
+                    {" "}
+                    <CustomTableCell>
+                      {" "}
+                      <Input
+                        value={ddMMYY(row.date)}
+                        onChange={(e) => handleChange(e, id, "date")}
+                        disableUnderline={true}
+                        disabled
+                      />
+                    </CustomTableCell>
+                    <CustomTableCell>
+                      {" "}
+                      <Input
+                        value={row.hours} // row.hours
+                        onChange={(e) => handleChange(e, id, "hours")}
+                        disableUnderline={true}
+                        disabled
+                      />
+                    </CustomTableCell>
+                  </>
+                ) : (
+                  ""
+                )}
+
+                {log == "weekly"
+                  ? weekCleander.map((element, index) => {
+                    return (
+                      <CustomTableCell
+                        key={index}
+                        sx={{
+                          fontWeight: checkHours(row, element) ? "bold" : "",
+                          minWidth: "65px",
+                        }}
+                      >
+                        {checkHours(row, element) ? row.hours : "00:00"}
+                      </CustomTableCell>
+                    );
+                  })
+                  : ""}
+
                 <CustomTableCell>
                   {" "}
                   <Input
@@ -260,32 +327,37 @@ const ListView = () => {
                         fontSize: "24px",
                       }}
                     />
-                    <Box
-                      sx={{
-                        paddingLeft: "5px",
-                        paddingRight: "15px",
-                        fontFamily: "sans-serif",
-                      }}
+                    <ButtonTextBox
                       component="span"
                     >
                       Edit
-                    </Box>
+                    </ButtonTextBox>
                   </CustomEditButton>
                 </CustomTableCell>
                 <CustomTableCell>
                   <CustomDeleteButton>
-                    <DeleteIcon />{" "}
-                    <Box
-                      sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
+                    <DeleteIcon />
+                    <ButtonTextBox
                       component="span"
                     >
                       Delete
-                    </Box>
+                    </ButtonTextBox>
                   </CustomDeleteButton>
                 </CustomTableCell>
               </TableRow>
             ))}
           </TableBody>
+          {!apiData?.length ? (
+            <TableFooter>
+              <CustomTableCell colSpan={log == "daily" ? 8 : 11}>
+                <TableFooterNoRecord>
+                  <Typography>NO RECORD TO DISPLAY.....</Typography>
+                </TableFooterNoRecord>
+              </CustomTableCell>
+            </TableFooter>
+          ) : (
+            ""
+          )}
         </Table>
       </TableContainer>
     </>
