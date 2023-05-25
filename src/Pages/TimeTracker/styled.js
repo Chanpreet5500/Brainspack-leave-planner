@@ -92,7 +92,7 @@ export const TableFooterNoRecord = styled(Box)(({ theme }) => ({
 export const ButtonTextBox = styled(Box)(({ theme }) => ({
   paddingLeft: "5px",
   fontFamily: "sans-serif",
-  minWidth: "50px",
+  // minWidth: "50px",
 }));
 
 export const WeekDayBox = styled(Box)(({ theme }) => ({
