@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { GetUserData } from "../ReactQuery/CustomHooks/timeTracker";
+// import { GetUserData } from "../ReactQuery/CustomHooks/timeTracker";
 import { Dialog, DialogContent, DialogContentText, DialogTitle, Typography } from "@mui/material";
 import CalendarModalComponent from "../Calendar/CalendarModal";
+import { GetUserData } from "../ReactQuery/CustomHooks/TimeTracker";
 
 export const CalenderView = () => {
   const [events, setEvents] = useState([]);

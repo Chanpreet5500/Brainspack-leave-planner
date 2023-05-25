@@ -1,5 +1,5 @@
 import { Box, styled, Button, Typography } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export const ButtonWrapper = styled(Box)(({ theme }) => ({
   display: "flex",

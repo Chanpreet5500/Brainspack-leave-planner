@@ -116,6 +116,7 @@ const EditTask = () => {
         onSubmit={saveData}
       >
         {(props) => {
+console.log(new Date(props.values.date).toLocaleDateString())
           return (
             <>
               <TableContainer
@@ -157,27 +158,19 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.projectName &&
-                        props.touched.projectName ? (
+                          props.touched.projectName ? (
                           <ErrorText>{props.errors.projectName}</ErrorText>
                         ) : null}
                       </CustomTableCell>
                       <CustomTableCell>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <PickDate
-                            value={props.values.date}
-                            onChange={(value) =>
-                              props.setFieldValue("date", value.$d)
-                            }
-                            renderInput={(props) => (
-                              <TextField
-                                {...props}
-                                size="small"
-                                varient={"standard"}
-                                helperText={null}
-                              />
-                            )}
-                          />
-                        </LocalizationProvider>
+
+                      <Input
+                          name={"date"}
+                          value={new Date(props.values.date).toLocaleDateString()}
+                          disableUnderline={true}
+                          disabled
+                        />
+                      
                       </CustomTableCell>
                       <CustomTableCell>
                         <Input
@@ -202,7 +195,7 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.taskDescription &&
-                        props.touched.taskDescription ? (
+                          props.touched.taskDescription ? (
                           <ErrorText>{props.errors.taskDescription}</ErrorText>
                         ) : null}
                       </CustomTableCell>
