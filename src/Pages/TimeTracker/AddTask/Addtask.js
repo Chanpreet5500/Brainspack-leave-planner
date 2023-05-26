@@ -10,15 +10,17 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { CustomTableCell, CustomTableHead, PickDate, Input } from "../styled";
-import { ErrorText } from "./EditStyled";
-import { Box, Button } from "@mui/material";
+import { ErrorText, RemoveRowButton } from "./EditStyled";
+import { Box, Button, Typography } from "@mui/material";
 import { useMutation } from "react-query";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import { ValidationSchema } from "./ValidationSchema";
 import { Snackbar, IconButton } from "@mui/material";
-
+import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import { CircularBar } from "../CalendarView/CalenderStyled";
+import { useNavigate } from "react-router-dom";
 const loggedInUser = localStorage.getItem("value");
 const finalData = JSON.parse(loggedInUser);
 const userId = finalData._id;
@@ -31,15 +33,20 @@ const initialValues = {
   status: false,
   hours: "",
 };
-const Addtask = () => {
+const Addtask = ({setValue}) => {
   const [open, setOpen] = useState(false);
-
   const addProjectData = useMutation(userId, (values) => {
     return axios.post(`http://localhost:5233/sendData/${userId}`, values);
   });
 
   const handleSubmit = (values) => {
     addProjectData.mutate(values.tasks);
+
+    if(!addProjectData.isError){
+      setTimeout(()=>{
+        setValue("listView")
+      },1000)
+    }
     setOpen(true);
   };
 
@@ -84,7 +91,7 @@ const Addtask = () => {
       >
         {(props) => {
           return (
-            <Form >
+            <Form>
               <FieldArray name="tasks">
                 {(arrayForm) => {
                   return (
@@ -128,10 +135,12 @@ const Addtask = () => {
                                           placeholder="Enter Project Name"
                                         />
                                         <Box>
-                                          {props.errors && props.touched ?<ErrorMessage
-                                            component={ErrorText}
-                                            name={`tasks.${index}.projectName`}
-                                          />:null}
+                                          {props.errors && props.touched ? (
+                                            <ErrorMessage
+                                              component={ErrorText}
+                                              name={`tasks.${index}.projectName`}
+                                            />
+                                          ) : null}
                                         </Box>
                                       </CustomTableCell>
                                       <CustomTableCell>
@@ -193,23 +202,16 @@ const Addtask = () => {
                                         </Box>
                                       </CustomTableCell>
                                       <CustomTableCell>
-                                        <Button
+                                        <RemoveRowButton
                                           onClick={() =>
                                             arrayForm.remove(index)
                                           }
-                                          sx={{
-                                            background: "#55AD88",
-                                            marginTop: "15px",
-                                            color: "#fff",
-                                            textTransform: "capitalize",
-                                            fontSize: "14px",
-                                            "&:hover": {
-                                              background: "#4d9b78",
-                                            },
-                                          }}
                                         >
-                                          Remove Row <AddIcon />{" "}
-                                        </Button>
+                                          <RemoveCircleOutlineOutlinedIcon
+                                            sx={{ mr: "8px" }}
+                                          />
+                                          Remove
+                                        </RemoveRowButton>
                                       </CustomTableCell>
                                     </TableRow>
                                   </>
@@ -247,14 +249,27 @@ const Addtask = () => {
                             color: "#fff",
                             textTransform: "capitalize",
                             fontSize: "14px",
-                            padding: "5px 25px",
+                            padding:props.isSubmitting? "5px 11px":"5px 25px",
+                            opacity: props.isSubmitting ? 0.7 : 1,
                             "&:hover": {
                               background: "#3547bd",
                             },
                           }}
                           type="submit"
+                          disabled={props.isSubmitting}
                         >
-                          Save
+                          {props.isSubmitting ? (
+                            <>
+                              <CircularBar sx={{height:"16px",width:"16px"}}/>
+                              <Typography
+                                sx={{ color: "#fff", marginLeft: "8px" }}
+                              >
+                                Save
+                              </Typography>
+                            </>
+                          ) : (
+                            "Save"
+                          )}
                         </Button>
                       </Box>
                     </>
