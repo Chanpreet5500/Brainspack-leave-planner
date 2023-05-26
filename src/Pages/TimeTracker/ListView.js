@@ -73,17 +73,6 @@ const ListView = () => {
     date: "Today",
   });
 
-  const handleChange = (e, index, field) => {
-    const newArray = projectTitle.map((item, i) => {
-      if (index === i) {
-        return { ...item, [field]: e.target.value };
-      } else {
-        return item;
-      }
-    });
-    setProjectTitle(newArray);
-  };
-
   
 
   const { data: weekDataUser, refetch } = FetchFilterdWeekData({
@@ -92,11 +81,7 @@ const ListView = () => {
     weekLastDay,
   });
 
-  useEffect(() => {
-    if (log && weekFIrstDay) {
-      refetch();
-    }
-  }, [log, weekFIrstDay]);
+ 
 
   const ddMMYY = (date) => {
     const d = new Date(date);
@@ -120,7 +105,11 @@ const ListView = () => {
   ];
 
   const apiData = weekDataUser?.data?.filterdUsers;
-
+  useEffect(() => {
+    if (log && weekFIrstDay) {
+      refetch();
+    }
+  }, [log, weekFIrstDay,weekDataUser]);
   const weekCleander = [
     {
       formatDate: new Date(
@@ -239,6 +228,7 @@ const ListView = () => {
                 ""
               )}
 
+              <CustomTableHead>Status</CustomTableHead>
               {log == "weekly"
                 ? weekCleander.map((element) => {
                     return (
@@ -255,14 +245,11 @@ const ListView = () => {
                     );
                   })
                 : ""}
-
-              <CustomTableHead>Status</CustomTableHead>
-              {log == 'daily' ?
-
+              {log == "daily" ? (
                 <CustomTableHead colSpan={2}>Actions</CustomTableHead>
-                : ''}
-
-              <CustomTableHead colSpan={2}>Actions</CustomTableHead>
+              ) : (
+                ""
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -286,6 +273,10 @@ const ListView = () => {
                   ""
                 )}
 
+                <CustomTableCell>
+                  {row.status == true ? "Approved" : "Pending"}
+                </CustomTableCell>
+
                 {log == "weekly"
                   ? weekCleander.map((element, index) => {
                       return (
@@ -302,40 +293,43 @@ const ListView = () => {
                     })
                   : ""}
 
-                <CustomTableCell>
-                  {row.status == true ? "Approved" : "Pending"}
-                </CustomTableCell>
-                <CustomTableCell>
-                  <CustomEditButton
-                    onClick={() => editTask(row._id, row.userId)}
-                  >
-                    <EditIcon
-                      sx={{
-                        fontSize: "24px",
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        paddingLeft: "5px",
-                        paddingRight: "15px",
-                        fontFamily: "sans-serif",
-                      }}
-                      component="span"
-                    >
-                      Edit
-                    </Box>
-                  </CustomEditButton>
+                {log == "daily" ? (
+                  <>
+                    <CustomTableCell sx={{minWidth:'142px'}} >
+                      <CustomEditButton
+                        onClick={() => editTask(row._id, row.userId)}
+                      >
+                        <EditIcon
+                          sx={{
+                            fontSize: "24px",
+                          }}
+                        />
+                        <Box
+                          sx={{
+                            paddingLeft: "5px",
+                            paddingRight: "15px",
+                            fontFamily: "sans-serif",
+                          }}
+                          component="span"
+                        >
+                          Edit
+                        </Box>
+                      </CustomEditButton>
 
-                  <CustomDeleteButton onClick={() => confirmModal(row._id)}>
-                    <DeleteIcon />{" "}
-                    <Box
-                      sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
-                      component="span"
-                    >
-                      Delete
-                    </Box>
-                  </CustomDeleteButton>
-                </CustomTableCell>
+                      <CustomDeleteButton onClick={() => confirmModal(row._id)}>
+                        <DeleteIcon />{" "}
+                        <Box
+                          sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
+                          component="span"
+                        >
+                          Delete
+                        </Box>
+                      </CustomDeleteButton>
+                    </CustomTableCell>
+                  </>
+                ) : (
+                  ""
+                )}
               </TableRow>
             ))}
           </TableBody>

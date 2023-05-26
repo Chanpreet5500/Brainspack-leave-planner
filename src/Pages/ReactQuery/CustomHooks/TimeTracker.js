@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "react-query";
 const axiosInstance = axios.create();
 
 const fetchTimeTracker = (id) => {
-  return axiosInstance.get(`http://localhost:5233/logged-user-data/${id}`);
+  return axiosInstance.get(`http://localhost:5233/testData/${id}`);
 };
 
 export const GetUserData = (id) => {
@@ -38,16 +38,12 @@ export const FetchFilterdWeekData = (id) => {
   return useQuery("logged-user-week-data", () => fetchWeekData(id), {
     retry: false,
     refetchOnMount: true,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     enabled: false,
   });
 };
 
-// const getDAta = (data) => {
-//   const id = data.userId;
 
-//   return axiosInstance.post(`http://localhost:5233/weekly-data/${id}`, data);
-// };
 
 const fetchDataByID = (id) => {
   return axiosInstance.get(`http://localhost:5233/getDataById/${id}`);
@@ -71,9 +67,7 @@ export const DeleteUserData = (data) => {
   return result;
 };
 
-const fetchEditData = (id) => {
-  return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`, id);
-};
+// 
 
 export const EditUserData = (data) => {
   return useQuery("getEditUserData", () => fetchEditData(data), {
