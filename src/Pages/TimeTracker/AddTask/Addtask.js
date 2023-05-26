@@ -1,182 +1,279 @@
 import * as React from "react";
-import { useState} from "react";
+import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import { CustomTableCell, CustomTableHead } from "../styled";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Box, Button, TextField } from "@mui/material";
+import TableRow from "@mui/material/TableRow";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
+import { CustomTableCell, CustomTableHead, PickDate, Input } from "../styled";
+import { ErrorText } from "./EditStyled";
+import { Box, Button } from "@mui/material";
+import { useMutation } from "react-query";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import { ValidationSchema } from "./ValidationSchema";
+import { Snackbar, IconButton } from "@mui/material";
+import * as Yup from "yup";
 
-const rows = [
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-];
+const loggedInUser = localStorage.getItem("value");
+const finalData = JSON.parse(loggedInUser);
+const userId = finalData._id;
 
 const Addtask = () => {
-  const [projectTitle, setProjectTitle] = useState(rows);
-  const [taskName, setTaskName] = useState([]);
-  const [taskDescription, setTaskDescription] = useState([]);
-  const [hours, setHours] = useState([]);
-  const [projectReview, setProjectReview] = useState([]);
+  const [newRow, setRow] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  const handleChange = (e, index, field) => {
-    const newArray = projectTitle.map((item, i) => {
-      if (index === i) {
-        return { ...item, [field]: e.target.value };
-      } else {
-        return item;
-      }
+  const addProjectData = useMutation(userId, (values) => {
+    return axios.post(`http://localhost:5233/sendData/${userId}`, values);
+  });
+
+  const handleSubmit = (values) => {
+    values.row.map((e) => {
+      e.userId = userId;
     });
-    setProjectTitle(newArray);
+    addProjectData.mutate(values.row);
+    setOpen(true);
   };
 
-  const addRowOnClick = () => {
+  const addRowOnClick = (props) => {
     const data = {
+      userId: userId,
       projectName: "",
       date: "",
       taskName: "",
       taskDescription: "",
-      status: "",
-      hours: "",
+      status: false,
+      hours: "00:00",
     };
-    setProjectTitle([...projectTitle, data]);
+    props.push(data);
+    setRow([...newRow, data]);
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const validateFunction = (value) => {
+    let error;
+    if (value === "") {
+      error = "Field Required";
+    }
+    return error;
+  };
 
   return (
-    <>
-      <TableContainer
-        component={Paper}
-        sx={{
-          padding: "10px",
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message={
+          addProjectData.isError
+            ? "Failed adding data"
+            : "Data added successfully"
+        }
+        ContentProps={{
+          sx: {
+            backgroundColor: addProjectData.isError ? "#F20000" : "#4BB543",
+          },
         }}
+        action={
+          <>
+            <IconButton color="inherit" onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
+      />
+      <Formik
+        initialValues={[
+          {
+            userId: userId,
+            projectName: "",
+            date: "",
+            taskName: "",
+            taskDescription: "",
+            status: false,
+            hours: "00:00",
+          },
+        ]}
+        validationSchema={ValidationSchema}
+        onSubmit={(values) => handleSubmit(values)}
       >
-        <Table sx={{ minWidth: 650, flex: 1 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <CustomTableHead>S.No</CustomTableHead>
-              <CustomTableHead>Project Name</CustomTableHead>
-              <CustomTableHead>Date</CustomTableHead>
-              <CustomTableHead>Task Name</CustomTableHead>
-              <CustomTableHead>Task Description</CustomTableHead>
-              <CustomTableHead>Hours</CustomTableHead>
-              <CustomTableHead>Status</CustomTableHead>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {projectTitle?.map((row, id) => (
-              <TableRow
-                key={id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        {(props) => {
+          setRow(props.values);
+          return (
+            <form onSubmit={props.handleSubmit}>
+              <TableContainer
+                component={Paper}
+                sx={{
+                  padding: "10px",
+                }}
               >
-                <CustomTableCell component="th" scope="row">
-                  {id + 1 + "."}
-                </CustomTableCell>
-                <CustomTableCell>
-                  <Input
-                    value={row.projectName} // row.projectName
-                    onChange={(e) => handleChange(e, id, "projectName")}
-                    disableUnderline={true}
-                    placeholder="Enter project name"
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.date}
-                    onChange={(e) => handleChange(e, id, "date")}
-                    disableUnderline={true}
-                    placeholder="Enter project name"
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.taskName} // row,taskName
-                    onChange={(e) => handleChange(e, id, "taskName")}
-                    disableUnderline={true}
-                    placeholder="Enter project name"
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.taskDescription} // row.taskDescription
-                    onChange={(e) => handleChange(e, id, "taskDescription")}
-                    disableUnderline={true}
-                    placeholder="Enter project name"
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.hours} // row.hours
-                    onChange={(e) => handleChange(e, id, "hours")}
-                    disableUnderline={true}
-                    placeholder="Enter project name"
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.status == true ? "Approved" : "Pending"}
-                    onChange={(e) => handleChange(e, id, "status")}
-                    disableUnderline={true}
-                    disabled
-                  />
-                </CustomTableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
+                <Table
+                  sx={{ minWidth: 650, flex: 1 }}
+                  aria-label="simple table"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <CustomTableHead>S.No</CustomTableHead>
+                      <CustomTableHead>Project Name</CustomTableHead>
+                      <CustomTableHead>Date</CustomTableHead>
+                      <CustomTableHead>Task Name</CustomTableHead>
+                      <CustomTableHead>Task Description</CustomTableHead>
+                      <CustomTableHead>Hours</CustomTableHead>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <FieldArray>
+                      <>
+                        {newRow.map((row, index) => {
+                          return (
+                            <>
+                              <TableRow>
+                                <CustomTableCell>
+                                  {index + 1 + "."}
+                                </CustomTableCell>
+                                <CustomTableCell>
+                                  <Field
+                                    as={Input}
+                                    name={`row.${index}.projectName`}
+                                    placeholder="Enter Project Name"
+                                    validate={validateFunction}
+                                  />
+                                  <Box>
+                                    {props.touched && props.errors ? (
+                                      <ErrorMessage
+                                        name={`row.${index}.projectName`}
+                                      />
+                                    ) : null}
+                                  </Box>
+                                </CustomTableCell>
+                                <CustomTableCell>
+                                  <Field
+                                    as={PickDate}
+                                    value={props.values.date}
+                                    onChange={(value) =>
+                                      props.setFieldValue(
+                                        `row.${index}.date`,
+                                        value.$d
+                                      )
+                                    }
+                                    validate={validateFunction}
+                                  />
+                                  <Box>
+                                    {props.touched ? (
+                                      <ErrorMessage
+                                        name={`row.${index}.date`}
+                                      />
+                                    ) : null}
+                                  </Box>
+                                </CustomTableCell>
+                                <CustomTableCell>
+                                  <Field
+                                    as={Input}
+                                    name={`row.${index}.taskName`}
+                                    placeholder="Enter Task Name"
+                                    validate={validateFunction}
+                                  />
+                                  <Box>
+                                    {props.touched ? (
+                                      <ErrorMessage
+                                        name={`row.${index}.taskName`}
+                                      />
+                                    ) : null}
+                                  </Box>
+                                </CustomTableCell>
+                                <CustomTableCell>
+                                  <Field
+                                    as={Input}
+                                    name={`row.${index}.taskDescription`}
+                                    placeholder="Enter Task Description"
+                                    validate={validateFunction}
+                                  />
+                                  <Box>
+                                    {props.touched ? (
+                                      <ErrorMessage
+                                        name={`row.${index}.taskDescription`}
+                                      />
+                                    ) : null}
+                                  </Box>
+                                </CustomTableCell>
+                                <CustomTableCell>
+                                  <Field
+                                    as={Input}
+                                    name={`row.${index}.hours`}
+                                    placeholder="Enter Hours"
+                                    validate={validateFunction}
+                                  />
+                                  <Box>
+                                    {props.touched ? (
+                                      <ErrorMessage
+                                        name={`row.${index}.hours`}
+                                      />
+                                    ) : null}
+                                  </Box>
+                                </CustomTableCell>
+                              </TableRow>
+                            </>
+                          );
+                        })}
+                      </>
+                    </FieldArray>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Button
+                  onClick={() => addRowOnClick(props.values)}
+                  sx={{
+                    background: "#55AD88",
+                    marginTop: "15px",
+                    color: "#fff",
+                    textTransform: "capitalize",
+                    fontSize: "14px",
+                    "&:hover": {
+                      background: "#4d9b78",
+                    },
+                  }}
+                >
+                  Add Row <AddIcon />{" "}
+                </Button>
+                <Button
+                  sx={{
+                    background: "#355edb",
+                    marginTop: "15px",
+                    color: "#fff",
+                    textTransform: "capitalize",
+                    fontSize: "14px",
+                    padding: "5px 25px",
+                    "&:hover": {
+                      background: "#3547bd",
+                    },
+                  }}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </Box>
+            </form>
+          );
         }}
-      >
-        <Button
-          onClick={addRowOnClick}
-          sx={{
-            background: "#55AD88",
-            marginTop: "15px",
-            color: "#fff",
-            textTransform: "capitalize",
-            fontSize: "14px",
-            "&:hover": {
-              background: "#4d9b78",
-            },
-          }}
-        >
-          Add Row <AddIcon />{" "}
-        </Button>
-        <Button
-          sx={{
-            background: "#355edb",
-            marginTop: "15px",
-            color: "#fff",
-            textTransform: "capitalize",
-            fontSize: "14px",
-            padding: "5px 25px",
-            "&:hover": {
-              background: "#3547bd",
-            },
-          }}
-        >
-          Save
-        </Button>
-      </Box>
-    </>
+      </Formik>
+    </LocalizationProvider>
   );
 };
 

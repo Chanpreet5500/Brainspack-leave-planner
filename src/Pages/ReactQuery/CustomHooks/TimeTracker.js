@@ -14,10 +14,6 @@ export const GetUserData = (id) => {
   });
 };
 
-
-
-
-
 const fetchWeekData = (data) => {
   const id = data.userId;
   const fDay = data.weekFIrstDay.formatDate;
@@ -31,13 +27,12 @@ const fetchWeekData = (data) => {
   }-${tempDate.getDate()}`;
   const weekLastDay = `${secondTempDate.getFullYear()}-${
     secondTempDate.getMonth() + 1
-  }-${secondTempDate.getDate()+1}`;
+  }-${secondTempDate.getDate() + 1}`;
 
   return axiosInstance.get(
     `http://localhost:5233/weekly-datas/${id}/${weekFIrstDay}/${weekLastDay}`
   );
 };
-
 
 export const FetchFilterdWeekData = (id) => {
   return useQuery("logged-user-week-data", () => fetchWeekData(id), {
@@ -48,29 +43,20 @@ export const FetchFilterdWeekData = (id) => {
   });
 };
 
+// const getDAta = (data) => {
+//   const id = data.userId;
 
+//   return axiosInstance.post(`http://localhost:5233/weekly-data/${id}`, data);
+// };
 
-
-
-
-
-
-const getDAta = (data) => {
-  const id = data.userId;
-
-  return axiosInstance.post(`http://localhost:5233/weekly-data/${id}`, data);
+const fetchDataByID = (id) => {
+  return axiosInstance.get(`http://localhost:5233/getDataById/${id}`);
 };
 
-export const WeekyUsersData = (data) => {
-  return useMutation(getDAta, {
-    onSuccess: () => {
-      // Success actions
-      console.log("success");
-    },
-    onError: (error) => {
-      console.log(error, "error");
-      // Error actions
-    },
+export const GetDataById = (id) => {
+  return useQuery("getDataById", () => fetchDataByID(id), {
+    retry: false,
+    refetchOnMount: true,
   });
     // refetchInterval:2000,
   }
@@ -80,6 +66,15 @@ const fetchEditData = (id) => {
   return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`,id);
 };
 
+export const DeleteUserData = (data) => {
+  const result = useMutation(deleteApi);
+  return result;
+};
+
+const fetchEditData = (id) => {
+  return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`, id);
+};
+
 export const EditUserData = (data) => {
   return useQuery("getEditUserData", () => fetchEditData(data), {
     retry: false,
@@ -87,20 +82,15 @@ export const EditUserData = (data) => {
   });
 };
 
-const postApi =(data) => {
-  return axiosInstance.patch(`http://localhost:5233/update`,data)
-}
+const postApi = (data) => {
+  return axiosInstance.patch(`http://localhost:5233/updateCalendar`, data);
+};
 
 export const UpdateUserData = (data) => {
   const result = useMutation(postApi);
-  return result
+  return result;
 };
 
-const deleteApi =(data) => {
-  return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`)
-}
-
-export const DeleteUserData = (data) => {
-  const result = useMutation(deleteApi);
-  return result
+const deleteApi = (data) => {
+  return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`);
 };

@@ -19,11 +19,11 @@ import { Input, Box, Typography, TableFooter } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
-import {
-  FetchFilterdWeekData,
-
-} from "../ReactQuery/CustomHooks/TimeTracker";
-
+import Modal from "../Dialog/Modal";
+import { FetchFilterdWeekData } from "../ReactQuery/CustomHooks/TimeTracker";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const rows = [
   {
@@ -37,14 +37,18 @@ const rows = [
 ];
 
 const ListView = () => {
+  const dateForWeek = new Date();
+  const axiosInstance = axios.create();
+  const navigate = useNavigate();
+  const loggedInUser = localStorage.getItem("value");
+  const finalData = JSON.parse(loggedInUser);
+  const userId = finalData?._id;
+
   const [projectTitle, setProjectTitle] = useState(rows);
   const [log, setLog] = React.useState("daily");
-  const [navBarDate, setNavbarDate] = React.useState({
-    formatDate: new Date(),
-    date: "Today",
-  });
-  const dateForWeek = new Date();
-  const [weekFIrstDay, setWeekFirstDay] = React.useState({
+  const [openModal, setOpenModal] = useState(false);
+  const [rowId, setRowId] = useState("");
+  const [weekFIrstDay, setWeekFirstDay] = useState({
     formatDate: new Date(
       dateForWeek.getFullYear(),
       dateForWeek.getMonth(),
@@ -52,7 +56,13 @@ const ListView = () => {
     ),
     date: "Today",
   });
-  const [weekLastDay, setWeekLastDay] = React.useState({
+
+  const [navBarDate, setNavbarDate] = useState({
+    formatDate: new Date(),
+    date: "Today",
+  });
+
+  const [weekLastDay, setWeekLastDay] = useState({
     formatDate: new Date(
       new Date(
         dateForWeek.getFullYear(),
@@ -74,9 +84,7 @@ const ListView = () => {
     setProjectTitle(newArray);
   };
 
-  const loggedInUser = localStorage.getItem("value");
-  const finalData = JSON.parse(loggedInUser);
-  const userId = finalData?._id;
+  
 
   const { data: weekDataUser, refetch } = FetchFilterdWeekData({
     userId,
@@ -166,8 +174,35 @@ const ListView = () => {
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thru", "Fri", "Sat"];
 
+  const editTask = (id) => {
+    navigate("/editTask", { state: id });
+  };
+
+  const deleteProjectData = useMutation(() => {
+    return axiosInstance.delete(`http://localhost:5233/delete-user/${rowId}`);
+  });
+
+  const confirmModal = (id) => {
+    setRowId(id);
+    setOpenModal(true);
+  };
+
   return (
     <>
+      <Box>
+        {openModal && (
+          <Modal
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            title="Delete Project Detail"
+            message="Are you sure you want to delete?"
+            submit={() => {
+              deleteProjectData.mutate(rowId);
+              setOpenModal(false);
+            }}
+          />
+        )}
+      </Box>
       <Header
         data={{
           log,
@@ -206,20 +241,19 @@ const ListView = () => {
 
               {log == "weekly"
                 ? weekCleander.map((element) => {
-                  console.log(element.formatDate.getDay());
-                  return (
-                    <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
-                      <Box>
-                        {`${months[element.formatDate.getMonth()]
+                    return (
+                      <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
+                        <Box>
+                          {`${
+                            months[element.formatDate.getMonth()]
                           } - ${element.formatDate.getDate()}`}
-                      </Box>
-                      <WeekDayBox
-                      >
-                        {`(${weekDays[element.formatDate.getDay()]})`}
-                      </WeekDayBox>
-                    </CustomTableHead>
-                  );
-                })
+                        </Box>
+                        <WeekDayBox>
+                          {`(${weekDays[element.formatDate.getDay()]})`}
+                        </WeekDayBox>
+                      </CustomTableHead>
+                    );
+                  })
                 : ""}
 
               <CustomTableHead>Status</CustomTableHead>
@@ -228,6 +262,7 @@ const ListView = () => {
                 <CustomTableHead colSpan={2}>Actions</CustomTableHead>
                 : ''}
 
+              <CustomTableHead colSpan={2}>Actions</CustomTableHead>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -239,53 +274,13 @@ const ListView = () => {
                 <CustomTableCell component="th" scope="row">
                   {id + 1 + "."}
                 </CustomTableCell>
-                <CustomTableCell>
-                  <Input
-                    value={row.projectName} // row.projectName
-                    onChange={(e) => handleChange(e, id, "projectName")}
-                    disableUnderline={true}
-                    disabled
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.taskName} // row,taskName
-                    onChange={(e) => handleChange(e, id, "taskName")}
-                    disableUnderline={true}
-                  // disabled
-                  />
-                </CustomTableCell>
-                <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.taskDescription} // row.taskDescription
-                    onChange={(e) => handleChange(e, id, "taskDescription")}
-                    disableUnderline={true}
-                  // disabled
-                  />
-                </CustomTableCell>
+                <CustomTableCell>{row.projectName}</CustomTableCell>
+                <CustomTableCell>{row.taskName} </CustomTableCell>
+                <CustomTableCell>{row.taskDescription}</CustomTableCell>
                 {log == "daily" ? (
                   <>
-                    {" "}
-                    <CustomTableCell>
-                      {" "}
-                      <Input
-                        value={ddMMYY(row.date)}
-                        onChange={(e) => handleChange(e, id, "date")}
-                        disableUnderline={true}
-                        disabled
-                      />
-                    </CustomTableCell>
-                    <CustomTableCell>
-                      {" "}
-                      <Input
-                        value={row.hours} // row.hours
-                        onChange={(e) => handleChange(e, id, "hours")}
-                        disableUnderline={true}
-                        disabled
-                      />
-                    </CustomTableCell>
+                    <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
+                    <CustomTableCell>{row.hours}</CustomTableCell>
                   </>
                 ) : (
                   ""
@@ -293,61 +288,54 @@ const ListView = () => {
 
                 {log == "weekly"
                   ? weekCleander.map((element, index) => {
-                    return (
-                      <CustomTableCell
-                        key={index}
-                        sx={{
-                          fontWeight: checkHours(row, element) ? "bold" : "",
-                          minWidth: "65px",
-                        }}
-                      >
-                        {checkHours(row, element) ? row.hours : "00:00"}
-                      </CustomTableCell>
-                    );
-                  })
+                      return (
+                        <CustomTableCell
+                          key={index}
+                          sx={{
+                            fontWeight: checkHours(row, element) ? "bold" : "",
+                            minWidth: "65px",
+                          }}
+                        >
+                          {checkHours(row, element) ? row.hours : "00:00"}
+                        </CustomTableCell>
+                      );
+                    })
                   : ""}
 
                 <CustomTableCell>
-                  {" "}
-                  <Input
-                    value={row.status == true ? "Approved" : "Pending"}
-                    onChange={(e) => handleChange(e, id, "status")}
-                    disableUnderline={true}
-                    disabled
-                  />
+                  {row.status == true ? "Approved" : "Pending"}
                 </CustomTableCell>
+                <CustomTableCell>
+                  <CustomEditButton
+                    onClick={() => editTask(row._id, row.userId)}
+                  >
+                    <EditIcon
+                      sx={{
+                        fontSize: "24px",
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        paddingLeft: "5px",
+                        paddingRight: "15px",
+                        fontFamily: "sans-serif",
+                      }}
+                      component="span"
+                    >
+                      Edit
+                    </Box>
+                  </CustomEditButton>
 
-                {
-                  log == 'daily' ? (
-                    <>
-
-                      <CustomTableCell>
-                        <CustomEditButton>
-                          <EditIcon
-                            sx={{
-                              fontSize: "24px",
-                            }}
-                          />
-                          <ButtonTextBox
-                            component="span"
-                          >
-                            Edit
-                          </ButtonTextBox>
-                        </CustomEditButton>
-                      </CustomTableCell>
-                      <CustomTableCell>
-                        <CustomDeleteButton>
-                          <DeleteIcon />
-                          <ButtonTextBox
-                            component="span"
-                          >
-                            Delete
-                          </ButtonTextBox>
-                        </CustomDeleteButton>
-                      </CustomTableCell>
-                    </>
-                  ) : ""
-                }
+                  <CustomDeleteButton onClick={() => confirmModal(row._id)}>
+                    <DeleteIcon />{" "}
+                    <Box
+                      sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
+                      component="span"
+                    >
+                      Delete
+                    </Box>
+                  </CustomDeleteButton>
+                </CustomTableCell>
               </TableRow>
             ))}
           </TableBody>

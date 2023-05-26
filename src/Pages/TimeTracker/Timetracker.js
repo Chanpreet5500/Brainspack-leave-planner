@@ -30,7 +30,12 @@ const Timetracker = () => {
       >
         <TabContext value={value}>
           <Box
-            sx={{ borderBottom: 1, borderColor: "divider", display: "flex", justifyContent: "space-between"}}
+            sx={{
+              borderBottom: 1,
+              borderColor: "divider",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
           >
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab
@@ -44,7 +49,7 @@ const Timetracker = () => {
                 value="calendarView"
               />
             </TabList>
-            <TabList onChange={handleChange}>
+            <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab
                 sx={{ textTransform: "capitalize", fontSize: "16px" }}
                 label="Add Task"
