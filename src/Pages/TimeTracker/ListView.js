@@ -8,7 +8,6 @@ import {
   CustomEditButton,
   CustomDeleteButton,
   TableFooterNoRecord,
-  ButtonTextBox,
   WeekDayBox,
 } from "./styled";
 import TableContainer from "@mui/material/TableContainer";
@@ -25,17 +24,6 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const rows = [
-  {
-    projectName: "",
-    date: "",
-    taskName: "",
-    taskDescription: "",
-    status: "",
-    hours: "",
-  },
-];
-
 const ListView = () => {
   const dateForWeek = new Date();
   const axiosInstance = axios.create();
@@ -44,7 +32,9 @@ const ListView = () => {
   const finalData = JSON.parse(loggedInUser);
   const userId = finalData?._id;
 
-  const [projectTitle, setProjectTitle] = useState(rows);
+  const [totalHours, setTotalHours] = useState({});
+  const [totalHoursWeeks, setTotalHoursWeeks] = useState([]);
+
   const [log, setLog] = React.useState("daily");
   const [openModal, setOpenModal] = useState(false);
   const [rowId, setRowId] = useState("");
@@ -83,7 +73,7 @@ const ListView = () => {
     if (log && weekFIrstDay) {
       refetch();
     }
-  }, [log, weekFIrstDay, weekDataUser]);
+  }, [log, weekFIrstDay]);
 
   const ddMMYY = (date) => {
     const d = new Date(date);
@@ -148,13 +138,11 @@ const ListView = () => {
 
   const checkHours = (headerDate, projectDate) => {
     const [tempDate, tempDate2] = headerDate.date.split("T");
-
-    const [year, month, date] = tempDate.split("-");
+    let [year, month, date] = tempDate.split("-");
     const year2 = projectDate.formatDate.getFullYear();
     const month2 = projectDate.formatDate.getMonth() + 1;
     const date2 = projectDate.formatDate.getDate();
-
-    if (+year == year2 && +month == month2 && +date == date2) {
+    if (+year == year2 && +month == month2 && ++date == date2) {
       return true;
     }
   };
@@ -174,6 +162,39 @@ const ListView = () => {
     setOpenModal(true);
   };
 
+  let dayTotalHours = [];
+
+  useEffect(() => {
+    if (weekDataUser?.data && log == "daily") {
+      let arr = { hours: 0, minutes: 0 };
+      weekDataUser.data.filterdUsers.map((element, index) => {
+        const [hours, minutes] = element.hours.split(":");
+        arr.minutes += Number(minutes);
+        arr.hours += Number(hours) + Math.trunc(arr.minutes / 60);
+        arr.minutes = arr.minutes % 60;
+      });
+      setTotalHours(arr);
+    } else {
+      let arr = [];
+      weekCleander.map((element) => {
+        arr.push({ date: element.formatDate.getDate(), hours: 0, minutes: 0 });
+      });
+      weekDataUser?.data.filterdUsers.map((userData) => {
+        arr.map((element, index) => {
+          let userTaskDate = new Date(userData.date).getDate();
+          let currentDate = element.date;
+          if (userTaskDate == currentDate) {
+            let [hours, minutes] = userData.hours.split(":");
+            arr[index].minutes += Number(minutes);
+            arr[index].hours +=
+              Number(hours) + Math.trunc(arr[index].minutes / 60);
+            arr[index].minutes = arr[index].minutes % 60;
+          }
+        });
+      });
+      setTotalHoursWeeks(arr);
+    }
+  }, [weekDataUser]);
   return (
     <>
       <Box>
@@ -186,6 +207,9 @@ const ListView = () => {
             submit={() => {
               deleteProjectData.mutate(rowId);
               setOpenModal(false);
+              setTimeout(() => {
+                refetch();
+              }, 1000);
             }}
           />
         )}
@@ -247,90 +271,108 @@ const ListView = () => {
               {log == "daily" ? (
                 <CustomTableHead colSpan={2}>Actions</CustomTableHead>
               ) : (
-                ""
+                <CustomTableHead align="center">
+                  <Box>Total</Box>
+                  <WeekDayBox>(Hours)</WeekDayBox>
+                </CustomTableHead>
               )}
             </TableRow>
           </TableHead>
           <TableBody>
-            {apiData?.map((row, id) => (
-              <TableRow
-                key={id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <CustomTableCell component="th" scope="row">
-                  {id + 1 + "."}
-                </CustomTableCell>
-                <CustomTableCell>{row.projectName}</CustomTableCell>
-                <CustomTableCell>{row.taskName} </CustomTableCell>
-                <CustomTableCell>{row.taskDescription}</CustomTableCell>
-                {log == "daily" ? (
-                  <>
-                    <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
-                    <CustomTableCell>{row.hours}</CustomTableCell>
-                  </>
-                ) : (
-                  ""
-                )}
+            {apiData?.map((row, index) => {
+              dayTotalHours.push(parseInt(row.hours));
+              return (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <CustomTableCell component="th" scope="row">
+                    {index + 1 + "."}
+                  </CustomTableCell>
+                  <CustomTableCell>{row.projectName}</CustomTableCell>
+                  <CustomTableCell>{row.taskName} </CustomTableCell>
+                  <CustomTableCell>{row.taskDescription}</CustomTableCell>
+                  {log == "daily" ? (
+                    <>
+                      <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
+                      <CustomTableCell >
+                        {row.hours}
+                      </CustomTableCell>
+                    </>
+                  ) : (
+                    ""
+                  )}
 
-                <CustomTableCell>
-                  {row.status == true ? "Approved" : "Pending"}
-                </CustomTableCell>
-                {log == "weekly"
-                  ? weekCleander.map((element, index) => {
-                      return (
-                        <CustomTableCell
-                          key={index}
-                          sx={{
-                            fontWeight: checkHours(row, element) ? "bold" : "",
-                            minWidth: "65px",
-                          }}
-                        >
-                          {checkHours(row, element) ? row.hours : "00:00"}
-                        </CustomTableCell>
-                      );
-                    })
-                  : ""}
+                  <CustomTableCell>
+                    {row.status == true ? "Approved" : "Pending"}
+                  </CustomTableCell>
+                  {log == "weekly"
+                    ? weekCleander.map((element, index) => {
+                        const dateCheck = checkHours(row, element);
+                        return (
+                          <CustomTableCell
+                            align="center"
+                            key={index}
+                            sx={{
+                              fontWeight: dateCheck ? "bold" : "",
+                              minWidth: "65px",
+                            }}
+                          >
+                            {dateCheck ? row.hours : "00:00"}
+                          </CustomTableCell>
+                        );
+                      })
+                    : ""}
 
-                {log == "daily" ? (
-                  <>
-                    <CustomTableCell>
-                      <CustomEditButton
-                        onClick={() => editTask(row._id, row.userId)}
-                      >
-                        <EditIcon
-                          sx={{
-                            fontSize: "24px",
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            paddingLeft: "5px",
-                            paddingRight: "15px",
-                            fontFamily: "sans-serif",
-                          }}
-                          component="span"
+                  {log == "daily" ? (
+                    <>
+                      <CustomTableCell>
+                        <CustomEditButton
+                          onClick={() => editTask(row._id, row.userId)}
                         >
-                          Edit
-                        </Box>
-                      </CustomEditButton>
+                          <EditIcon
+                            sx={{
+                              fontSize: "24px",
+                            }}
+                          />
+                          <Box
+                            sx={{
+                              paddingLeft: "5px",
+                              paddingRight: "15px",
+                              fontFamily: "sans-serif",
+                            }}
+                            component="span"
+                          >
+                            Edit
+                          </Box>
+                        </CustomEditButton>
 
-                      <CustomDeleteButton onClick={() => confirmModal(row._id)}>
-                        <DeleteIcon />{" "}
-                        <Box
-                          sx={{ paddingLeft: "5px", fontFamily: "sans-serif" }}
-                          component="span"
+                        <CustomDeleteButton
+                          onClick={() => confirmModal(row._id)}
                         >
-                          Delete
-                        </Box>
-                      </CustomDeleteButton>
+                          <DeleteIcon />{" "}
+                          <Box
+                            sx={{
+                              paddingLeft: "5px",
+                              fontFamily: "sans-serif",
+                            }}
+                            component="span"
+                          >
+                            Delete
+                          </Box>
+                        </CustomDeleteButton>
+                      </CustomTableCell>
+                    </>
+                  ) : (
+                    <CustomTableCell sx={{ fontWeight: "bold" }}>
+                      {row.hours}
                     </CustomTableCell>
-                  </>
-                ) : (
-                  ""
-                )}
-              </TableRow>
-            ))}
+                  )}
+                </TableRow>
+              );
+            })}
           </TableBody>
+
           {!apiData?.length ? (
             <TableFooter>
               <CustomTableCell colSpan={log == "daily" ? 8 : 11}>
@@ -340,7 +382,33 @@ const ListView = () => {
               </CustomTableCell>
             </TableFooter>
           ) : (
-            ""
+            <TableFooter>
+              <CustomTableCell colSpan={ 4} align="right">
+              </CustomTableCell>
+              <CustomTableCell >
+               <CustomTableHead  align="left"> Total </CustomTableHead>
+              </CustomTableCell>
+              {log == "daily" && (
+                <CustomTableCell align="right">
+                  <CustomTableHead align="right" sx={{ fontWeight: "bold" }}>
+                    {totalHours.hours + ":" + totalHours.minutes}
+                  </CustomTableHead>
+                </CustomTableCell>
+              )}
+              {log == "weekly" && (
+                <>
+                  {totalHoursWeeks.map((element) => {
+                    return (
+                      <CustomTableHead
+                        sx={{ p: 0, textAlign: "center", fontWeight: "bold" }}
+                      >
+                        <Box>{element.hours + ":" + element.minutes}</Box>
+                      </CustomTableHead>
+                    );
+                  })}
+                </>
+              )}
+            </TableFooter>
           )}
         </Table>
       </TableContainer>

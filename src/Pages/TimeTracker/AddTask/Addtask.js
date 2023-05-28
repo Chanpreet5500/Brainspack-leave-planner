@@ -20,7 +20,7 @@ import { ValidationSchema } from "./ValidationSchema";
 import { Snackbar, IconButton } from "@mui/material";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { CircularBar } from "../CalendarView/CalenderStyled";
-import { useNavigate } from "react-router-dom";
+
 const loggedInUser = localStorage.getItem("value");
 const finalData = JSON.parse(loggedInUser);
 const userId = finalData._id;
@@ -33,6 +33,7 @@ const initialValues = {
   status: false,
   hours: "",
 };
+
 const Addtask = ({setValue}) => {
   const [open, setOpen] = useState(false);
   const addProjectData = useMutation(userId, (values) => {
@@ -144,7 +145,7 @@ const Addtask = ({setValue}) => {
                                         </Box>
                                       </CustomTableCell>
                                       <CustomTableCell>
-                                        <Field
+                                        <Field 
                                           as={PickDate}
                                           value={props.values.date}
                                           name={`tasks.${index}.date`}
@@ -206,6 +207,7 @@ const Addtask = ({setValue}) => {
                                           onClick={() =>
                                             arrayForm.remove(index)
                                           }
+                                          disabled={props.values.tasks.length===1}
                                         >
                                           <RemoveCircleOutlineOutlinedIcon
                                             sx={{ mr: "8px" }}

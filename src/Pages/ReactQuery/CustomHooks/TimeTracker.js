@@ -39,9 +39,7 @@ export const FetchFilterdWeekData = (id) => {
   return useQuery("logged-user-week-data", () => fetchWeekData(id), {
     retry: false,
     refetchOnMount: true,
-    refetchOnWindowFocus: false,
-    // enabled: false,
-    // refetchInterval: 1000,
+    refetchOnWindowFocus: true,
   });
 };
 
