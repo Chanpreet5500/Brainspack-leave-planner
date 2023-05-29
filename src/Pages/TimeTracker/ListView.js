@@ -14,7 +14,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Box, Typography, TableFooter } from "@mui/material";
+import { Box, Typography, TableFooter } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
@@ -31,6 +31,9 @@ const ListView = () => {
   const loggedInUser = localStorage.getItem("value");
   const finalData = JSON.parse(loggedInUser);
   const userId = finalData?._id;
+
+  const [totalHours, setTotalHours] = useState({});
+  const [totalHoursWeeks, setTotalHoursWeeks] = useState([]);
 
   const [log, setLog] = React.useState("daily");
   const [openModal, setOpenModal] = useState(false);
@@ -137,10 +140,7 @@ const ListView = () => {
     const year2 = projectDate.formatDate.getFullYear();
     const month2 = projectDate.formatDate.getMonth() + 1;
     const date2 = projectDate.formatDate.getDate();
-
-  
-
-    if (+year == year2 && +month == month2 && ++date == date2) {
+    if (+year === year2 && +month === month2 && ++date === date2) {
       return true;
     }
   };
@@ -162,96 +162,39 @@ const ListView = () => {
     setOpenModal(true);
   };
 
-  let weektotalTime = [];
-  let tempHours = [];
+  let dayTotalHours = [];
 
-  const totalHours = (id) => {
-    let totalHours = 0;
-    let totalMinutes = 0;
-
-    weektotalTime[id]?.map((e) => {
-      const [hour, minute] = e.split(":");
-
-      totalHours += +hour;
-      totalMinutes += +minute;
-    });
-    console.log(totalMinutes.toString().length);
-    if (totalMinutes.toString().length == 1) {
-      totalMinutes = `0${totalMinutes}`;
-    } else if (totalMinutes > 60) {
-      const val = totalMinutes - 60;
-      totalHours += 1;
-      totalMinutes = val;
+  useEffect(() => {
+    if (weekDataUser?.data && log === "daily") {
+      let arr = { hours: 0, minutes: 0 };
+      weekDataUser.data.filterdUsers.map((element) => {
+        const [hours, minutes] = element.hours.split(":");
+        arr.minutes += Number(minutes);
+        arr.hours += Number(hours) + Math.trunc(arr.minutes / 60);
+        arr.minutes = arr.minutes % 60;
+      });
+      setTotalHours(arr);
+    } else {
+      let arr = [];
+      weekCleander.map((element) => {
+        arr.push({ date: element.formatDate.getDate(), hours: 0, minutes: 0 });
+      });
+      weekDataUser?.data.filterdUsers.map((userData) => {
+        arr.map((element, index) => {
+          let userTaskDate = new Date(userData.date).getDate();
+          let currentDate = element.date;
+          if (userTaskDate == currentDate) {
+            let [hours, minutes] = userData.hours.split(":");
+            arr[index].minutes += Number(minutes);
+            arr[index].hours +=
+              Number(hours) + Math.trunc(arr[index].minutes / 60);
+            arr[index].minutes = arr[index].minutes % 60;
+          }
+        });
+      });
+      setTotalHoursWeeks(arr);
     }
-
-    if (totalHours.toString().length == 1) {
-      totalHours = `0${totalHours}`;
-    }
-
-    return `${totalHours}:${totalMinutes}`;
-  };
-
-  const hoursFormat = (hours) => {
-    let [hour, minute] = hours.split(":");
-
-    if (minute.toString().length == 1) {
-      minute = `0${minute}`;
-    } else if (minute > 60) {
-      const val = minute - 60;
-      hour = +hour + 1;
-      minute = val;
-    }
-
-    if (hour.toString().length == 1) {
-      hour = `0${hour}`;
-    }
-
-    console.log(hour, minute);
-
-    return `${hour}:${minute}`;
-  };
-
-  // let z = [];
-  // weekCleander.map((e) => {
-  //   z.push([]);
-  // });
-
-  // const sorteddayCalcHour = () => {
-  //   const totalHour = []
-  //   const totalMinutes= []
-  //   console.log(z)
-  //   z?.map((e) =>{
-  //     const t= []
-  //     const v=[]
-  //     e.map((x) => {
-      
-  //     let [hour, minute] = x.split(":");
-
-  //     if (minute.toString().length == 1) {
-  //       minute = `0${minute}`;
-  //     } else if (minute > 60) {
-  //       const val = minute - 60;
-  //       hour = +hour + 1;
-  //       minute = val;
-  //     }
-  
-  //     if (hour.toString().length == 1) {
-  //       hour = `0${hour}`;
-  //     }t.push(hour)
-  //     v.push(minute)
-  
-      
-  //   })
-  //   console.log(t,v)
-  //   const tt = t.length &&  t?.reduce((acc,crr)=> +acc+ +crr)
-  //   const tM = v.length && v?.reduce((acc,crr)=> +acc+ +crr)
-  //   totalHour.push(`${tt}:${tM}`)
-  //   totalMinutes.push(tM)
-  //   });
-  //   console.log(totalHour,totalMinutes)
-     
-  // };
-
+  }, [weekDataUser]);
   return (
     <>
       <Box>
@@ -298,7 +241,7 @@ const ListView = () => {
               <CustomTableHead>Project Name</CustomTableHead>
               <CustomTableHead>Task Name</CustomTableHead>
               <CustomTableHead>Task Description</CustomTableHead>
-              {log == "daily" ? (
+              {log === "daily" ? (
                 <>
                   {" "}
                   <CustomTableHead>Date</CustomTableHead>
@@ -309,7 +252,7 @@ const ListView = () => {
               )}
 
               <CustomTableHead>Status</CustomTableHead>
-              {log == "weekly"
+              {log === "weekly"
                 ? weekCleander.map((element) => {
                     return (
                       <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
@@ -325,32 +268,36 @@ const ListView = () => {
                     );
                   })
                 : ""}
-              {log == "weekly" ? <CustomTableHead>Total </CustomTableHead> : ""}
-              {log == "daily" ? (
+
+              {log === "daily" ? (
                 <CustomTableHead colSpan={2}>Actions</CustomTableHead>
               ) : (
-                ""
+                <CustomTableHead align="center">
+                  <Box>Total</Box>
+                  <WeekDayBox>(Hours)</WeekDayBox>
+                </CustomTableHead>
               )}
             </TableRow>
           </TableHead>
           <TableBody>
-            {apiData?.map((row, id) => {
+            {apiData?.map((row, index) => {
+              dayTotalHours.push(parseInt(row.hours));
               return (
                 <TableRow
-                  key={id}
+                  key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <CustomTableCell component="th" scope="row">
-                    {id + 1 + "."}
+                    {index + 1 + "."}
                   </CustomTableCell>
                   <CustomTableCell>{row.projectName}</CustomTableCell>
                   <CustomTableCell>{row.taskName} </CustomTableCell>
                   <CustomTableCell>{row.taskDescription}</CustomTableCell>
-                  {log == "daily" ? (
+                  {log === "daily" ? (
                     <>
                       <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
-                      <CustomTableCell>
-                        {hoursFormat(row.hours)}
+                      <CustomTableCell >
+                        {row.hours}
                       </CustomTableCell>
                     </>
                   ) : (
@@ -358,52 +305,29 @@ const ListView = () => {
                   )}
 
                   <CustomTableCell>
-                    {row.status == true ? "Approved" : "Pending"}
+                    {row.status === true ? "Approved" : "Pending"}
                   </CustomTableCell>
-                  {log == "weekly"
+                  {log === "weekly"
                     ? weekCleander.map((element, index) => {
-                        {/* if (checkHours(row, element)) {
-                          z[index]?.push(row.hours);
-                        } else {
-                          z[index]?.push("00:00");
-                        }
-                        sorteddayCalcHour() */}
-                        if (checkHours(row, element) == true) {
-                          tempHours.push(row.hours);
-                        }
-
-                        if (index == weekCleander.length - 1) {
-                          weektotalTime.push(tempHours);
-                          tempHours = [];
-                        }
-
+                        const dateCheck = checkHours(row, element);
                         return (
                           <CustomTableCell
+                            align="center"
                             key={index}
                             sx={{
-                              fontWeight: checkHours(row, element)
-                                ? "bold"
-                                : "",
+                              fontWeight: dateCheck ? "bold" : "",
                               minWidth: "65px",
                             }}
                           >
-                            {checkHours(row, element, "hours")
-                              ? hoursFormat(row.hours)
-                              : "00:00"}
+                            {dateCheck ? row.hours : "00:00"}
                           </CustomTableCell>
                         );
                       })
                     : ""}
-                  {log == "weekly" ? (
-                    <CustomTableCell sx={{ fontWeight: "bold" }}>
-                      {totalHours(id)}
-                    </CustomTableCell>
-                  ) : (
-                    ""
-                  )}
-                  {log == "daily" ? (
+
+                  {log === "daily" ? (
                     <>
-                      <CustomTableCell sx={{ minWidth: "142px" }}>
+                      <CustomTableCell>
                         <CustomEditButton
                           onClick={() => editTask(row._id, row.userId)}
                         >
@@ -441,23 +365,52 @@ const ListView = () => {
                       </CustomTableCell>
                     </>
                   ) : (
-                    ""
+                    <CustomTableCell sx={{ fontWeight: "bold" }}>
+                      {row.hours}
+                    </CustomTableCell>
                   )}
                 </TableRow>
               );
             })}
           </TableBody>
-          {!apiData?.length ? (
             <TableFooter>
-              <CustomTableCell colSpan={log == "daily" ? 8 : 12}>
+          {!apiData?.length ? (
+              <CustomTableCell colSpan={log === "daily" ? 8 : 11}>
                 <TableFooterNoRecord>
                   <Typography>NO RECORD TO DISPLAY.....</Typography>
                 </TableFooterNoRecord>
               </CustomTableCell>
-            </TableFooter>
           ) : (
-            ""
+            <>
+              <CustomTableCell colSpan={ 4} align="right">
+              </CustomTableCell>
+              <CustomTableCell >
+               <CustomTableHead  align="left"> Total </CustomTableHead>
+              </CustomTableCell>
+              {log === "daily" && (
+                <CustomTableCell align="left">
+                  <CustomTableHead align="center" sx={{ fontWeight: "bold" }}>
+                    {/* {totalHours.hours.toString().padStart(2,"0") + ":" + totalHours.minutes.toString().padEnd(2,"0")} */}
+                    {totalHours?.hours?.toString().padStart(2,"0") + ":" + totalHours.minutes?.toString().padStart(2,"0")}
+                  </CustomTableHead>
+                </CustomTableCell>
+              )}
+              {log === "weekly" && (
+                <>
+                  {totalHoursWeeks.map((element) => {
+                    return (
+                      <CustomTableHead
+                        sx={{ p: 0, textAlign: "center", fontWeight: "bold" }}
+                      >
+                        <Box>{element.hours?.toString().padStart(2,"0") + ":" + element.minutes?.toString().padStart(2,"0")}</Box>
+                      </CustomTableHead>
+                    );
+                  })}
+                </>
+              )}
+            </>
           )}
+          </TableFooter>
         </Table>
       </TableContainer>
     </>

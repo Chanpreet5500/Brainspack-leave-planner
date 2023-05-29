@@ -1,26 +1,27 @@
 import * as React from "react";
 import axios from "axios";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import Paper from "@mui/material/Paper";
-import TableRow from "@mui/material/TableRow";
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  Paper,
+  TableRow,
+  Box, Button,  Typography, Snackbar, IconButton
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { CustomTableCell, CustomTableHead, PickDate, Input } from "../styled";
 import { ErrorText, RemoveRowButton } from "./EditStyled";
-import { Box, Button, Typography } from "@mui/material";
 import { useMutation } from "react-query";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import { ValidationSchema } from "./ValidationSchema";
-import { Snackbar, IconButton } from "@mui/material";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { CircularBar } from "../CalendarView/CalenderStyled";
-import { useNavigate } from "react-router-dom";
+
 const loggedInUser = localStorage.getItem("value");
 const finalData = JSON.parse(loggedInUser);
 const userId = finalData?._id;
@@ -33,7 +34,8 @@ const initialValues = {
   status: false,
   hours: "",
 };
-const Addtask = ({setValue}) => {
+
+const Addtask = ({ setValue }) => {
   const [open, setOpen] = useState(false);
   const addProjectData = useMutation(userId, (values) => {
     return axios.post(`http://localhost:5233/sendData/${userId}`, values);
@@ -42,10 +44,10 @@ const Addtask = ({setValue}) => {
   const handleSubmit = (values) => {
     addProjectData.mutate(values.tasks);
 
-    if(!addProjectData.isError){
-      setTimeout(()=>{
-        setValue("listView")
-      },1000)
+    if (!addProjectData.isError) {
+      setTimeout(() => {
+        setValue("listView");
+      }, 1000);
     }
     setOpen(true);
   };
@@ -206,6 +208,9 @@ const Addtask = ({setValue}) => {
                                           onClick={() =>
                                             arrayForm.remove(index)
                                           }
+                                          disabled={
+                                            props.values.tasks.length === 1
+                                          }
                                         >
                                           <RemoveCircleOutlineOutlinedIcon
                                             sx={{ mr: "8px" }}
@@ -249,7 +254,9 @@ const Addtask = ({setValue}) => {
                             color: "#fff",
                             textTransform: "capitalize",
                             fontSize: "14px",
-                            padding:props.isSubmitting? "5px 11px":"5px 25px",
+                            padding: props.isSubmitting
+                              ? "5px 11px"
+                              : "5px 25px",
                             opacity: props.isSubmitting ? 0.7 : 1,
                             "&:hover": {
                               background: "#3547bd",
@@ -260,7 +267,9 @@ const Addtask = ({setValue}) => {
                         >
                           {props.isSubmitting ? (
                             <>
-                              <CircularBar sx={{height:"16px",width:"16px"}}/>
+                              <CircularBar
+                                sx={{ height: "16px", width: "16px" }}
+                              />
                               <Typography
                                 sx={{ color: "#fff", marginLeft: "8px" }}
                               >
