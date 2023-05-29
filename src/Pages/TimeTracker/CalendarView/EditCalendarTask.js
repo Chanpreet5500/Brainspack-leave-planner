@@ -7,7 +7,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Snackbar, IconButton, TextField } from "@mui/material";
+import {
+  Input,
+  Snackbar,
+  IconButton,
+  TextField,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -25,6 +32,11 @@ import validationSchema from "../formvalidation/validationSchema";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
+import axios from "axios";
+import { useMutation } from "react-query";
+import { CircularBar } from "./CalenderStyled";
+
+const axiosInstance = axios.create();
 
 let initialValues = {
   date: "",
@@ -66,18 +78,26 @@ const EditCalendarTask = () => {
     };
   }
 
-  const { mutate, isError } = UpdateUserData();
+  // const { mutate, isError } = UpdateUserData();
 
-  const saveData = (data) => {
-    mutate(data);
-    if (!isError) {
+  // const saveData = (data) => {
+  //   mutate(data);
+  //   if (!isError) {
+  //     setTimeout(() => {
+  //       navigate(-1);
+  //     }, 2000);
+  //   }
+  //   setOpen(true);
+  // };
+  const UpdateTask = useMutation(_id, (data) => {
+    axiosInstance.patch(`http://localhost:5233/update/${_id}`, data);
+    if (!UpdateTask.isError) {
       setTimeout(() => {
         navigate(-1);
       }, 2000);
     }
     setOpen(true);
-  };
-
+  });
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -92,10 +112,12 @@ const EditCalendarTask = () => {
         autoHideDuration={2000}
         onClose={handleClose}
         message={
-          isError ? "User Data Not Updated" : "User Data Updated Successfully"
+          UpdateTask.isError
+            ? "User Data Not Updated"
+            : "User Data Updated Successfully"
         }
         ContentProps={{
-          sx: { backgroundColor: isError ? "#F20000" : "#4BB543" },
+          sx: { backgroundColor: UpdateTask.isError ? "#F20000" : "#4BB543" },
         }}
         action={
           <>
@@ -114,7 +136,7 @@ const EditCalendarTask = () => {
         enableReinitialize={true}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={saveData}
+        onSubmit={(data) => UpdateTask.mutate(data)}
       >
         {(props) => {
           return (
@@ -225,7 +247,9 @@ const EditCalendarTask = () => {
                         <Input
                           name={"status"}
                           value={
-                            props.values.status === true ? "Approved" : "Pending"
+                            props.values.status === true
+                              ? "Approved"
+                              : "Pending"
                           }
                           onChange={props.handleChange}
                           disableUnderline={true}
@@ -240,8 +264,26 @@ const EditCalendarTask = () => {
                 </Table>
               </TableContainer>
               <ButtonWrapper>
-                <ButtonContainer type="submit" onClick={props.handleSubmit}>
-                  Update Task
+                <ButtonContainer
+                  type="submit"
+                  onClick={props.handleSubmit}
+                  disabled={props.isSubmitting}
+                  sx={{
+                    width: "140px",
+                    height: "40px",
+                    opacity: props.isSubmitting ? 0.7 : 1,
+                  }}
+                >
+                  {props.isSubmitting ? (
+                    <>
+                      <CircularBar />
+                      <Typography sx={{ color: "#fff", marginLeft: "4px" }}>
+                        Updating
+                      </Typography>
+                    </>
+                  ) : (
+                    "Update Task"
+                  )}
                 </ButtonContainer>
               </ButtonWrapper>
             </>

@@ -19,11 +19,11 @@ export const ButtonContainer = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const ErrorText= styled(Typography)(({theme})=>({
-  color:'red',
-  fontSize: "12px",
-  position:'absolute',
-}))
+export const ErrorText = styled(Typography)(({ theme }) => ({
+  color: "red",
+  fontSize: "14px",
+  // position:'absolute',
+}));
 
 export const PickDate = styled(DatePicker)(({ theme }) => ({
   "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
@@ -33,4 +33,15 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
     {
       borderColor: "#000 !important",
     },
+}));
+
+export const RemoveRowButton = styled(Button)(({ theme }) => ({
+  background: "#c94328",
+  marginTop: "15px",
+  color: "#fff",
+  textTransform: "capitalize",
+  fontSize: "14px",
+  "&:hover": {
+    background: "#ba351a",
+  },
 }));

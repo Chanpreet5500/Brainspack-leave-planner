@@ -10,7 +10,8 @@ const fetchTimeTracker = (id) => {
 export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
-    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnMount:true,
   });
 };
 
@@ -40,6 +41,7 @@ export const FetchFilterdWeekData = (id) => {
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     enabled: false,
+   
   });
 };
 
@@ -80,7 +82,7 @@ const postApi = (data) => {
   return axiosInstance.patch(`http://localhost:5233/updateCalendar`, data);
 };
 
-export const UpdateUserData = (data) => {
+export const UpdateUserData = (id) => {
   const result = useMutation(postApi);
   return result;
 };

@@ -1,4 +1,4 @@
-import { Box, styled, Typography } from "@mui/material";
+import { Box, CircularProgress, styled, Typography } from "@mui/material";
 
 export const MainContainer = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -42,4 +42,10 @@ export const ButtonWrapper = styled(Box)(({ theme }) => ({
 
 export const HeadingModal =styled(Typography)(({theme})=>({
     margin: "15px 0px 30px 0px",
+}))
+
+export const CircularBar =styled(CircularProgress)(({theme})=>({
+      width: "20px !important",
+      height: "20px!important",
+      color:'#ffffff',
 }))
