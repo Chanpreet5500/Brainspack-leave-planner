@@ -74,7 +74,7 @@ const ListView = () => {
     const finalDate = d.toLocaleDateString();
     return finalDate;
   };
-
+console.log('totalHoursWeeks',totalHoursWeeks)
   const months = [
     "Jan",
     "Feb",
@@ -195,6 +195,7 @@ const ListView = () => {
       setTotalHoursWeeks(arr);
     }
   }, [weekDataUser]);
+ 
   return (
     <>
       <Box>
@@ -390,7 +391,7 @@ const ListView = () => {
               {log === "daily" && (
                 <CustomTableCell align="left">
                   <CustomTableHead align="center" sx={{ fontWeight: "bold" }}>
-                    {/* {totalHours.hours.toString().padStart(2,"0") + ":" + totalHours.minutes.toString().padEnd(2,"0")} */}
+                 
                     {totalHours?.hours?.toString().padStart(2,"0") + ":" + totalHours.minutes?.toString().padStart(2,"0")}
                   </CustomTableHead>
                 </CustomTableCell>
