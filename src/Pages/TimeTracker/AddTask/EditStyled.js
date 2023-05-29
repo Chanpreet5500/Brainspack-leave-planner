@@ -19,18 +19,42 @@ export const ButtonContainer = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const ErrorText= styled(Typography)(({theme})=>({
-  color:'red',
-  fontSize: "12px",
-  position:'absolute',
-}))
+export const ErrorText = styled(Typography)(({ theme }) => ({
+  color: "red",
+  fontSize: "14px",
+  // position:'absolute',
+}));
 
 export const PickDate = styled(DatePicker)(({ theme }) => ({
+  padding:'0px',
+  "& .MuiInputBase-input": {
+    padding: '0 !important',
+    paddingLeft: 0
+  },
+  
+  // "& .MuiInputBase-input-MuiOutlinedInput-input":{
+  //   padding: "0px",
+  // },
   "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-    borderWidth: "0px !important",
+    borderWidth: "0px !important", 
+       padding: '0 !important',
+
   },
   "& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
     {
       borderColor: "#000 !important",
+      padding: '0 !important',
+
     },
+}));
+
+export const RemoveRowButton = styled(Button)(({ theme }) => ({
+  background: "#c94328",
+  marginTop: "15px",
+  color: "#fff",
+  textTransform: "capitalize",
+  fontSize: "14px",
+  "&:hover": {
+    background: "#ba351a",
+  },
 }));
