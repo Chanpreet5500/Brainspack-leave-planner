@@ -29,6 +29,9 @@ import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
 import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 import EditCalendarTask from "./Pages/TimeTracker/CalendarView/EditCalendarTask";
+import AdminRegister from "./Pages/Admin/AdminRegister";
+import AdminLogin from "./Pages/Admin/AdminLogin";
+import Hello from "./Pages/Admin/Hello";
 const font = "'Raleway', sans-serif";
 
 function App() {
@@ -62,11 +65,18 @@ function App() {
             <ThemeProvider theme={theme}>
               <Routes>
                 <Route path="/" element={<LoginComponent />} />
-
+                <Route path="/adminRegister" element={<AdminRegister />} />
+                <Route path="/adminLogin" element={<AdminLogin />} />
                 <Route
                   path="/dashboard"
                   element={
                     <PrivateRouteComponent Component={DashboardComponent} />
+                  }
+                />
+                <Route
+                  path="/hello"
+                  element={
+                    <PrivateRouteComponent Component={Hello} />
                   }
                 />
                 <Route
@@ -130,7 +140,9 @@ function App() {
                 />
                 <Route
                   path="/edituserdata"
-                  element={<PrivateRouteComponent Component={EditCalendarTask} />}
+                  element={
+                    <PrivateRouteComponent Component={EditCalendarTask} />
+                  }
                 />
                 <Route
                   path="/reset-password/:token"

@@ -8,16 +8,14 @@ import {
   TextField,
 } from "@mui/material";
 import { Formik } from "formik";
-import { RegisterData } from "../ReactQuery/CustomHooks/LeavePlanner";
+import { RegisterAdmin } from "../ReactQuery/CustomHooks/LeavePlanner";
 import { useNavigate } from "react-router-dom";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { format } from "date-fns";
 
-function RegisterComponent() {
+function AdminRegister() {
   const parentPopup = {
     width: "40%",
-    margin: "44px 0 44px 590px",
+    margin: "44px 0 44px 690px",
     textAlign: "center",
     position: "relative",
     zIndex: 10,
@@ -155,29 +153,19 @@ function RegisterComponent() {
 
   const navigate = useNavigate();
 
-  const { mutate, data, isSuccess } = RegisterData();
+  const { mutate, data, isSuccess } = RegisterAdmin();
 
   const RegisterDataValues = (props) => {
     console.log(props);
 
-    // const stringifyDate = date.toString()
-    // const finalDate = stringifyDate.slice(4,15)
-
-    const date = props.values.birthDate.$d;
-    const finalBirthdate = format(date, "MM/dd/yyyy");
-    console.log(finalBirthdate, "BIRTHDATEEE");
-
     const data = {
       firstName: props.values.firstName,
       lastName: props.values.lastName,
-      phoneNumber: props.values.phoneNumber,
-      designation: props.values.designation,
       email: props.values.email,
       password: props.values.password,
-      birthdate: finalBirthdate,
     };
 
-     const x = mutate(data);
+    const x = mutate(data);
   };
 
   if (data && isSuccess) {
@@ -190,8 +178,10 @@ function RegisterComponent() {
         style={{
           background:
             "linear-gradient(to right bottom, rgb(81 155 99), rgb(0 0 0 / 95%))",
-          height: "636px",
-          paddingTop: "1px",
+          minHeight: "100%",
+          display: "flex",
+          paddingTop: "80px",
+          paddingLeft: "200px",
         }}
       >
         <Paper elevation={20} sx={imageParent}>
@@ -205,7 +195,6 @@ function RegisterComponent() {
               }}
             />
           </Grid>
-
           <Grid style={{ width: "35%" }}>
             <img
               src="Shaping The Fututre Of Your Business With Web.png"
@@ -369,9 +358,9 @@ function RegisterComponent() {
             password: "",
             firstName: "",
             lastName: "",
-            phoneNumber: "",
-            designation: "",
-            birthDate: "",
+            // phoneNumber: "",
+            // designation: "",
+            // birthDate: "",
           }}
           validate={(values) => {
             const errors = {};
@@ -383,13 +372,14 @@ function RegisterComponent() {
               errors.firstName = "Required";
             } else if (!values.lastName) {
               errors.lastName = "Required";
-            } else if (!values.phoneNumber) {
-              errors.phoneNumber = "Required";
-            } else if (!values.designation) {
-              errors.designation = "Required";
-            } else if (!values.birthDate) {
-              errors.birthDate = "Required";
             }
+            // else if (!values.phoneNumber) {
+            //   errors.phoneNumber = "Required";
+            // } else if (!values.designation) {
+            //   errors.designation = "Required";
+            // } else if (!values.birthDate) {
+            //   errors.birthDate = "Required";
+            // }
             return errors;
           }}
         >
@@ -576,7 +566,7 @@ function RegisterComponent() {
                         _
                       </Typography>
                     </Grid>
-                    <Input
+                    {/* <Input
                       name="phoneNumber"
                       onChange={props.handleChange}
                       placeholder="Enter Phone Number"
@@ -595,7 +585,7 @@ function RegisterComponent() {
                       }}
                     >
                       {props.errors.phoneNumber}
-                    </Typography>
+                    </Typography> */}
                     <Grid>
                       <Typography variant="span" sx={rightFullStop}>
                         .
@@ -614,7 +604,7 @@ function RegisterComponent() {
                       </Typography>
                     </Grid>
 
-                    <Input
+                    {/* <Input
                       name="designation"
                       onChange={props.handleChange}
                       placeholder="Enter Your Designation"
@@ -633,7 +623,7 @@ function RegisterComponent() {
                       }}
                     >
                       {props.errors.designation}
-                    </Typography>
+                    </Typography> */}
                   </Grid>
 
                   <Grid>
@@ -653,29 +643,6 @@ function RegisterComponent() {
                       _
                     </Typography>
                   </Grid>
-
-                  {/* <Input
-                      name="birthDate"
-                      onChange={props.handleChange}
-                      placeholder="Enter Your Birthdate"
-                      sx={textFieldEmail}
-                    /> */}
-                  <Grid style={{ marginBottom: "10px" }}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      {/* <Box style={{ height: "20px" }}></Box> */}
-
-                      <DatePicker
-                        name="birthDate"
-                        label="Enter Your Birthday"
-                        // minDate={props.values.startDateValue}
-                        value={props.values.birthDate}
-                        onChange={(value) =>
-                          props.setFieldValue("birthDate", value, "true")
-                        }
-                        renderInput={(e) => <TextField {...e} />}
-                      />
-                    </LocalizationProvider>
-                  </Grid>
                   <Button
                     variant="contained"
                     onClick={() => RegisterDataValues(props)}
@@ -693,4 +660,4 @@ function RegisterComponent() {
   );
 }
 
-export default RegisterComponent;
+export default AdminRegister;

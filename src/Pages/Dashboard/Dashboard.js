@@ -13,6 +13,7 @@ function DashboardComponent() {
 
   const loggedInUserData = localStorage.getItem("value");
   const userFinalData = JSON.parse(loggedInUserData);
+  console.log(userFinalData, 'from dashboard component')
   const userId = userFinalData._id;
 
   const navigate = useNavigate();
