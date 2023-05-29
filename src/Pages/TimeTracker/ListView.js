@@ -14,7 +14,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Box, Typography, TableFooter } from "@mui/material";
+import { Box, Typography, TableFooter } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
@@ -142,7 +142,7 @@ const ListView = () => {
     const year2 = projectDate.formatDate.getFullYear();
     const month2 = projectDate.formatDate.getMonth() + 1;
     const date2 = projectDate.formatDate.getDate();
-    if (+year == year2 && +month == month2 && ++date == date2) {
+    if (+year === year2 && +month === month2 && ++date === date2) {
       return true;
     }
   };
@@ -165,9 +165,9 @@ const ListView = () => {
   let dayTotalHours = [];
 
   useEffect(() => {
-    if (weekDataUser?.data && log == "daily") {
+    if (weekDataUser?.data && log === "daily") {
       let arr = { hours: 0, minutes: 0 };
-      weekDataUser.data.filterdUsers.map((element, index) => {
+      weekDataUser.data.filterdUsers.map((element) => {
         const [hours, minutes] = element.hours.split(":");
         arr.minutes += Number(minutes);
         arr.hours += Number(hours) + Math.trunc(arr.minutes / 60);
@@ -240,7 +240,7 @@ const ListView = () => {
               <CustomTableHead>Project Name</CustomTableHead>
               <CustomTableHead>Task Name</CustomTableHead>
               <CustomTableHead>Task Description</CustomTableHead>
-              {log == "daily" ? (
+              {log === "daily" ? (
                 <>
                   {" "}
                   <CustomTableHead>Date</CustomTableHead>
@@ -251,7 +251,7 @@ const ListView = () => {
               )}
 
               <CustomTableHead>Status</CustomTableHead>
-              {log == "weekly"
+              {log === "weekly"
                 ? weekCleander.map((element) => {
                     return (
                       <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
@@ -268,7 +268,7 @@ const ListView = () => {
                   })
                 : ""}
 
-              {log == "daily" ? (
+              {log === "daily" ? (
                 <CustomTableHead colSpan={2}>Actions</CustomTableHead>
               ) : (
                 <CustomTableHead align="center">
@@ -292,7 +292,7 @@ const ListView = () => {
                   <CustomTableCell>{row.projectName}</CustomTableCell>
                   <CustomTableCell>{row.taskName} </CustomTableCell>
                   <CustomTableCell>{row.taskDescription}</CustomTableCell>
-                  {log == "daily" ? (
+                  {log === "daily" ? (
                     <>
                       <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
                       <CustomTableCell >
@@ -304,9 +304,9 @@ const ListView = () => {
                   )}
 
                   <CustomTableCell>
-                    {row.status == true ? "Approved" : "Pending"}
+                    {row.status === true ? "Approved" : "Pending"}
                   </CustomTableCell>
-                  {log == "weekly"
+                  {log === "weekly"
                     ? weekCleander.map((element, index) => {
                         const dateCheck = checkHours(row, element);
                         return (
@@ -324,7 +324,7 @@ const ListView = () => {
                       })
                     : ""}
 
-                  {log == "daily" ? (
+                  {log === "daily" ? (
                     <>
                       <CustomTableCell>
                         <CustomEditButton
@@ -375,7 +375,7 @@ const ListView = () => {
 
           {!apiData?.length ? (
             <TableFooter>
-              <CustomTableCell colSpan={log == "daily" ? 8 : 11}>
+              <CustomTableCell colSpan={log === "daily" ? 8 : 11}>
                 <TableFooterNoRecord>
                   <Typography>NO RECORD TO DISPLAY.....</Typography>
                 </TableFooterNoRecord>
@@ -388,21 +388,21 @@ const ListView = () => {
               <CustomTableCell >
                <CustomTableHead  align="left"> Total </CustomTableHead>
               </CustomTableCell>
-              {log == "daily" && (
-                <CustomTableCell align="right">
-                  <CustomTableHead align="right" sx={{ fontWeight: "bold" }}>
-                    {totalHours.hours + ":" + totalHours.minutes}
+              {log === "daily" && (
+                <CustomTableCell align="left">
+                  <CustomTableHead align="center" sx={{ fontWeight: "bold" }}>
+                    {totalHours.hours.toString().padStart(2,"0") + ":" + totalHours.minutes.toString().padEnd(2,"0")}
                   </CustomTableHead>
                 </CustomTableCell>
               )}
-              {log == "weekly" && (
+              {log === "weekly" && (
                 <>
                   {totalHoursWeeks.map((element) => {
                     return (
                       <CustomTableHead
                         sx={{ p: 0, textAlign: "center", fontWeight: "bold" }}
                       >
-                        <Box>{element.hours + ":" + element.minutes}</Box>
+                        <Box>{element.hours.toString().padStart(2,"0") + ":" + element.minutes.toString().padEnd(2,"0")}</Box>
                       </CustomTableHead>
                     );
                   })}
