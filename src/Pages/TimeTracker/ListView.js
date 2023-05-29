@@ -372,17 +372,15 @@ const ListView = () => {
               );
             })}
           </TableBody>
-
-          {!apiData?.length ? (
             <TableFooter>
+          {!apiData?.length ? (
               <CustomTableCell colSpan={log === "daily" ? 8 : 11}>
                 <TableFooterNoRecord>
                   <Typography>NO RECORD TO DISPLAY.....</Typography>
                 </TableFooterNoRecord>
               </CustomTableCell>
-            </TableFooter>
           ) : (
-            <TableFooter>
+            <>
               <CustomTableCell colSpan={ 4} align="right">
               </CustomTableCell>
               <CustomTableCell >
@@ -391,7 +389,8 @@ const ListView = () => {
               {log === "daily" && (
                 <CustomTableCell align="left">
                   <CustomTableHead align="center" sx={{ fontWeight: "bold" }}>
-                    {totalHours.hours.toString().padStart(2,"0") + ":" + totalHours.minutes.toString().padEnd(2,"0")}
+                    {/* {totalHours.hours.toString().padStart(2,"0") + ":" + totalHours.minutes.toString().padEnd(2,"0")} */}
+                    {totalHours?.hours?.toString().padStart(2,"0") + ":" + totalHours.minutes?.toString().padStart(2,"0")}
                   </CustomTableHead>
                 </CustomTableCell>
               )}
@@ -402,14 +401,15 @@ const ListView = () => {
                       <CustomTableHead
                         sx={{ p: 0, textAlign: "center", fontWeight: "bold" }}
                       >
-                        <Box>{element.hours.toString().padStart(2,"0") + ":" + element.minutes.toString().padEnd(2,"0")}</Box>
+                        <Box>{element.hours?.toString().padStart(2,"0") + ":" + element.minutes?.toString().padStart(2,"0")}</Box>
                       </CustomTableHead>
                     );
                   })}
                 </>
               )}
-            </TableFooter>
+            </>
           )}
+          </TableFooter>
         </Table>
       </TableContainer>
     </>
