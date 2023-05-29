@@ -177,7 +177,7 @@ function RegisterComponent() {
       birthdate: finalBirthdate,
     };
 
-    //  const x = mutate(data);.
+     const x = mutate(data);
   };
 
   if (data && isSuccess) {
