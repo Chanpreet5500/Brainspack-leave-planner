@@ -33,8 +33,8 @@ const ListView = () => {
   const userId = finalData?._id;
 
   const [totalHours, setTotalHours] = useState({});
+  const [totalValue, setTotalValue] = useState({});
   const [totalHoursWeeks, setTotalHoursWeeks] = useState([]);
-
   const [log, setLog] = React.useState("daily");
   const [openModal, setOpenModal] = useState(false);
   const [rowId, setRowId] = useState("");
@@ -192,6 +192,13 @@ const ListView = () => {
           }
         });
       });
+      let totalHours = { hours: 0, minutes: 0 };
+      arr.map((element, index) => {
+        totalHours.minutes += element.minutes;
+        totalHours.hours += element.hours + Math.trunc(totalHours.minutes/60);
+        totalHours.minutes = totalHours.minutes%60;
+      });
+      setTotalValue(totalHours);
       setTotalHoursWeeks(arr);
     }
   }, [weekDataUser]);
@@ -295,9 +302,7 @@ const ListView = () => {
                   {log === "daily" ? (
                     <>
                       <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
-                      <CustomTableCell >
-                        {row.hours}
-                      </CustomTableCell>
+                      <CustomTableCell>{row.hours}</CustomTableCell>
                     </>
                   ) : (
                     ""
@@ -372,43 +377,56 @@ const ListView = () => {
               );
             })}
           </TableBody>
-            <TableFooter>
-          {!apiData?.length ? (
+          <TableFooter>
+            {!apiData?.length ? (
               <CustomTableCell colSpan={log === "daily" ? 8 : 11}>
                 <TableFooterNoRecord>
                   <Typography>NO RECORD TO DISPLAY.....</Typography>
                 </TableFooterNoRecord>
               </CustomTableCell>
-          ) : (
-            <>
-              <CustomTableCell colSpan={ 4} align="right">
-              </CustomTableCell>
-              <CustomTableCell >
-               <CustomTableHead  align="left"> Total </CustomTableHead>
-              </CustomTableCell>
-              {log === "daily" && (
-                <CustomTableCell align="left">
-                  <CustomTableHead align="center" sx={{ fontWeight: "bold" }}>
-                    {/* {totalHours.hours.toString().padStart(2,"0") + ":" + totalHours.minutes.toString().padEnd(2,"0")} */}
-                    {totalHours?.hours?.toString().padStart(2,"0") + ":" + totalHours.minutes?.toString().padStart(2,"0")}
-                  </CustomTableHead>
+            ) : (
+              <>
+                <CustomTableCell colSpan={4} align="right"></CustomTableCell>
+                <CustomTableCell>
+                  <CustomTableHead align="left"> Total </CustomTableHead>
                 </CustomTableCell>
-              )}
-              {log === "weekly" && (
-                <>
-                  {totalHoursWeeks.map((element) => {
-                    return (
-                      <CustomTableHead
-                        sx={{ p: 0, textAlign: "center", fontWeight: "bold" }}
-                      >
-                        <Box>{element.hours?.toString().padStart(2,"0") + ":" + element.minutes?.toString().padStart(2,"0")}</Box>
-                      </CustomTableHead>
-                    );
-                  })}
-                </>
-              )}
-            </>
-          )}
+                {log === "daily" && (
+                  <CustomTableCell align="left">
+                    <CustomTableHead align="center" sx={{ fontWeight: "bold" }}>
+                      {totalHours?.hours?.toString().padStart(2, "0") +
+                        ":" +
+                        totalHours.minutes?.toString().padStart(2, "0")}
+                    </CustomTableHead>
+                  </CustomTableCell>
+                )}
+                {log === "weekly" && (
+                  <>
+                    {totalHoursWeeks.map((element) => {
+                      return (
+                        <CustomTableHead
+                          sx={{ p: 0, textAlign: "center", fontWeight: "bold" }}
+                        >
+                          <Box>
+                            {element.hours?.toString().padStart(2, "0") +
+                              ":" +
+                              element.minutes?.toString().padStart(2, "0")}
+                          </Box>
+                        </CustomTableHead>
+                      );
+                    })}
+                  </>
+                )}
+                {log === "weekly" && (
+                  <>
+                    <CustomTableCell>
+                      {totalValue.hours?.toString().padStart(2, "0") +
+                        ":" +
+                        totalValue.minutes?.toString().padStart(2, "0")}
+                    </CustomTableCell>
+                  </>
+                )}
+              </>
+            )}
           </TableFooter>
         </Table>
       </TableContainer>
