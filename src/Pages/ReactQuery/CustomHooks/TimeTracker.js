@@ -16,19 +16,23 @@ export const GetUserData = (id) => {
 };
 
 const fetchWeekData = (data) => {
+   
   const id = data.userId;
   const fDay = data.weekFIrstDay.formatDate;
   const lDay = data.weekLastDay.formatDate;
-
+  
   const tempDate = new Date(fDay);
   const secondTempDate = new Date(lDay);
+  secondTempDate.setDate(secondTempDate.getDate()+1)
+
+
 
   const weekFIrstDay = `${tempDate.getFullYear()}-${
     tempDate.getMonth() + 1
   }-${tempDate.getDate()}`;
   const weekLastDay = `${secondTempDate.getFullYear()}-${
     secondTempDate.getMonth() + 1
-  }-${secondTempDate.getDate() + 1}`;
+  }-${secondTempDate.getDate() }`;
 
   return axiosInstance.get(
     `http://localhost:5233/weekly-datas/${id}/${weekFIrstDay}/${weekLastDay}`

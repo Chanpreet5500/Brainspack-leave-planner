@@ -29,6 +29,7 @@ import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
 import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 import EditCalendarTask from "./Pages/TimeTracker/CalendarView/EditCalendarTask";
+import ManageEmployees from "./Pages/AdmilLayout/ManageEmployees";
 const font = "'Raleway', sans-serif";
 
 function App() {
@@ -135,6 +136,12 @@ function App() {
                 <Route
                   path="/reset-password/:token"
                   element={<CreateNewPasswordComponent />}
+                />
+                 <Route
+                  path='/manage-employees'
+                  element={
+                    <PrivateRouteComponent Component={ManageEmployees} />
+                  }
                 />
               </Routes>
             </ThemeProvider>

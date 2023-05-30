@@ -74,7 +74,7 @@ const ListView = () => {
     const finalDate = d.toLocaleDateString();
     return finalDate;
   };
-console.log('totalHoursWeeks',totalHoursWeeks)
+
   const months = [
     "Jan",
     "Feb",
@@ -91,11 +91,13 @@ console.log('totalHoursWeeks',totalHoursWeeks)
   ];
 
   const apiData = weekDataUser?.data?.filterdUsers;
+ 
   useEffect(() => {
     if (log && weekFIrstDay) {
+     
       refetch();
     }
-  }, [log, weekFIrstDay]);
+  }, [log, weekFIrstDay,weekLastDay]);
   const weekCleander = [
     {
       formatDate: new Date(
