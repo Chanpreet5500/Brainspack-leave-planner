@@ -8,7 +8,7 @@ import {
   Drawer,
   ListItemButton,
   ListItem,
-  Paper
+  Paper,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -16,31 +16,48 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import MenuIcon from "@mui/icons-material/Menu";
 import SpeedIcon from "@mui/icons-material/Speed";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import LogoutIcon from '@mui/icons-material/Logout';
-import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import BroadcastOnPersonalIcon from "@mui/icons-material/BroadcastOnPersonal";
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
-import TimelapseIcon from '@mui/icons-material/Timelapse';
+import TimelapseIcon from "@mui/icons-material/Timelapse";
+import EmployeeDetails from "../AdmilLayout/EmployeeDetails";
+import ManageEmployees from "../AdmilLayout/ManageEmployees";
+import GroupIcon from '@mui/icons-material/Group';
+import { useQuery } from "react-query";
+import axios from "axios";
 // import  Alert  from '@mui/material/Alert'
 // import  Snackbar  from '@mui/material/Snackbar'
 
 function NavbarComponent(props) {
-
-  const { values } = props
-  const firstName = values?.firstName
-  const [open, setOpen] = useState(false)
+  const { values } = props;
+  const firstName = values?.firstName;
+  const [open, setOpen] = useState(false);
 
   // const loggedInUserName = props?.userData?.name
   const [logoutButton, setLogoutButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+
+
+
+
   const sidebarMenu = [
-    { name: 'Calendar', icon: <CalendarMonthIcon />, value: 'calendar' },
-    { name: 'Statistics', icon: <DonutLargeIcon />, value: 'statistics' },
-    { name: 'Dashboard', icon: <BroadcastOnPersonalIcon />, value: 'dashboard' },
-    { name: 'Time Tracker', icon: <TimelapseIcon />, value: 'timetracker' },
-    { name: 'Add Leave', icon: <SpeedIcon />, value: 'leave' }]
+    { name: "Calendar", icon: <CalendarMonthIcon />, value: "calendar" },
+    { name: "Statistics", icon: <DonutLargeIcon />, value: "statistics" },
+    {
+      name: "Dashboard",
+      icon: <BroadcastOnPersonalIcon />,
+      value: "dashboard",
+    },
+    { name: "Time Tracker", icon: <TimelapseIcon />, value: "timetracker" },
+    { name: "Add Leave", icon: <SpeedIcon />, value: "leave" },
+  ];
+
+  const adminSidebarMenu = [
+    { name: "Employees", icon: <GroupIcon />, value: "manage-employees" },
+  ];
 
   const navigate = useNavigate();
 
@@ -53,20 +70,18 @@ function NavbarComponent(props) {
   }
 
   function logoutUser() {
-    localStorage.clear()
+    localStorage.clear();
     navigate("/");
   }
 
   function navigation(value) {
-
     // <Snackbar open={open} autoHideDuration={2000}>
     //   <Alert severity='success'>Good</Alert>
     // </Snackbar>
 
     if (value) {
-      navigate(`/${value}`)
+      navigate(`/${value}`);
     }
-
   }
 
   const navbarParent = {
@@ -114,17 +129,18 @@ function NavbarComponent(props) {
     top: "70px",
     right: "23px",
     background: "white",
-    height: '150px',
-    zIndex: "1"
+    height: "150px",
+    zIndex: "2",
   };
 
   const logoutParent = {
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    alignContent: 'flex-start'
-  }
-
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+    alignContent: "flex-start",
+  };
+  const roleType =JSON.parse( localStorage.getItem('value'));
+  console.log(roleType,'roleTyperoleType')
 
   return (
     <>
@@ -135,7 +151,7 @@ function NavbarComponent(props) {
             style={{ height: "45px", margin: "10px 0 0 20px" }}
           />
 
-          <Box >
+          <Box>
             <IconButton
               onClick={() => smallSideBar()}
               style={{
@@ -152,8 +168,8 @@ function NavbarComponent(props) {
               anchor="left"
               style={{ marginTop: "85px" }}
             >
-              <Stack width={270} >
-                <Grid >
+              <Stack width={270}>
+                <Grid>
                   <Grid style={{ margin: "20px 0px 5px 7px" }}>
                     <Typography
                       variant="p"
@@ -168,16 +184,18 @@ function NavbarComponent(props) {
                     </Typography>
                   </Grid>
 
-                  {sidebarMenu.map((e, i) => {
+                  { roleType.role!='admin'?
+                    sidebarMenu.map((e, i) => {
                     return (
-                      <ListItem onClick={() => {
-                        setIsOpen(false)
-                        navigation(e.value)
-                      }} key={i}>
+                      <ListItem
+                        onClick={() => {
+                          setIsOpen(false);
+                          navigation(e.value);
+                        }}
+                        key={i}
+                      >
                         <ListItemButton sx={defaultOptionParent}>
-                          <Grid >
-                            {e.icon}
-                          </Grid>
+                          <Grid>{e.icon}</Grid>
                           <Typography
                             variant="span"
                             style={{
@@ -190,9 +208,36 @@ function NavbarComponent(props) {
                           </Typography>
                         </ListItemButton>
                       </ListItem>
-                    )
-                  })}
+                    );
+                  }):
+                  adminSidebarMenu.map((e, i) => {
+                    return (
+                      <ListItem
+                        onClick={() => {
+                          setIsOpen(false);
+                          navigation(e.value);
+                        }}
+                        key={i}
+                      >
+                        <ListItemButton sx={defaultOptionParent}>
+                          <Grid>{e.icon}</Grid>
+                          <Typography
+                            variant="span"
+                            style={{
+                              position: "relative",
+                              fontStyle: "17px",
+                              marginLeft: "15px",
+                            }}
+                          >
+                            {e.name}
+                          </Typography>
+                        </ListItemButton>
+                      </ListItem>
+                    );
+                  })
+                  }
 
+                  
                 </Grid>
               </Stack>
             </Drawer>
@@ -217,20 +262,31 @@ function NavbarComponent(props) {
                   padding: "0px 10px",
                 }}
               >
-                {(firstName ? <PersonIcon /> : '')}
+                {firstName ? <PersonIcon /> : ""}
               </Typography>
             </Grid>
             {logoutButton && (
-              <Paper elevation={20} style={logoutButtonParent} >
-                <Typography variant="h5" style={{ fontSize: "30px", padding: '5px 0 0 13px' }}>Hey , {firstName}</Typography>
+              <Paper elevation={20} style={logoutButtonParent}>
+                <Typography
+                  variant="h5"
+                  style={{ fontSize: "30px", padding: "5px 0 0 13px" }}
+                >
+                  Hey , {firstName}
+                </Typography>
                 <ListItem sx={logoutParent}>
                   <ListItemButton onClick={logoutUser}>
                     <LogoutIcon />
-                    <Typography variant="h5" style={{ margin: '0 0 0 13px' }}>  Logout</Typography>
+                    <Typography variant="h5" style={{ margin: "0 0 0 13px" }}>
+                      {" "}
+                      Logout
+                    </Typography>
                   </ListItemButton>
-                  <ListItemButton onClick={() => (navigation('profile'))} >
-                    <PersonOutlineIcon style={{ marginRight: '8px' }} />
-                    <Typography variant="h5" style={{ margin: '0 0 0 13px' }}> Profile</Typography>
+                  <ListItemButton onClick={() => navigation("profile")}>
+                    <PersonOutlineIcon style={{ marginRight: "8px" }} />
+                    <Typography variant="h5" style={{ margin: "0 0 0 13px" }}>
+                      {" "}
+                      Profile
+                    </Typography>
                   </ListItemButton>
                 </ListItem>
               </Paper>

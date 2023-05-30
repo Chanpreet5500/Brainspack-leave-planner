@@ -1,19 +1,41 @@
 import {
+  Avatar,
   Box,
   Button,
+  InputAdornment,
   InputBase,
   Table,
   TableBody,
   TableHead,
   TableRow,
+  TextField,
+  Typography,
   alpha,
 } from "@mui/material";
-import React from "react";
-import { CustomTableCell, CustomTableHead } from "../TimeTracker/styled";
+import React, { useEffect, useState } from "react";
+import {
+  CustomTableCell,
+  CustomTableHead,
+  TableFooterNoRecord,
+  UserDetailsBox,
+  Username,
+} from "../TimeTracker/styled";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import styled from "@emotion/styled";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowBackIosNew,
+  AccountCircle,
+  KeyboardArrowDown,
+} from "@mui/icons-material";
+import { useQuery } from "react-query";
+import axios from "axios";
 const ManageEmployees = () => {
+  const [employeeData, setEmployeeData] = useState([]);
+  const [searchBarValue, setSearchBarValue] = useState("");
+
+  const navigate = useNavigate();
   const tableHeader = [
     "Sr.No.",
     "Employee Name",
@@ -22,62 +44,106 @@ const ManageEmployees = () => {
     "Designation",
     "",
   ];
-  const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
-  
-  
 
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-  
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
+  const usersData = [
+    {
+      name: "Tushar Maheshwari",
+      email: "jai@yoyo.com",
+      phoneNo: "7418529632",
+      designation: "Intern Trainee",
     },
-  }));
+    {
+      name: "Gourav Kashyap",
+      email: "	gourav@yoyo.com",
+      phoneNo: "4564565256",
+      designation: "Intern Trainee",
+    },
+    {
+      name: "Amam Sharma",
+      email: "	amam@yoyo.com",
+      phoneNo: "7858596589",
+      designation: "Intern Trainee",
+    },
+    {
+      name: "Vaibhav Mani",
+      email: "	vaibhav@yoyo.com",
+      phoneNo: "7485965652",
+      designation: "Intern Trainee",
+    },
+  ];
+  const { data, refetch } = useQuery("employee-list", () => {
+    return axios.get("http://localhost:5233/getEmpList");
+  });
+
+  let employeeList = data?.data.userList;
+
+  const searchEmployee = (event) => {
+    setSearchBarValue(event.target.value);
+  };
+  useEffect(() => {
+    if (searchBarValue != "" && employeeData.length > 0) {
+      const filterdData = employeeData?.filter(
+        (element) =>
+          element.firstName
+            .toLowerCase()
+            .includes(searchBarValue.toLowerCase()) ||
+          element.lastName.toLowerCase().includes(searchBarValue.toLowerCase())
+      );
+
+      setEmployeeData(filterdData);
+    } else if (employeeList) {
+      setEmployeeData(employeeList);
+    }
+  }, [searchBarValue, employeeList]);
+
+  console.log(employeeData, "employeeDataemployeeData employeeData");
 
   return (
     <>
       <Box sx={{ margin: "40px" }}>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ "aria-label": "search" }}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            m: "25px 0px",
+          }}
+        >
+          <UserDetailsBox>
+            <ArrowBackIosNew sx={{ color: "#174dc2" }} />
+            <AccountCircle sx={{ color: "#ebebeb", fontSize: "3rem" }} />
+            <Username component="span">C1936 - Mayank Kumar</Username>
+            <KeyboardArrowDown sx={{ padding: "10px" }} />
+          </UserDetailsBox>
+
+          <TextField
+            onChange={searchEmployee}
+            value={searchBarValue}
+            sx={{
+              "& .css-1iulo1y-MuiInputBase-root-MuiFilledInput-root": {
+                background: "none",
+                "&:hover": {
+                  background: "none",
+                },
+
+                "&:focus-within": {
+                  width: "350px",
+                },
+                "&:active": {
+                  background: "none",
+                },
+              },
+            }}
+            variant="filled"
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-        </Search>
+        </Box>
         <Table sx={{ flex: 1 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -87,17 +153,37 @@ const ManageEmployees = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow sx={{ cursor: "url(Logo-light-versuion.png)" }}>
-              <CustomTableCell>1.</CustomTableCell>
-              <CustomTableCell>Tushar Maheshwari</CustomTableCell>
-              <CustomTableCell>jai@yoyo.com</CustomTableCell>
-              <CustomTableCell>7418529632</CustomTableCell>
-              <CustomTableCell>Intern Trainee</CustomTableCell>
-
-              <CustomTableCell>
-                <MoreHorizIcon sx={{ cursor: "pointer" }} />
+            {employeeData.length ? (
+              employeeData?.map((element, index) => {
+                return (
+                  <>
+                    <TableRow sx={{ cursor: "url(Logo-light-versuion.png)" }}>
+                      <CustomTableCell>{index + 1}.</CustomTableCell>
+                      <CustomTableCell>
+                        {`${element.firstName} ${element.lastName}`}.
+                      </CustomTableCell>
+                      <CustomTableCell>{element.email}.</CustomTableCell>
+                      <CustomTableCell>{element.phoneNumber}.</CustomTableCell>
+                      <CustomTableCell>{element.designation}.</CustomTableCell>
+                      <CustomTableCell>
+                        <MoreHorizIcon
+                          sx={{ cursor: "pointer" }}
+                          onClick={() =>
+                            navigate("/employe-details", { state: {id:element._id} })
+                          }
+                        />
+                      </CustomTableCell>
+                    </TableRow>
+                  </>
+                );
+              })
+            ) : (
+              <CustomTableCell colSpan={6}>
+                <TableFooterNoRecord>
+                  <Typography>NO RECORD TO DISPLAY.....</Typography>
+                </TableFooterNoRecord>
               </CustomTableCell>
-            </TableRow>
+            )}
           </TableBody>
         </Table>
       </Box>

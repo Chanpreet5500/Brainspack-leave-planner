@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
 import Modal from "../Dialog/Modal";
 import { FetchFilterdWeekData } from "../ReactQuery/CustomHooks/TimeTracker";
-import { useMutation } from "react-query";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -154,9 +154,14 @@ const ListView = () => {
   const editTask = (id) => {
     navigate("/editTask", { state: id });
   };
+  const queryClient = useQueryClient()
 
   const deleteProjectData = useMutation(() => {
     return axiosInstance.delete(`http://localhost:5233/delete-user/${rowId}`);
+  },{
+    onSuccess(){
+      queryClient.invalidateQueries('logged-user-week-data')
+    }
   });
 
   const confirmModal = (id) => {
@@ -218,9 +223,7 @@ const ListView = () => {
               deleteProjectData.mutate(rowId);
 
               setOpenModal(false);
-              setTimeout(() => {
-                refetch();
-              }, 100);
+             
             }}
           />
         )}
@@ -253,7 +256,6 @@ const ListView = () => {
               <CustomTableHead>Task Description</CustomTableHead>
               {log === "daily" ? (
                 <>
-                  {" "}
                   <CustomTableHead>Date</CustomTableHead>
                   <CustomTableHead>Hours</CustomTableHead>
                 </>
@@ -282,7 +284,7 @@ const ListView = () => {
               {log === "daily" ? (
                 <CustomTableHead colSpan={2}>Actions</CustomTableHead>
               ) : (
-                <CustomTableHead align="center">
+                <CustomTableHead align="center" >
                   <Box>Total</Box>
                   <WeekDayBox>(Hours)</WeekDayBox>
                 </CustomTableHead>
@@ -373,7 +375,7 @@ const ListView = () => {
                       </CustomTableCell>
                     </>
                   ) : (
-                    <CustomTableCell sx={{ fontWeight: "bold" }}>
+                    <CustomTableCell sx={{ fontWeight: "bold",color:'black',}}>
                       {row.hours}
                     </CustomTableCell>
                   )}
@@ -390,13 +392,13 @@ const ListView = () => {
               </CustomTableCell>
             ) : (
               <>
-                <CustomTableCell colSpan={4} align="right"></CustomTableCell>
+                <CustomTableCell sx={{border:'none',fontWeight: "bold" }} colSpan={4} align="right"></CustomTableCell>
                 <CustomTableCell>
-                  <CustomTableHead align="left"> Total </CustomTableHead>
+                  <CustomTableHead sx={{border:'none',fontWeight: "bold",color:'black', }} align="left"> Total </CustomTableHead>
                 </CustomTableCell>
                 {log === "daily" && (
                   <CustomTableCell align="left">
-                    <CustomTableHead align="center" sx={{ fontWeight: "bold" }}>
+                    <CustomTableHead align="center" sx={{ fontWeight: "bold" ,border:'none',color:'black', }}>
                       {totalHours?.hours?.toString().padStart(2, "0") +
                         ":" +
                         totalHours.minutes?.toString().padStart(2, "0")}
@@ -408,7 +410,7 @@ const ListView = () => {
                     {totalHoursWeeks.map((element) => {
                       return (
                         <CustomTableHead
-                          sx={{ p: 0, textAlign: "center", fontWeight: "bold" }}
+                          sx={{ p: 0, textAlign: "center", fontWeight: "bold" ,border:'none',color:'black', }}
                         >
                           <Box>
                             {element.hours?.toString().padStart(2, "0") +
@@ -422,7 +424,7 @@ const ListView = () => {
                 )}
                 {log === "weekly" && (
                   <>
-                    <CustomTableCell>
+                    <CustomTableCell sx={{border:'none',fontWeight: "bold",color:'black', }}>
                       {totalValue.hours?.toString().padStart(2, "0") +
                         ":" +
                         totalValue.minutes?.toString().padStart(2, "0")}

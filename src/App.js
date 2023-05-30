@@ -24,12 +24,16 @@ import StatisticsComponent from "./Pages/Statistics/Statistics";
 import CalendarComponent from "./Pages/Calendar/Calendar";
 import ProfileComponent from "./Pages/Profile/Profile";
 import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
+import PrivateDashboard from "./PrivateRouting/PrivateDashboard";
 import CreateNewPasswordComponent from "./Pages/CreatePassword/CreatePassword";
 import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
 import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 import EditCalendarTask from "./Pages/TimeTracker/CalendarView/EditCalendarTask";
 import ManageEmployees from "./Pages/AdmilLayout/ManageEmployees";
+import AdminRegister from "./Pages/Admin/AdminRegister";
+import Hello from "./Pages/Admin/Hello";
+import EmployeeDetails from "./Pages/AdmilLayout/EmployeeDetails";
 const font = "'Raleway', sans-serif";
 
 function App() {
@@ -63,11 +67,24 @@ function App() {
             <ThemeProvider theme={theme}>
               <Routes>
                 <Route path="/" element={<LoginComponent />} />
-
+                <Route path="/adminRegister" element={<AdminRegister />} />
                 <Route
                   path="/dashboard"
                   element={
                     <PrivateRouteComponent Component={DashboardComponent} />
+                  }
+                />
+                <Route
+                  path="/manage-employees"
+                  element={
+                    <PrivateDashboard Component={ManageEmployees} />
+                  }
+                />
+                
+                <Route
+                  path="/employe-details"
+                  element={
+                    <PrivateDashboard Component={EmployeeDetails} />
                   }
                 />
                 <Route
@@ -131,18 +148,27 @@ function App() {
                 />
                 <Route
                   path="/edituserdata"
-                  element={<PrivateRouteComponent Component={EditCalendarTask} />}
+                  element={
+                    <PrivateRouteComponent Component={EditCalendarTask} />
+                  }
                 />
                 <Route
                   path="/reset-password/:token"
                   element={<CreateNewPasswordComponent />}
                 />
-                 <Route
+                 {/* <Route
                   path='/manage-employees'
                   element={
                     <PrivateRouteComponent Component={ManageEmployees} />
                   }
-                />
+                /> */}
+
+                 {/* <Route
+                  path='/employe-details'
+                  element={
+                    <PrivateRouteComponent Component={EmployeeDetails} />
+                  }
+                /> */}
               </Routes>
             </ThemeProvider>
           </ErrorBoundaries>
