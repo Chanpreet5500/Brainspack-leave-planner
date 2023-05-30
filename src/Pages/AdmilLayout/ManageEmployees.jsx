@@ -160,11 +160,11 @@ const ManageEmployees = () => {
                     <TableRow sx={{ cursor: "url(Logo-light-versuion.png)" }}>
                       <CustomTableCell>{index + 1}.</CustomTableCell>
                       <CustomTableCell>
-                        {`${element.firstName} ${element.lastName}`}.
+                        {`${element.firstName} ${element.lastName}`}
                       </CustomTableCell>
-                      <CustomTableCell>{element.email}.</CustomTableCell>
-                      <CustomTableCell>{element.phoneNumber}.</CustomTableCell>
-                      <CustomTableCell>{element.designation}.</CustomTableCell>
+                      <CustomTableCell>{element.email}</CustomTableCell>
+                      <CustomTableCell>{element.phoneNumber}</CustomTableCell>
+                      <CustomTableCell>{element.designation}</CustomTableCell>
                       <CustomTableCell>
                         <MoreHorizIcon
                           sx={{ cursor: "pointer" }}
