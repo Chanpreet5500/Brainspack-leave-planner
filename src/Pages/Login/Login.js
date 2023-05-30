@@ -244,7 +244,6 @@ function Login() {
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         name="role"
-                        value={role}
                         onChange={(e) => {
                           props.handleChange(e);
                           setRole(e.target.value);
