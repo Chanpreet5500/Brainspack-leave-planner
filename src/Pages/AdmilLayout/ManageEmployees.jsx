@@ -96,11 +96,12 @@ const ManageEmployees = () => {
     }
   }, [searchBarValue, employeeList]);
 
-  console.log(employeeData, "employeeDataemployeeData employeeData");
+  
 
   const admin = JSON.parse(localStorage.getItem("value"));
-  console.log(admin,'admin')
-
+ 
+  const uniqueId = admin._id.slice(admin._id.length - 4)
+ 
   return (
     <>
       <Box sx={{ margin: "40px" }}>
@@ -114,7 +115,7 @@ const ManageEmployees = () => {
           <UserDetailsBox>
             <ArrowBackIosNew sx={{ color: "#174dc2" }} />
             <AccountCircle sx={{ color: "#ebebeb", fontSize: "3rem" }} />
-            <Username component="span">C1936 - {admin.firstName} {admin.lastName}</Username>
+            <Username component="span">{uniqueId.toUpperCase()} - {admin.firstName} {admin.lastName}</Username>
             <KeyboardArrowDown sx={{ padding: "10px" }} />
           </UserDetailsBox>
 
