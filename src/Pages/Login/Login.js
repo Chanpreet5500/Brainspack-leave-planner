@@ -134,7 +134,7 @@ function Login() {
         localStorage.setItem("admintoken", token);
         localStorage.setItem("value", JSON.stringify(loggedInAdminData));
         console.log("function called");
-        return navigate("/hello");
+        return navigate("/manage-employees");
       }
     } else {
       const gettingClientToken = clientData?.data;

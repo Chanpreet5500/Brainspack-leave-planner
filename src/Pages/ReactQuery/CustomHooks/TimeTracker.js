@@ -16,20 +16,23 @@ export const GetUserData = (id) => {
 };
 
 const fetchWeekData = (data) => {
+   
   const id = data.userId;
   const fDay = data.weekFIrstDay.formatDate;
   const lDay = data.weekLastDay.formatDate;
-
+  
   const tempDate = new Date(fDay);
   const secondTempDate = new Date(lDay);
-  secondTempDate.setDate(secondTempDate.getDate() +1)
+  secondTempDate.setDate(secondTempDate.getDate()+1)
+
+
 
   const weekFIrstDay = `${tempDate.getFullYear()}-${
     tempDate.getMonth() + 1
   }-${tempDate.getDate()}`;
   const weekLastDay = `${secondTempDate.getFullYear()}-${
     secondTempDate.getMonth() + 1
-  }-${secondTempDate.getDate()}`;
+  }-${secondTempDate.getDate() }`;
 
   return axiosInstance.get(
     `http://localhost:5233/weekly-datas/${id}/${weekFIrstDay}/${weekLastDay}`
@@ -41,14 +44,12 @@ export const FetchFilterdWeekData = (id) => {
     retry: false,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
+   
+   
   });
 };
 
-// const getDAta = (data) => {
-//   const id = data.userId;
 
-//   return axiosInstance.post(`http://localhost:5233/weekly-data/${id}`, data);
-// };
 
 const fetchDataByID = (id) => {
   return axiosInstance.get(`http://localhost:5233/getDataById/${id}`);
@@ -59,6 +60,12 @@ export const GetDataById = (id) => {
     retry: false,
     refetchOnMount: true,
   });
+    // refetchInterval:2000,
+  }
+
+
+const fetchEditData = (id) => {
+  return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`,id);
 };
 
 export const DeleteUserData = (data) => {
@@ -66,9 +73,7 @@ export const DeleteUserData = (data) => {
   return result;
 };
 
-const fetchEditData = (id) => {
-  return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`, id);
-};
+// 
 
 export const EditUserData = (data) => {
   return useQuery("getEditUserData", () => fetchEditData(data), {

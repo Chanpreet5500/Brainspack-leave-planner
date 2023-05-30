@@ -135,6 +135,7 @@ const EditTask = () => {
         onSubmit={(data) => UpdateTask.mutate(data)}
       >
         {(props) => {
+console.log(new Date(props.values.date).toLocaleDateString())
           return (
             <>
               <TableContainer
@@ -175,7 +176,7 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.projectName &&
-                        props.touched.projectName ? (
+                          props.touched.projectName ? (
                           <ErrorText>{props.errors.projectName}</ErrorText>
                         ) : null}
                       </CustomTableCell>
@@ -219,7 +220,7 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.taskDescription &&
-                        props.touched.taskDescription ? (
+                          props.touched.taskDescription ? (
                           <ErrorText>{props.errors.taskDescription}</ErrorText>
                         ) : null}
                       </CustomTableCell>

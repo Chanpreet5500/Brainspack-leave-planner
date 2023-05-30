@@ -30,8 +30,10 @@ import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
 import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 import EditCalendarTask from "./Pages/TimeTracker/CalendarView/EditCalendarTask";
+import ManageEmployees from "./Pages/AdmilLayout/ManageEmployees";
 import AdminRegister from "./Pages/Admin/AdminRegister";
 import Hello from "./Pages/Admin/Hello";
+import EmployeeDetails from "./Pages/AdmilLayout/EmployeeDetails";
 const font = "'Raleway', sans-serif";
 
 function App() {
@@ -73,9 +75,16 @@ function App() {
                   }
                 />
                 <Route
-                  path="/hello"
+                  path="/manage-employees"
                   element={
-                    <PrivateDashboard Component={Hello} />
+                    <PrivateDashboard Component={ManageEmployees} />
+                  }
+                />
+                
+                <Route
+                  path="/employe-details"
+                  element={
+                    <PrivateDashboard Component={EmployeeDetails} />
                   }
                 />
                 <Route
@@ -147,6 +156,19 @@ function App() {
                   path="/reset-password/:token"
                   element={<CreateNewPasswordComponent />}
                 />
+                 {/* <Route
+                  path='/manage-employees'
+                  element={
+                    <PrivateRouteComponent Component={ManageEmployees} />
+                  }
+                /> */}
+
+                 {/* <Route
+                  path='/employe-details'
+                  element={
+                    <PrivateRouteComponent Component={EmployeeDetails} />
+                  }
+                /> */}
               </Routes>
             </ThemeProvider>
           </ErrorBoundaries>

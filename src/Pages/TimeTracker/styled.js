@@ -8,6 +8,8 @@ import { TextField, FormControl } from "@mui/material";
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: "#ededed",
   fontSize: "18px",
+  // maxWidth:"142px",
+  overflow:'hidden'
 }));
 export const CustomTableHead = styled(TableCell)(({ theme }) => ({
   fontWeight: "bold",
@@ -15,7 +17,7 @@ export const CustomTableHead = styled(TableCell)(({ theme }) => ({
 }));
 export const CustomEditButton = styled(Button)(({ theme }) => ({
   background: "#355edb",
-  zIndex: 10,
+  // zIndex: 10,
   fontSize: "16px",
   marginRight: "5%",
   color: "#fff",
