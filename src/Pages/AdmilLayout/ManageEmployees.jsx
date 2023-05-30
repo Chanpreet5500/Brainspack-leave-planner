@@ -98,6 +98,9 @@ const ManageEmployees = () => {
 
   console.log(employeeData, "employeeDataemployeeData employeeData");
 
+  const admin = JSON.parse(localStorage.getItem("value"));
+  console.log(admin,'admin')
+
   return (
     <>
       <Box sx={{ margin: "40px" }}>
@@ -111,7 +114,7 @@ const ManageEmployees = () => {
           <UserDetailsBox>
             <ArrowBackIosNew sx={{ color: "#174dc2" }} />
             <AccountCircle sx={{ color: "#ebebeb", fontSize: "3rem" }} />
-            <Username component="span">C1936 - Mayank Kumar</Username>
+            <Username component="span">C1936 - {admin.firstName} {admin.lastName}</Username>
             <KeyboardArrowDown sx={{ padding: "10px" }} />
           </UserDetailsBox>
 
@@ -169,7 +172,9 @@ const ManageEmployees = () => {
                         <MoreHorizIcon
                           sx={{ cursor: "pointer" }}
                           onClick={() =>
-                            navigate("/employe-details", { state: {id:element._id} })
+                            navigate("/employe-details", {
+                              state: { id: element._id },
+                            })
                           }
                         />
                       </CustomTableCell>
