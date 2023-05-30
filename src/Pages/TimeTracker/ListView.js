@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
 import Modal from "../Dialog/Modal";
 import { FetchFilterdWeekData } from "../ReactQuery/CustomHooks/TimeTracker";
-import { useMutation } from "react-query";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -69,12 +69,6 @@ const ListView = () => {
     weekLastDay,
   });
 
-  useEffect(() => {
-    if (log && weekFIrstDay) {
-      refetch();
-    }
-  }, [log, weekFIrstDay]);
-
   const ddMMYY = (date) => {
     const d = new Date(date);
     const finalDate = d.toLocaleDateString();
@@ -97,7 +91,13 @@ const ListView = () => {
   ];
 
   const apiData = weekDataUser?.data?.filterdUsers;
-
+ 
+  useEffect(() => {
+    if (log && weekFIrstDay) {
+     
+      refetch();
+    }
+  }, [log, weekFIrstDay,weekLastDay]);
   const weekCleander = [
     {
       formatDate: new Date(
@@ -136,7 +136,7 @@ const ListView = () => {
     },
   ];
 
-  const checkHours = (headerDate, projectDate) => {
+  const checkHours = (headerDate, projectDate, hour) => {
     const [tempDate, tempDate2] = headerDate.date.split("T");
     let [year, month, date] = tempDate.split("-");
     const year2 = projectDate.formatDate.getFullYear();
@@ -147,14 +147,21 @@ const ListView = () => {
     }
   };
 
+  
+
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thru", "Fri", "Sat"];
 
   const editTask = (id) => {
     navigate("/editTask", { state: id });
   };
+  const queryClient = useQueryClient()
 
   const deleteProjectData = useMutation(() => {
     return axiosInstance.delete(`http://localhost:5233/delete-user/${rowId}`);
+  },{
+    onSuccess(){
+      queryClient.invalidateQueries('logged-user-week-data')
+    }
   });
 
   const confirmModal = (id) => {
@@ -202,6 +209,7 @@ const ListView = () => {
       setTotalHoursWeeks(arr);
     }
   }, [weekDataUser]);
+ 
   return (
     <>
       <Box>
@@ -213,10 +221,9 @@ const ListView = () => {
             message="Are you sure you want to delete?"
             submit={() => {
               deleteProjectData.mutate(rowId);
+
               setOpenModal(false);
-              setTimeout(() => {
-                refetch();
-              }, 1000);
+             
             }}
           />
         )}

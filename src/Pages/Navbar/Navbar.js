@@ -22,6 +22,11 @@ import BroadcastOnPersonalIcon from "@mui/icons-material/BroadcastOnPersonal";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
+import EmployeeDetails from "../AdmilLayout/EmployeeDetails";
+import ManageEmployees from "../AdmilLayout/ManageEmployees";
+import GroupIcon from '@mui/icons-material/Group';
+import { useQuery } from "react-query";
+import axios from "axios";
 // import  Alert  from '@mui/material/Alert'
 // import  Snackbar  from '@mui/material/Snackbar'
 
@@ -34,6 +39,10 @@ function NavbarComponent(props) {
   const [logoutButton, setLogoutButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+
+
+
+
   const sidebarMenu = [
     { name: "Calendar", icon: <CalendarMonthIcon />, value: "calendar" },
     { name: "Statistics", icon: <DonutLargeIcon />, value: "statistics" },
@@ -44,6 +53,10 @@ function NavbarComponent(props) {
     },
     { name: "Time Tracker", icon: <TimelapseIcon />, value: "timetracker" },
     { name: "Add Leave", icon: <SpeedIcon />, value: "leave" },
+  ];
+
+  const adminSidebarMenu = [
+    { name: "Employees", icon: <GroupIcon />, value: "manage-employees" },
   ];
 
   const navigate = useNavigate();
@@ -126,6 +139,8 @@ function NavbarComponent(props) {
     flexWrap: "wrap",
     alignContent: "flex-start",
   };
+  const roleType =JSON.parse( localStorage.getItem('value'));
+  console.log(roleType,'roleTyperoleType')
 
   return (
     <>
@@ -169,7 +184,8 @@ function NavbarComponent(props) {
                     </Typography>
                   </Grid>
 
-                  {sidebarMenu.map((e, i) => {
+                  { roleType.role!='admin'?
+                    sidebarMenu.map((e, i) => {
                     return (
                       <ListItem
                         onClick={() => {
@@ -193,7 +209,35 @@ function NavbarComponent(props) {
                         </ListItemButton>
                       </ListItem>
                     );
-                  })}
+                  }):
+                  adminSidebarMenu.map((e, i) => {
+                    return (
+                      <ListItem
+                        onClick={() => {
+                          setIsOpen(false);
+                          navigation(e.value);
+                        }}
+                        key={i}
+                      >
+                        <ListItemButton sx={defaultOptionParent}>
+                          <Grid>{e.icon}</Grid>
+                          <Typography
+                            variant="span"
+                            style={{
+                              position: "relative",
+                              fontStyle: "17px",
+                              marginLeft: "15px",
+                            }}
+                          >
+                            {e.name}
+                          </Typography>
+                        </ListItemButton>
+                      </ListItem>
+                    );
+                  })
+                  }
+
+                  
                 </Grid>
               </Stack>
             </Drawer>
