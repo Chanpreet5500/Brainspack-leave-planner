@@ -57,6 +57,7 @@ function NavbarComponent(props) {
 
   const adminSidebarMenu = [
     { name: "Employees", icon: <GroupIcon />, value: "manage-employees" },
+    { name: "Calendar", icon: <CalendarMonthIcon />, value: "calendar" },
   ];
 
   const navigate = useNavigate();
