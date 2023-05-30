@@ -32,6 +32,8 @@ import ManageEmployees from "./Pages/AdmilLayout/ManageEmployees";
 import AdminRegister from "./Pages/Admin/AdminRegister";
 import Hello from "./Pages/Admin/Hello";
 import EmployeeDetails from "./Pages/AdmilLayout/EmployeeDetails";
+import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
+import PrivateDashboard from "../src/PrivateRouting/PrivateDashboard";
 const font = "'Raleway', sans-serif";
 
 function App() {
