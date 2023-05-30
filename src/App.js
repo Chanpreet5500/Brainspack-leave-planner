@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 // import DashboardPage from './pages/dashboard/dashboard';
 import RegisterComponent from "./Pages/Register/Register";
 import LoginComponent from "./Pages/Login/Login";
@@ -23,8 +23,6 @@ import ParalellQuery from "./Pages/ReactQuery/parallelQuery";
 import StatisticsComponent from "./Pages/Statistics/Statistics";
 import CalendarComponent from "./Pages/Calendar/Calendar";
 import ProfileComponent from "./Pages/Profile/Profile";
-import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
-import PrivateDashboard from "./PrivateRouting/PrivateDashboard";
 import CreateNewPasswordComponent from "./Pages/CreatePassword/CreatePassword";
 import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
@@ -32,6 +30,9 @@ import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 import EditCalendarTask from "./Pages/TimeTracker/CalendarView/EditCalendarTask";
 import AdminRegister from "./Pages/Admin/AdminRegister";
 import Hello from "./Pages/Admin/Hello";
+import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
+import PrivateDashboard from "../src/PrivateRouting/PrivateDashboard";
+import ListView from "./Pages/TimeTracker/ListView";
 const font = "'Raleway', sans-serif";
 
 function App() {
@@ -132,7 +133,8 @@ function App() {
                 <Route
                   path="/timetracker"
                   element={<PrivateRouteComponent Component={Timetracker} />}
-                />
+                >
+                </Route>
                 <Route
                   path="/editTask"
                   element={<PrivateRouteComponent Component={EditTask} />}
