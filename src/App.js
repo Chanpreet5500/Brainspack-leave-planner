@@ -24,13 +24,13 @@ import StatisticsComponent from "./Pages/Statistics/Statistics";
 import CalendarComponent from "./Pages/Calendar/Calendar";
 import ProfileComponent from "./Pages/Profile/Profile";
 import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
+import PrivateDashboard from "./PrivateRouting/PrivateDashboard";
 import CreateNewPasswordComponent from "./Pages/CreatePassword/CreatePassword";
 import "./App.css";
 import Timetracker from "./Pages/TimeTracker/Timetracker";
 import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 import EditCalendarTask from "./Pages/TimeTracker/CalendarView/EditCalendarTask";
 import AdminRegister from "./Pages/Admin/AdminRegister";
-import AdminLogin from "./Pages/Admin/AdminLogin";
 import Hello from "./Pages/Admin/Hello";
 const font = "'Raleway', sans-serif";
 
@@ -66,7 +66,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<LoginComponent />} />
                 <Route path="/adminRegister" element={<AdminRegister />} />
-                <Route path="/adminLogin" element={<AdminLogin />} />
                 <Route
                   path="/dashboard"
                   element={
@@ -76,7 +75,7 @@ function App() {
                 <Route
                   path="/hello"
                   element={
-                    <PrivateRouteComponent Component={Hello} />
+                    <PrivateDashboard Component={Hello} />
                   }
                 />
                 <Route

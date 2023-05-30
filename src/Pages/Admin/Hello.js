@@ -2,7 +2,7 @@ import React from 'react'
 
 const Hello = () => {
   return (
-    <div>Hello</div>
+    <h4>You are now admin !</h4>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   Grid,
@@ -6,24 +6,30 @@ import {
   Paper,
   Button,
   Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginData } from "../ReactQuery/CustomHooks/LeavePlanner";
+import { LoginAdmin, LoginData } from "../ReactQuery/CustomHooks/LeavePlanner";
 import { Formik } from "formik";
+import * as Yup from "yup";
 
 function googleAuthentication() {
   window.open("http://localhost:5233/google", "_blank");
 }
 
-function LoginComponent () {
+function Login() {
+  const [role, setRole] = useState("client");
 
   const parentPopup = {
     width: "60%",
     margin: "110px auto",
     alignContent: "center",
     textAlign: "center",
-    height: "400px",
+    height: "500px",
     display: "flex",
   };
 
@@ -88,30 +94,69 @@ function LoginComponent () {
 
   const navigate = useNavigate();
 
-  const { mutate, data, isSuccess } = LoginData();
-
-  const gettingToken = data?.data;
-
-  const token = gettingToken?.token;
-
-  const loggedInUserData = gettingToken?.data;
+  const {
+    mutate: admin,
+    data: adminData,
+    isSuccess: adminSuccess,
+  } = LoginAdmin();
+  const {
+    mutate: client,
+    data: clientData,
+    isSuccess: clientSuccess,
+  } = LoginData();
 
   function LoginValues(props) {
+    console.log(props.role);
     const values = {
-      email: props.values.email,
-      password: props.values.password,
+      email: props.email,
+      password: props.password,
+      role: props.role,
     };
 
-    let x = mutate(values);
-    return x;
+    if (role == "admin") {
+      admin(values);
+    } else {
+      client(values);
+    }
   }
 
-  if (token && data && isSuccess && loggedInUserData) {
-    localStorage.setItem("tokenn", token);
-    localStorage.setItem("value", JSON.stringify(loggedInUserData));
+  useEffect(() => {
+    if (role == "admin") {
+      const gettingToken = adminData?.data;
 
-    return navigate("/dashboard");
-  }
+      const token = gettingToken?.token;
+
+      const loggedInAdminData = gettingToken?.data;
+
+      console.log(token, adminData, adminSuccess, loggedInAdminData);
+
+      if (token && adminData && adminSuccess && loggedInAdminData) {
+        localStorage.setItem("admintoken", token);
+        localStorage.setItem("value", JSON.stringify(loggedInAdminData));
+        console.log("function called");
+        return navigate("/hello");
+      }
+    } else {
+      const gettingClientToken = clientData?.data;
+
+      const clientToken = gettingClientToken?.token;
+
+      const loggedInUserData = gettingClientToken?.data;
+
+      if (clientToken && clientData && clientSuccess && loggedInUserData) {
+        localStorage.setItem("tokenn", clientToken);
+        localStorage.setItem("value", JSON.stringify(loggedInUserData));
+
+        return navigate("/dashboard");
+      }
+    }
+  }, [adminData, clientData]);
+
+  const validationSchema = Yup.object({
+    email: Yup.string().required("Please enter email"),
+    password: Yup.string().required("Password is required"),
+    role: Yup.string().required("Please select a role"),
+  });
 
   return (
     <>
@@ -119,7 +164,10 @@ function LoginComponent () {
         initialValues={{
           email: "",
           password: "",
+          role: "",
         }}
+        validationSchema={validationSchema}
+        onSubmit={(data) => LoginValues(data)}
       >
         {(props) => {
           return (
@@ -127,7 +175,7 @@ function LoginComponent () {
               style={{
                 background:
                   "linear-gradient(to right bottom, rgb(81 155 99), rgb(0 0 0 / 95%))",
-                height: "636px",
+                height: "700px",
                 paddingTop: "20px",
               }}
             >
@@ -184,7 +232,42 @@ function LoginComponent () {
                       {props.errors.password}
                     </Typography>
                   </Grid>
-
+                  <Box>
+                    <FormControl
+                      sx={{
+                        width: "450px",
+                        marginTop: "30px",
+                      }}
+                    >
+                      <InputLabel>Role</InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        name="role"
+                        value={role}
+                        onChange={(e) => {
+                          props.handleChange(e);
+                          setRole(e.target.value);
+                        }}
+                        label="Role"
+                      >
+                        <MenuItem value="client">Client</MenuItem>
+                        <MenuItem value="admin">Admin</MenuItem>
+                      </Select>
+                      <Typography
+                        variant="span"
+                        style={{
+                          color: "red",
+                          fontSize: "12px",
+                          position: "absolute",
+                          zIndex: 13,
+                          top: "60px",
+                        }}
+                      >
+                        {props.errors.role}
+                      </Typography>
+                    </FormControl>
+                  </Box>
                   <Box sx={forgotPasswordLink}>
                     <Link
                       to="/forgot"
@@ -200,7 +283,7 @@ function LoginComponent () {
                     <Button
                       variant="contained"
                       sx={loginButton}
-                      onClick={() => LoginValues(props)}
+                      onClick={() => props.handleSubmit(props)}
                     >
                       Login
                     </Button>
@@ -223,6 +306,6 @@ function LoginComponent () {
       </Formik>
     </>
   );
-};
+}
 
-export default LoginComponent;
+export default Login;
