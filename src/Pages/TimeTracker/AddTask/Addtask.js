@@ -24,7 +24,7 @@ import { CircularBar } from "../CalendarView/CalenderStyled";
 
 const loggedInUser = localStorage.getItem("value");
 const finalData = JSON.parse(loggedInUser);
-const userId = finalData._id;
+const userId = finalData?._id;
 const initialValues = {
   userId: userId,
   projectName: "",
