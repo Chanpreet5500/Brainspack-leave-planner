@@ -322,7 +322,7 @@ function Login() {
       </Formik>
       <Snackbar
         open={open}
-        autoHideDuration={6000}
+        autoHideDuration={1000}
         onClose={handleClose}
         ContentProps={{
           sx: {
