@@ -81,25 +81,20 @@ const ManageEmployees = () => {
     setSearchBarValue(event.target.value);
   };
   useEffect(() => {
-    if (searchBarValue != "" && employeeData.length > 0) {
-      const filterdData = employeeData?.filter(
-        (element) =>
-          element.firstName
-            .toLowerCase()
-            .includes(searchBarValue.toLowerCase()) ||
-          element.lastName.toLowerCase().includes(searchBarValue.toLowerCase())
-      );
-
-      setEmployeeData(filterdData);
+    if (searchBarValue != "") {
+      const filteredData = employeeData?.filter((name) => {
+        const fullName = name.firstName + " " + name.lastName;
+        return (
+          fullName.toLowerCase().indexOf(searchBarValue.toLowerCase()) !== -1
+        );
+      });
+      setEmployeeData(filteredData);
     } else if (employeeList) {
       setEmployeeData(employeeList);
     }
   }, [searchBarValue, employeeList]);
 
-  console.log(employeeData, "employeeDataemployeeData employeeData");
-
   const admin = JSON.parse(localStorage.getItem("value"));
-  console.log(admin,'admin')
 
   return (
     <>
@@ -109,12 +104,15 @@ const ManageEmployees = () => {
             display: "flex",
             justifyContent: "space-between",
             m: "25px 0px",
+            searchBarValue,
           }}
         >
           <UserDetailsBox>
             <ArrowBackIosNew sx={{ color: "#174dc2" }} />
             <AccountCircle sx={{ color: "#ebebeb", fontSize: "3rem" }} />
-            <Username component="span">C1936 - {admin.firstName} {admin.lastName}</Username>
+            <Username component="span">
+              C1936 - {admin.firstName} {admin.lastName}
+            </Username>
             <KeyboardArrowDown sx={{ padding: "10px" }} />
           </UserDetailsBox>
 
@@ -157,7 +155,7 @@ const ManageEmployees = () => {
           </TableHead>
           <TableBody>
             {employeeData.length ? (
-              employeeData?.map((element, index) => {
+              employeeData.map((element, index) => {
                 return (
                   <>
                     <TableRow sx={{ cursor: "url(Logo-light-versuion.png)" }}>
