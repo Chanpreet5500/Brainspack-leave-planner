@@ -81,6 +81,7 @@ const ManageEmployees = () => {
     setSearchBarValue(event.target.value);
   };
   useEffect(() => {
+    
     if (searchBarValue != "" && employeeData.length > 0) {
       const filterdData = employeeData?.filter(
         (element) =>
@@ -122,6 +123,7 @@ const ManageEmployees = () => {
           <TextField
             onChange={searchEmployee}
             value={searchBarValue}
+            placeholder="Search Employee"
             sx={{
               "& .css-1iulo1y-MuiInputBase-root-MuiFilledInput-root": {
                 background: "none",
