@@ -12,7 +12,6 @@ function CalendarModalComponent(props) {
     props;
   const { title, start, description, name, hours, eventId, display, end ,type,firstName,lastName} =
     eventVal;
-  console.log(props);
   const formattedDate = format(new Date(start), "yyyy-dd-MM");
 
   const handleEdit = () => {

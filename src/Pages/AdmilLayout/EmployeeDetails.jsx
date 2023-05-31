@@ -6,19 +6,16 @@ import { UserTask } from "./UserTabs/UserTask";
 import TabPanel from "@mui/lab/TabPanel/TabPanel";
 import TabContext from "@mui/lab/TabContext/TabContext";
 
-const EmployeeDetails = (props) => {
-  // console.log("props of ",props)
+const EmployeeDetails = () => {
   const [value, setValue] = React.useState("leave");
   const location = useLocation();
-  console.log("location",location)
-
-  const { id } = location.state;
+  const { id ,firstName,lastName} = location.state;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   return (
-    <Box sx={{ width: "100%", mt: "20px", ml: "20px" }}>
+    <Box sx={{ mt: "20px",pl:'20px' }}>
       <TabContext value={value}>
 
       <Tabs value={value} onChange={handleChange}>
@@ -26,10 +23,10 @@ const EmployeeDetails = (props) => {
         <Tab value="tasks" label="Tasks"></Tab>
       </Tabs>
       <TabPanel  value="leave">
-        <UserLeave />
+        <UserLeave userId={id}/>
       </TabPanel>
       <TabPanel value="tasks">
-        <UserTask />
+        <UserTask userId={id} firstName={firstName} lastName={lastName}/>
       </TabPanel>
       </TabContext>
     </Box>

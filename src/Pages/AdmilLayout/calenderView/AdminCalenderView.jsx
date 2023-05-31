@@ -82,7 +82,7 @@ export const AdminCalenderView = () => {
         let colorValue = putColor(e.userId?.firstName);
         return {
           start: e.leaveDates,
-          title: e.userId.firstName,
+          title: e.userId.firstName + " " + e.userId.lastName,
           allDay: true,
           display: e.description,
           constraint: e.userId?.firstName,
@@ -125,6 +125,9 @@ export const AdminCalenderView = () => {
             id="demo-simple-select-standard"
             value={dropdown}
             onChange={handleChange}
+            sx={{"& .MuiBox":{
+              display:'none',
+            }}}
           >
             <MenuItem selected value={"all-users"}>
               <em>All User Data</em>
@@ -135,9 +138,9 @@ export const AdminCalenderView = () => {
                   <Typography>
                     {element.firstName + " " + element.lastName}
                   </Typography>
-                  <CustomBox
+                  {dropdown != "all-users" && <CustomBox
                     sx={{ background: putColor(element.firstName) }}
-                  ></CustomBox>
+                  ></CustomBox>}
                 </CustomMenu>
               );
             })}

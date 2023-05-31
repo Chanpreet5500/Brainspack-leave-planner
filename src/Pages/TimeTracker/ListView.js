@@ -30,6 +30,8 @@ const ListView = () => {
   const navigate = useNavigate();
   const loggedInUser = localStorage.getItem("value");
   const finalData = JSON.parse(loggedInUser);
+  const firstName=finalData?.firstName;
+  const lastName=finalData?.lastName;
   const userId = finalData?._id;
 
   const [totalHours, setTotalHours] = useState({});
@@ -98,6 +100,7 @@ const ListView = () => {
       refetch();
     }
   }, [log, weekFIrstDay,weekLastDay]);
+
   const weekCleander = [
     {
       formatDate: new Date(
@@ -239,6 +242,8 @@ const ListView = () => {
           weekLastDay,
           setWeekLastDay,
           userId,
+          firstName,
+          lastName,
         }}
       />
       <TableContainer

@@ -16,6 +16,8 @@ const Header = ({ data }) => {
     weekLastDay,
     setWeekLastDay,
     userId,
+    firstName,
+    lastName
   } = data;
   const date = new Date();
 
@@ -232,8 +234,6 @@ const Header = ({ data }) => {
     }
   };
 
-  const loggedUserData = JSON.parse(localStorage.getItem("value"));
-  const loggedUserName = `${loggedUserData.firstName} ${loggedUserData.lastName}`;
 
   return (
     <>
@@ -242,7 +242,7 @@ const Header = ({ data }) => {
         <UserDetailsBox >
           <ArrowBackIosNewIcon sx={{ color: "#174dc2" }} />
           <AccountCircleIcon sx={{ color: "#ebebeb", fontSize: "3rem" }} />
-          <Username component="span">C1936 - {loggedUserName}</Username>
+          <Username component={"span"}>{firstName + " " + lastName}</Username>
           <KeyboardArrowDownIcon sx={{ padding: "10px" }} />
         </UserDetailsBox>
 
@@ -253,7 +253,9 @@ const Header = ({ data }) => {
             }}
           />
           {log == "daily" ? (
-            <Box component="p">{navBarDate.date}</Box>
+            <Box component="p">
+              {navBarDate.date}
+              </Box>
           ) : (
             <Box component="p">
               {weekFIrstDay.date} - {weekLastDay.date}

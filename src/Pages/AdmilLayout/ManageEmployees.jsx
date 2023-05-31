@@ -49,7 +49,7 @@ const ManageEmployees = () => {
   });
 
   let employeeList = data?.data.userList;
-  console.log(employeeList);
+
   const searchEmployee = (event) => {
     setSearchBarValue(event.target.value);
   };
@@ -69,12 +69,10 @@ const ManageEmployees = () => {
     }
   }, [searchBarValue, employeeList]);
 
-  
-
   const admin = JSON.parse(localStorage.getItem("value"));
- 
-  const uniqueId = admin._id.slice(admin._id.length - 4)
- 
+
+  const uniqueId = admin._id.slice(admin._id.length - 4);
+
   return (
     <>
       <Box sx={{ margin: "40px" }}>
@@ -88,7 +86,9 @@ const ManageEmployees = () => {
           <UserDetailsBox>
             <ArrowBackIosNew sx={{ color: "#174dc2" }} />
             <AccountCircle sx={{ color: "#ebebeb", fontSize: "3rem" }} />
-            <Username component="span">{uniqueId.toUpperCase()} - {admin.firstName} {admin.lastName}</Username>
+            <Username component="span">
+              {uniqueId.toUpperCase()} - {admin.firstName} {admin.lastName}
+            </Username>
             <KeyboardArrowDown sx={{ padding: "10px" }} />
           </UserDetailsBox>
 
@@ -147,7 +147,11 @@ const ManageEmployees = () => {
                           sx={{ cursor: "pointer" }}
                           onClick={() =>
                             navigate("/employe-details", {
-                              state: { id: element._id },
+                              state: {
+                                id: element._id,
+                                firstName: element.firstName,
+                                lastName: element.lastName,
+                              },
                             })
                           }
                         />
