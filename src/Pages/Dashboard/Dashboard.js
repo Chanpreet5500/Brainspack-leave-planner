@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Grid,
   Typography,
 } from "@mui/material";
 import { GetDashboardData, GetLeaveDataById } from "../ReactQuery/CustomHooks/LeavePlanner";
 import { useNavigate } from "react-router-dom";
-import  NavbarComponent  from '../Navbar/Navbar'
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
 
 function DashboardComponent() {
 
   const loggedInUserData = localStorage.getItem("value");
   const userFinalData = JSON.parse(loggedInUserData);
-  // console.log(userFinalData, 'from dashboard component')
   const userId = userFinalData._id;
 
   const navigate = useNavigate();
