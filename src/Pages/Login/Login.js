@@ -35,6 +35,7 @@ function Login() {
     }
 
     setOpen(false);
+    setIsLoginSuccess(false);
   };
 
   const parentPopup = {
@@ -54,7 +55,8 @@ function Login() {
 
   const popupFieldsParent = {
     width: "60%",
-    backgroundColor: "#c9c9c9e0;",
+    // backgroundColor: "#c9c9c9e0;",
+    backgroundColor: "#ffffff",
   };
 
   const inputFieldEmail = {
@@ -111,7 +113,7 @@ function Login() {
     mutate: client,
     data: clientData,
     isSuccess: clientSuccess,
-    isError,
+    error,
   } = LoginData();
 
   const userRole = clientData?.data?.data?.role;
@@ -141,8 +143,6 @@ function Login() {
       const token = gettingToken?.token;
 
       const loggedInAdminData = gettingToken?.data;
-
-      console.log(token, clientData, clientSuccess, loggedInAdminData);
 
       if (token && clientData && clientSuccess && loggedInAdminData) {
         localStorage.setItem("admintoken", token);
@@ -332,9 +332,7 @@ function Login() {
             fontWeight: "bold",
           },
         }}
-        message={
-          role == "admin" ? "You are not an Admin !" : "You are not a Client !"
-        }
+        message={error?.response?.data?.message}
         action={
           <>
             <IconButton color="inherit" onClick={handleClose}>
@@ -355,7 +353,7 @@ function Login() {
             fontWeight: "bold",
           },
         }}
-        message="Login Successfull !"
+        message={clientData?.data?.message}
         action={
           <>
             <IconButton color="inherit" onClick={handleClose}>
