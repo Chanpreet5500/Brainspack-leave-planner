@@ -13,8 +13,11 @@ import {
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginAdmin, LoginData } from "../ReactQuery/CustomHooks/LeavePlanner";
+import { LoginData } from "../ReactQuery/CustomHooks/LeavePlanner";
 import { Formik } from "formik";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import * as Yup from "yup";
 
 function googleAuthentication() {
@@ -23,6 +26,16 @@ function googleAuthentication() {
 
 function Login() {
   const [role, setRole] = useState("client");
+  const [open, setOpen] = useState(false);
+  const [loginSuccess, setIsLoginSuccess] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const parentPopup = {
     width: "60%",
@@ -95,48 +108,50 @@ function Login() {
   const navigate = useNavigate();
 
   const {
-    mutate: admin,
-    data: adminData,
-    isSuccess: adminSuccess,
-  } = LoginAdmin();
-  const {
     mutate: client,
     data: clientData,
     isSuccess: clientSuccess,
+    isError,
   } = LoginData();
 
+  const userRole = clientData?.data?.data?.role;
+
   function LoginValues(props) {
-    console.log(props.role);
     const values = {
       email: props.email,
       password: props.password,
       role: props.role,
     };
 
-    if (role == "admin") {
-      admin(values);
-    } else {
-      client(values);
-    }
+    const sendData = client(values, {
+      onError() {
+        setOpen(true);
+      },
+      onSuccess() {
+        setIsLoginSuccess(true);
+      },
+    });
+    return sendData;
   }
 
   useEffect(() => {
-    if (role == "admin") {
-      const gettingToken = adminData?.data;
+    if (userRole == "admin" && role == "admin") {
+      const gettingToken = clientData?.data;
 
       const token = gettingToken?.token;
 
       const loggedInAdminData = gettingToken?.data;
 
-      console.log(token, adminData, adminSuccess, loggedInAdminData);
+      console.log(token, clientData, clientSuccess, loggedInAdminData);
 
-      if (token && adminData && adminSuccess && loggedInAdminData) {
+      if (token && clientData && clientSuccess && loggedInAdminData) {
         localStorage.setItem("admintoken", token);
         localStorage.setItem("value", JSON.stringify(loggedInAdminData));
-        console.log("function called");
-        return navigate("/manage-employees");
+        setTimeout(() => {
+          navigate("/manage-employees");
+        }, 500);
       }
-    } else {
+    } else if (userRole == "client" && role == "client") {
       const gettingClientToken = clientData?.data;
 
       const clientToken = gettingClientToken?.token;
@@ -147,10 +162,12 @@ function Login() {
         localStorage.setItem("tokenn", clientToken);
         localStorage.setItem("value", JSON.stringify(loggedInUserData));
 
-        return navigate("/dashboard");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 500);
       }
     }
-  }, [adminData, clientData]);
+  }, [clientData]);
 
   const validationSchema = Yup.object({
     email: Yup.string().required("Please enter email"),
@@ -303,6 +320,50 @@ function Login() {
           );
         }}
       </Formik>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        ContentProps={{
+          sx: {
+            backgroundColor: "#F20000",
+            fontFamily: "Helvetica",
+            fontSize: "16px",
+            fontWeight: "bold",
+          },
+        }}
+        message={
+          role == "admin" ? "You are not an Admin !" : "You are not a Client !"
+        }
+        action={
+          <>
+            <IconButton color="inherit" onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
+      />
+      <Snackbar
+        open={loginSuccess}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        ContentProps={{
+          sx: {
+            backgroundColor: "#4BB543",
+            fontFamily: "Helvetica",
+            fontSize: "16px",
+            fontWeight: "bold",
+          },
+        }}
+        message="Login Successfull !"
+        action={
+          <>
+            <IconButton color="inherit" onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
+      />
     </>
   );
 }
