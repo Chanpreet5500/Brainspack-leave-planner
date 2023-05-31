@@ -34,6 +34,7 @@ import Hello from "./Pages/Admin/Hello";
 import EmployeeDetails from "./Pages/AdmilLayout/EmployeeDetails";
 import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
 import PrivateDashboard from "../src/PrivateRouting/PrivateDashboard";
+import { AdminCalenderView } from "./Pages/AdmilLayout/calenderView/AdminCalenderView";
 const font = "'Raleway', sans-serif";
 
 function App() {
@@ -81,6 +82,13 @@ function App() {
                   }
                 />
                 
+                <Route
+                  path="/admin-calender"
+                  element={
+                    <PrivateDashboard Component={AdminCalenderView} />
+                  }
+                />
+
                 <Route
                   path="/employe-details"
                   element={

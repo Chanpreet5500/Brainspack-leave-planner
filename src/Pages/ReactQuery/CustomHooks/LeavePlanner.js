@@ -18,7 +18,7 @@ const loginUrl = (data) => {
 };
 
 const loginAdminUrl = (data) => {
-  console.log(data, 'data from api function')
+  console.log(data, "data from api function");
   return axiosInstance.post("http://localhost:5233/loginAdmin", data);
 };
 
@@ -100,7 +100,10 @@ export const GetLeaveDataById = (id, userType) => {
   return useQuery(
     ["get-leave-data-id", id, userType],
     () => getLeaveDataById(id, userType),
-    { retry: false }
+    {
+      refetchOnMount: true,
+      retry: false
+    }
   );
 };
 

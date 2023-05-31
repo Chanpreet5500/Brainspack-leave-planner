@@ -8,10 +8,11 @@ import { ButtonContainer, ButtonWrapper, Text } from "./CalenderStyled";
 
 function CalendarModalComponent(props) {
   const navigate = useNavigate();
-  const { eventVal, setShowModal, setConfirmDelete, handleDelete } = props;
-  const { title, start, description, name, hours, eventId, display, end } =
+  const { eventVal, setShowModal, setConfirmDelete, handleDelete, admin } =
+    props;
+  const { title, start, description, name, hours, eventId, display, end ,type,firstName,lastName} =
     eventVal;
-
+  console.log(props);
   const formattedDate = format(new Date(start), "yyyy-dd-MM");
 
   const handleEdit = () => {
@@ -20,37 +21,45 @@ function CalendarModalComponent(props) {
 
   return (
     <>
-      {getDay(start) == 0 || getDay(start) == 6 ? (
-        <>
-          {" "}
-          <Text>Title :- {title}</Text>
-          <ButtonContainer sx={{justifyContent:"center"}}>
-          <CustomEditButton  onClick={() => setShowModal(false)}>
-            <ButtonWrapper component="span">Cancel</ButtonWrapper>
-          </CustomEditButton>
-          </ButtonContainer>
-        </>
+      {!admin ? (
+        getDay(start) == 0 || getDay(start) == 6 ? (
+          <>
+            {" "}
+            <Text>Title :- {title}</Text>
+            <ButtonContainer sx={{ justifyContent: "center" }}>
+              <CustomEditButton onClick={() => setShowModal(false)}>
+                <ButtonWrapper component="span">Cancel</ButtonWrapper>
+              </CustomEditButton>
+            </ButtonContainer>
+          </>
+        ) : (
+          <>
+            {" "}
+            <Text variant="h5">Title :- {title}</Text>
+            <Text variant="h5">Date :- {formattedDate}</Text>
+            <Text variant="h5">Description :- {description}</Text>
+            <Text variant="h5">Hours :- {hours}</Text>
+            <ButtonContainer>
+              <CustomEditButton onClick={() => handleEdit()}>
+                <EditIcon
+                  sx={{
+                    fontSize: "24px",
+                  }}
+                />
+                <ButtonWrapper component="span">Edit</ButtonWrapper>
+              </CustomEditButton>
+              <CustomDeleteButton onClick={() => handleDelete(eventId)}>
+                <DeleteIcon />{" "}
+                <ButtonWrapper component="span">Delete</ButtonWrapper>
+              </CustomDeleteButton>
+            </ButtonContainer>
+          </>
+        )
       ) : (
         <>
-          {" "}
-          <Text variant="h5">Title :- {title}</Text>
-          <Text variant="h5">Date :- {formattedDate}</Text>
-          <Text variant="h5">Description :- {description}</Text>
-          <Text variant="h5">Hours :- {hours}</Text>
-          <ButtonContainer>
-            <CustomEditButton onClick={() => handleEdit()}>
-              <EditIcon
-                sx={{
-                  fontSize: "24px",
-                }}
-              />
-              <ButtonWrapper component="span">Edit</ButtonWrapper>
-            </CustomEditButton>
-            <CustomDeleteButton onClick={() => handleDelete(eventId)}>
-              <DeleteIcon />{" "}
-              <ButtonWrapper component="span">Delete</ButtonWrapper>
-            </CustomDeleteButton>
-          </ButtonContainer>
+            <Text variant="h5">Name :- {firstName + " " + lastName}</Text>
+            <Text variant="h5">Date :- {formattedDate}</Text>
+            <Text variant="h5">Leave Type :- {type}</Text>
         </>
       )}
     </>
