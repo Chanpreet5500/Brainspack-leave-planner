@@ -82,7 +82,7 @@ const ManageEmployees = () => {
   };
   useEffect(() => {
     if (searchBarValue != "") {
-      const filteredData = employeeData?.filter((name) => {
+      const filteredData = employeeList?.filter((name) => {
         const fullName = name.firstName + " " + name.lastName;
         return (
           fullName.toLowerCase().indexOf(searchBarValue.toLowerCase()) !== -1
