@@ -57,6 +57,7 @@ function NavbarComponent(props) {
 
   const adminSidebarMenu = [
     { name: "Employees", icon: <GroupIcon />, value: "manage-employees" },
+    { name: "Calendar", icon: <CalendarMonthIcon />, value: "admin-calender" },
   ];
 
   const navigate = useNavigate();
@@ -130,7 +131,7 @@ function NavbarComponent(props) {
     right: "23px",
     background: "white",
     height: "150px",
-    zIndex: "2",
+    zIndex: "100",
   };
 
   const logoutParent = {
@@ -140,7 +141,7 @@ function NavbarComponent(props) {
     alignContent: "flex-start",
   };
   const roleType =JSON.parse( localStorage.getItem('value'));
-  console.log(roleType,'roleTyperoleType')
+  // console.log(roleType,'roleTyperoleType')
 
   return (
     <>

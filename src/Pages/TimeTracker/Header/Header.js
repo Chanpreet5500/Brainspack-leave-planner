@@ -25,6 +25,8 @@ const Header = ({ data }) => {
     weekLastDay,
     setWeekLastDay,
     userId,
+    firstName,
+    lastName
   } = data;
   const date = new Date();
 
@@ -188,6 +190,9 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
   const firstDay = date.getDate() - date.getDay() + 1;
 
   const lastDay = firstDay + 4;
+  
+  // const firstDayOfWeek = new Date(date.getFullYear(), date.getMonth(),firstDay);
+  // const lastDayOfWeek = new Date(date.getFullYear(), date.getMonth(),lastDay);
 
   const firstDayOfWeek = new Date(
     date.getFullYear(),
@@ -201,8 +206,8 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
     lastDay
   );
 
-  console.log(firstDayOfWeek)
-  console.log(lastDayOfWeek)
+  // console.log(firstDayOfWeek)
+  // console.log(lastDayOfWeek)
   
 
   const firstDayFormat = `${firstDayOfWeek.getDate()}-${
@@ -263,8 +268,6 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
     }
   };
 
-  const loggedUserData = JSON.parse(localStorage.getItem("value"));
-  const loggedUserName = `${loggedUserData.firstName} ${loggedUserData.lastName}`;
 
   return (
     <>
@@ -272,7 +275,7 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
         <UserDetailsBox>
           <ArrowBackIosNewIcon sx={{ color: "#174dc2" }} />
           <AccountCircleIcon sx={{ color: "#ebebeb", fontSize: "3rem" }} />
-          <Username component="span">C1936 - {loggedUserName}</Username>
+          <Username component={"span"}>{firstName + " " + lastName}</Username>
           <KeyboardArrowDownIcon sx={{ padding: "10px" }} />
         </UserDetailsBox>
 
@@ -283,7 +286,9 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
             }}
           />
           {log == "daily" ? (
-            <Box component="p">{navBarDate.date}</Box>
+            <Box component="p">
+              {navBarDate.date}
+              </Box>
           ) : (
             <Box component="p">
               {weekFIrstDay.date} - {weekLastDay.date}

@@ -21,7 +21,6 @@ import {
   Username,
 } from "../TimeTracker/styled";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import styled from "@emotion/styled";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import {
@@ -52,6 +51,7 @@ const ManageEmployees = () => {
   console.log(data)
 
   let employeeList = data?.data.userList;
+  console.log(employeeList, 'data from api')
 
   const searchEmployee = (event) => {
     setSearchBarValue(event.target.value);
@@ -153,7 +153,11 @@ const ManageEmployees = () => {
                           sx={{ cursor: "pointer" }}
                           onClick={() =>
                             navigate("/employe-details", {
-                              state: { id: element._id },
+                              state: {
+                                id: element._id,
+                                firstName: element.firstName,
+                                lastName: element.lastName,
+                              },
                             })
                           }
                         />
