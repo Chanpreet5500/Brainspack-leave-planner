@@ -42,6 +42,8 @@ export const ButtonWrapper = styled(Box)(({ theme }) => ({
 
 export const HeadingModal =styled(Typography)(({theme})=>({
     margin: "15px 0px 30px 0px",
+    textAlign: "center",
+    fontWeight:'bold',
 }))
 
 export const CircularBar =styled(CircularProgress)(({theme})=>({

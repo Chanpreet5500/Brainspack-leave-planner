@@ -81,6 +81,7 @@ export const AdminCalenderView = () => {
           id: e._id,
           backgroundColor: colorValue,
           borderColor: colorValue,
+          textColor:'black',
           extendedProps: {
             type: e.leaveType,
             firstName: e.userId.firstName,
