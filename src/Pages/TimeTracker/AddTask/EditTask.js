@@ -83,7 +83,6 @@ const EditTask = () => {
       });
     }
   }, [data]);
-  console.log("id",id)
   const UpdateTask = useMutation(id, (data) => {
     axiosInstance.patch(`http://localhost:5233/update/${id}`, data);
     if (!UpdateTask.isError) {
@@ -135,7 +134,6 @@ const EditTask = () => {
         onSubmit={(data) => UpdateTask.mutate(data)}
       >
         {(props) => {
-console.log(new Date(props.values.date).toLocaleDateString())
           return (
             <>
               <TableContainer

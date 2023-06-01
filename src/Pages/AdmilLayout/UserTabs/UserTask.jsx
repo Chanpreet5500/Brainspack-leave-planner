@@ -37,7 +37,6 @@ const months = [
 export const UserTask = (props) => {
   const dateForWeek = new Date();
   const { userId ,firstName,lastName } = props;
-  console.log(firstName + " " + lastName)
   const [log, setLog] = useState("daily");
   const [totalHours, setTotalHours] = useState({});
   const [totalValue, setTotalValue] = useState({});
@@ -72,14 +71,12 @@ export const UserTask = (props) => {
   });
 
   const apiData = weekDataUser?.data?.filterdUsers;
-  console.log(apiData);
   useEffect(() => {
     if (log && weekFIrstDay) {
       refetch();
     }
   }, [log, weekFIrstDay, weekLastDay]);
 
-  console.log("apidata", weekDataUser);
 
   const weekCleander = [
     {

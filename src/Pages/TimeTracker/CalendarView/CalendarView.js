@@ -61,9 +61,9 @@ const CalendarView = () => {
         start: element.date,
         id: element._id,
         display: element.taskDescription,
-        backgroundColor: "rgb(0 0 0 / 17%)",
+        backgroundColor: "#0f8d47",
         borderColor: "#fff",
-        borderRadius: "3px",
+        borderRadius: "5px",
         textColor: "black",
         extendedProps: {
           title: element.projectName,

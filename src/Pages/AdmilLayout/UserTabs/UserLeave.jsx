@@ -47,6 +47,8 @@ export const UserLeave = (props) => {
           display: e.description,
           constraint: e.userId?.firstName,
           id: e._id,
+          backgroundColor: "#0f8d47",
+          borderColor: "#0f8d47",
           extendedProps: {
             type: e.leaveType,
             firstName: e.userId.firstName,
