@@ -156,7 +156,6 @@ function AdminRegister() {
   const { mutate, data, isSuccess } = RegisterAdmin();
 
   const RegisterDataValues = (props) => {
-    console.log(props);
 
     const data = {
       firstName: props.values.firstName,

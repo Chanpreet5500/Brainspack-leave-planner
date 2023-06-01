@@ -3,6 +3,8 @@ import Header from "../../TimeTracker/Header/Header";
 import { FetchFilterdWeekData } from "../../ReactQuery/CustomHooks/TimeTracker";
 import {
   Box,
+  Button,
+  Modal,
   Paper,
   Table,
   TableBody,
@@ -13,11 +15,15 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  CustomDeleteButton,
+  CustomEditButton,
   CustomTableCell,
   CustomTableHead,
   TableFooterNoRecord,
   WeekDayBox,
 } from "../../TimeTracker/styled";
+import { UpdateStatus } from "../../ReactQuery/CustomHooks/TimeTracker";
+import { ButtonContainer, ButtonWrapper, HeadingModal, MainContainer } from "../../TimeTracker/CalendarView/CalenderStyled";
 
 const months = [
   "Jan",
@@ -36,8 +42,10 @@ const months = [
 
 export const UserTask = (props) => {
   const dateForWeek = new Date();
-  const { userId ,firstName,lastName } = props;
+  const { userId, firstName, lastName } = props;
   const [log, setLog] = useState("daily");
+  const [approveUserId,setApproveUserId] = useState();
+  const [open, setOpen] = useState(false);
   const [totalHours, setTotalHours] = useState({});
   const [totalValue, setTotalValue] = useState({});
   const [totalHoursWeeks, setTotalHoursWeeks] = useState([]);
@@ -76,7 +84,6 @@ export const UserTask = (props) => {
       refetch();
     }
   }, [log, weekFIrstDay, weekLastDay]);
-
 
   const weekCleander = [
     {
@@ -129,7 +136,6 @@ export const UserTask = (props) => {
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thru", "Fri", "Sat"];
 
-
   const ddMMYY = (date) => {
     const d = new Date(date);
     const finalDate = d.toLocaleDateString();
@@ -177,8 +183,44 @@ export const UserTask = (props) => {
     }
   }, [weekDataUser]);
 
+  const { mutate } = UpdateStatus();
+
+  const updateStatus = (value) => {
+    setOpen(true)
+    setApproveUserId(value)
+  };
+
+  const confirmApprove=()=>{
+    mutate({
+      id: approveUserId,
+      status: true,
+    });
+    setOpen(false)
+  }
   return (
     <>
+       <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{ width: "100%" }}
+      >
+        <MainContainer>
+          <HeadingModal id="modal-modal-title" component="h4">
+          Confirm Approve ?
+          </HeadingModal>
+          <ButtonContainer>
+            <CustomEditButton onClick={() => setOpen(false)}>
+              <ButtonWrapper component="span">Cancel</ButtonWrapper>
+            </CustomEditButton>
+            <CustomDeleteButton
+             onClick={() => confirmApprove()}
+             >
+              <ButtonWrapper component="span">Approve</ButtonWrapper>
+            </CustomDeleteButton>
+          </ButtonContainer>
+        </MainContainer>
+      </Modal>
+
       <Header
         data={{
           log,
@@ -191,7 +233,7 @@ export const UserTask = (props) => {
           setWeekLastDay,
           userId,
           firstName,
-          lastName
+          lastName,
         }}
       />
 
@@ -218,6 +260,8 @@ export const UserTask = (props) => {
               )}
 
               <CustomTableHead>Status</CustomTableHead>
+              {log === "daily" ? <CustomTableHead></CustomTableHead> : ""}
+
               {log === "weekly"
                 ? weekCleander.map((element) => {
                     return (
@@ -269,7 +313,10 @@ export const UserTask = (props) => {
                   )}
 
                   <CustomTableCell>
-                    {row.status === true ? "Approved" : "Pending"}
+                 
+                       {row.status === true ? "Approved" : "Pending"}
+                  
+                     
                   </CustomTableCell>
                   {log === "weekly"
                     ? weekCleander.map((element, index) => {
@@ -295,6 +342,29 @@ export const UserTask = (props) => {
                         sx={{ fontWeight: "bold", color: "black" }}
                       >
                         {row.hours}
+                      </CustomTableCell>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {log === "daily" && !row.status ? (
+                    <>
+                      <CustomTableCell>
+                        <Button
+                          onClick={() => updateStatus(row._id)}
+                          sx={{
+                            background: "#55AD88",
+                            marginTop: "15px",
+                            color: "#fff",
+                            textTransform: "capitalize",
+                            fontSize: "14px",
+                            "&:hover": {
+                              background: "#4d9b78",
+                            },
+                          }}
+                        >
+                          Approve
+                        </Button>
                       </CustomTableCell>
                     </>
                   ) : (

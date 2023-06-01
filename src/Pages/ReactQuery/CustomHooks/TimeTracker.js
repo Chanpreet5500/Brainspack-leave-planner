@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const axiosInstance = axios.create();
 
@@ -11,28 +11,25 @@ export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
     refetchOnWindowFocus: true,
-    refetchOnMount:true,
+    refetchOnMount: true,
   });
 };
 
 const fetchWeekData = (data) => {
-   
   const id = data.userId;
   const fDay = data.weekFIrstDay.formatDate;
   const lDay = data.weekLastDay.formatDate;
-  
+
   const tempDate = new Date(fDay);
   const secondTempDate = new Date(lDay);
-  secondTempDate.setDate(secondTempDate.getDate()+1)
-
-
+  secondTempDate.setDate(secondTempDate.getDate() + 1);
 
   const weekFIrstDay = `${tempDate.getFullYear()}-${
     tempDate.getMonth() + 1
   }-${tempDate.getDate()}`;
   const weekLastDay = `${secondTempDate.getFullYear()}-${
     secondTempDate.getMonth() + 1
-  }-${secondTempDate.getDate() }`;
+  }-${secondTempDate.getDate()}`;
 
   return axiosInstance.get(
     `http://localhost:5233/weekly-datas/${id}/${weekFIrstDay}/${weekLastDay}`
@@ -44,12 +41,8 @@ export const FetchFilterdWeekData = (id) => {
     retry: false,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
-   
-   
   });
 };
-
-
 
 const fetchDataByID = (id) => {
   return axiosInstance.get(`http://localhost:5233/getDataById/${id}`);
@@ -60,12 +53,11 @@ export const GetDataById = (id) => {
     retry: false,
     refetchOnMount: true,
   });
-    // refetchInterval:2000,
-  }
-
+  // refetchInterval:2000,
+};
 
 const fetchEditData = (id) => {
-  return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`,id);
+  return axiosInstance.get(`http://localhost:5233/edituserdata/${id}`, id);
 };
 
 export const DeleteUserData = (data) => {
@@ -73,7 +65,7 @@ export const DeleteUserData = (data) => {
   return result;
 };
 
-// 
+//
 
 export const EditUserData = (data) => {
   return useQuery("getEditUserData", () => fetchEditData(data), {
@@ -93,4 +85,19 @@ export const UpdateUserData = (id) => {
 
 const deleteApi = (data) => {
   return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`);
+};
+
+const updateProjectStatus = (data) => {
+  const { id } = data;
+  return axiosInstance.patch(`http://localhost:5233/updateStatus/${id}`, data);
+};
+
+export const UpdateStatus = (data) => {
+  const queryClients = useQueryClient()
+  const result = useMutation(updateProjectStatus,{
+    onSuccess(){
+      queryClients.invalidateQueries("logged-user-week-data")
+    }
+  });
+  return result;
 };
