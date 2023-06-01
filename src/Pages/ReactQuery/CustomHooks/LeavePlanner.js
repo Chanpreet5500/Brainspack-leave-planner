@@ -18,7 +18,6 @@ const loginUrl = (data) => {
 };
 
 const loginAdminUrl = (data) => {
-  console.log(data, "data from api function");
   return axiosInstance.post("http://localhost:5233/loginAdmin", data);
 };
 

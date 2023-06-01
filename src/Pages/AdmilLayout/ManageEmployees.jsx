@@ -51,7 +51,6 @@ const ManageEmployees = () => {
   console.log(data)
 
   let employeeList = data?.data.userList;
-  console.log(employeeList, 'data from api')
 
   const searchEmployee = (event) => {
     setSearchBarValue(event.target.value);
