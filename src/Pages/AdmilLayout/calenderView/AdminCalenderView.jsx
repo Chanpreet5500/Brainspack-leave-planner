@@ -46,12 +46,10 @@ export const AdminCalenderView = () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   const employeeList = data?.data?.userList;
-  const {
-    data: apiData,
-    refetch: refetedUser,
-  } = GetLeaveDataById(userId, "my_leave");
-
-  console.log(apiData, 'api data')
+  const { data: apiData, refetch: refetedUser } = GetLeaveDataById(
+    userId,
+    "my_leave"
+  );
 
   const handleChange = (event) => {
     setUserId(event.target.value);
@@ -81,7 +79,6 @@ export const AdminCalenderView = () => {
   useEffect(() => {
     if (apiData && colorToUser) {
       const allLeaves = apiData?.data?.data?.map((e, i) => {
-        console.log(e, 'data from map')
         let colorValue = putColor(e.userId?.firstName);
         return {
           start: e.leaveDates,
@@ -128,9 +125,11 @@ export const AdminCalenderView = () => {
             id="demo-simple-select-standard"
             value={dropdown}
             onChange={handleChange}
-            sx={{"& .MuiBox":{
-              display:'none',
-            }}}
+            sx={{
+              "& .MuiBox": {
+                display: "none",
+              },
+            }}
           >
             <MenuItem selected value={"all-users"}>
               <em>All User Data</em>
@@ -141,9 +140,9 @@ export const AdminCalenderView = () => {
                   <Typography>
                     {element.firstName + " " + element.lastName}
                   </Typography>
-                  {dropdown != "all-users" && <CustomBox
+                  <CustomBox
                     sx={{ background: putColor(element.firstName) }}
-                  ></CustomBox>}
+                  ></CustomBox>
                 </CustomMenu>
               );
             })}

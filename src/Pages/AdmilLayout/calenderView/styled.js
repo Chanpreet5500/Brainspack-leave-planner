@@ -28,5 +28,8 @@ export const DropDown = styled(Select)(({ theme }) => ({
   export const CustomBox =styled(Box)(({theme})=>({
     width: "20px !important",
     height:'20px',
-    borderRadius:'50%'
+    borderRadius:'50%',
+    '&::selection' :{
+      height: "0px"
+    }
 }))
