@@ -109,6 +109,7 @@ const ManageEmployees = () => {
             display: "flex",
             justifyContent: "space-between",
             m: "25px 0px",
+            searchBarValue,
           }}
         >
           <UserDetailsBox>
@@ -160,7 +161,7 @@ const ManageEmployees = () => {
           </TableHead>
           <TableBody>
             {employeeData.length ? (
-              employeeData?.map((element, index) => {
+              employeeData.map((element, index) => {
                 return (
                   <>
                     <TableRow sx={{ cursor: "url(Logo-light-versuion.png)" }}>
