@@ -21,15 +21,6 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 
-const employeLeaveColor = [
-  "#f31010eb",
-  "#008000de",
-  "#2d8ceb",
-  "yellow",
-  "purple",
-  "orange",
-  "pink",
-];
 
 export const AdminCalenderView = () => {
   const localData = JSON.parse(localStorage.getItem("value"));
@@ -51,7 +42,6 @@ export const AdminCalenderView = () => {
     "my_leave"
   );
 
-  console.log(apiData);
 
   const handleChange = (event) => {
     setUserId(event.target.value);
@@ -64,7 +54,7 @@ export const AdminCalenderView = () => {
     employeeList?.map((element, index) => {
       arrayOfColor.push({
         firstName: element.firstName,
-        userColor: employeLeaveColor[index],
+        userColor:setBg(),
       });
     });
     setColorToUser(arrayOfColor);
@@ -117,7 +107,10 @@ export const AdminCalenderView = () => {
       lastName: events.event.extendedProps.lastName,
     });
   }
-
+  const setBg = () => {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    return  "#" + randomColor;
+  };
   return (
     <>
       <MainContainerCalender>
@@ -127,7 +120,6 @@ export const AdminCalenderView = () => {
             id="demo-simple-select-standard"
             value={dropdown}
             onChange={handleChange}
-
           >
             <MenuItem selected value={"all-users"}>
               <em>All User Data</em>
@@ -136,9 +128,9 @@ export const AdminCalenderView = () => {
               return (
                 <CustomMenu value={element._id}>
                   <Typography>
-                    {element.firstName + " " + element.lastName} 
+                    {element.firstName + " " + element.lastName}
                   </Typography>
-                  <CustomBox  
+                  <CustomBox
                     sx={{ background: putColor(element.firstName) }}
                   ></CustomBox>
                 </CustomMenu>

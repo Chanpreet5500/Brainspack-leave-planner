@@ -158,14 +158,12 @@ function RegisterComponent() {
   const { mutate, data, isSuccess } = RegisterData();
 
   const RegisterDataValues = (props) => {
-    console.log(props);
 
     // const stringifyDate = date.toString()
     // const finalDate = stringifyDate.slice(4,15)
 
     const date = props.values.birthDate.$d;
     const finalBirthdate = format(date, "MM/dd/yyyy");
-    console.log(finalBirthdate, "BIRTHDATEEE");
 
     const data = {
       firstName: props.values.firstName,
