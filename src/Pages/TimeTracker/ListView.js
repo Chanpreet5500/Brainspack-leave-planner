@@ -59,7 +59,7 @@ const ListView = () => {
       new Date(
         dateForWeek.getFullYear(),
         dateForWeek.getMonth(),
-        dateForWeek.getDate() + 1
+        dateForWeek.getDate() 
       )
     ),
     date: "Today",
@@ -93,14 +93,12 @@ const ListView = () => {
   ];
 
   const apiData = weekDataUser?.data?.filterdUsers;
- 
+
   useEffect(() => {
     if (log && weekFIrstDay) {
-     
       refetch();
     }
-  }, [log, weekFIrstDay,weekLastDay]);
-
+  }, [log, weekFIrstDay, weekLastDay]);
   const weekCleander = [
     {
       formatDate: new Date(
@@ -139,33 +137,41 @@ const ListView = () => {
     },
   ];
 
-  const checkHours = (headerDate, projectDate, hour) => {
-    const [tempDate, tempDate2] = headerDate.date.split("T");
-    let [year, month, date] = tempDate.split("-");
+  const checkHours = (headerDate, projectDate) => {
+  
+    
+    const checkDateFromHeader = new Date( headerDate.date);
+   
+    const checkYear = checkDateFromHeader.getFullYear();
+    const checkMonth = checkDateFromHeader.getMonth() + 1;
+    const checkDate = checkDateFromHeader.getDate();
+
     const year2 = projectDate.formatDate.getFullYear();
     const month2 = projectDate.formatDate.getMonth() + 1;
     const date2 = projectDate.formatDate.getDate();
-    if (+year === year2 && +month === month2 && ++date === date2) {
+   
+    if (checkYear === year2 && checkMonth === month2 && checkDate === date2) {
       return true;
     }
   };
-
-  
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thru", "Fri", "Sat"];
 
   const editTask = (id) => {
     navigate("/editTask", { state: id });
   };
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-  const deleteProjectData = useMutation(() => {
-    return axiosInstance.delete(`http://localhost:5233/delete-user/${rowId}`);
-  },{
-    onSuccess(){
-      queryClient.invalidateQueries('logged-user-week-data')
+  const deleteProjectData = useMutation(
+    () => {
+      return axiosInstance.delete(`http://localhost:5233/delete-user/${rowId}`);
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries("logged-user-week-data");
+      },
     }
-  });
+  );
 
   const confirmModal = (id) => {
     setRowId(id);
@@ -205,14 +211,16 @@ const ListView = () => {
       let totalHours = { hours: 0, minutes: 0 };
       arr.map((element, index) => {
         totalHours.minutes += element.minutes;
-        totalHours.hours += element.hours + Math.trunc(totalHours.minutes/60);
-        totalHours.minutes = totalHours.minutes%60;
+        totalHours.hours += element.hours + Math.trunc(totalHours.minutes / 60);
+        totalHours.minutes = totalHours.minutes % 60;
       });
       setTotalValue(totalHours);
       setTotalHoursWeeks(arr);
     }
   }, [weekDataUser]);
- 
+
+  
+
   return (
     <>
       <Box>
@@ -226,7 +234,6 @@ const ListView = () => {
               deleteProjectData.mutate(rowId);
 
               setOpenModal(false);
-             
             }}
           />
         )}
@@ -289,7 +296,7 @@ const ListView = () => {
               {log === "daily" ? (
                 <CustomTableHead colSpan={2}>Actions</CustomTableHead>
               ) : (
-                <CustomTableHead align="center" >
+                <CustomTableHead align="center">
                   <Box>Total</Box>
                   <WeekDayBox>(Hours)</WeekDayBox>
                 </CustomTableHead>
@@ -380,7 +387,9 @@ const ListView = () => {
                       </CustomTableCell>
                     </>
                   ) : (
-                    <CustomTableCell sx={{ fontWeight: "bold",color:'black',}}>
+                    <CustomTableCell
+                      sx={{ fontWeight: "bold", color: "black" }}
+                    >
                       {row.hours}
                     </CustomTableCell>
                   )}
@@ -397,13 +406,30 @@ const ListView = () => {
               </CustomTableCell>
             ) : (
               <>
-                <CustomTableCell sx={{border:'none',fontWeight: "bold" }} colSpan={4} align="right"></CustomTableCell>
+                <CustomTableCell
+                  sx={{ border: "none", fontWeight: "bold" }}
+                  colSpan={4}
+                  align="right"
+                ></CustomTableCell>
                 <CustomTableCell>
-                  <CustomTableHead sx={{border:'none',fontWeight: "bold",color:'black', }} align="left"> Total </CustomTableHead>
+                  <CustomTableHead
+                    sx={{ border: "none", fontWeight: "bold", color: "black" }}
+                    align="left"
+                  >
+                    {" "}
+                    Total{" "}
+                  </CustomTableHead>
                 </CustomTableCell>
                 {log === "daily" && (
                   <CustomTableCell align="left">
-                    <CustomTableHead align="center" sx={{ fontWeight: "bold" ,border:'none',color:'black', }}>
+                    <CustomTableHead
+                      align="center"
+                      sx={{
+                        fontWeight: "bold",
+                        border: "none",
+                        color: "black",
+                      }}
+                    >
                       {totalHours?.hours?.toString().padStart(2, "0") +
                         ":" +
                         totalHours.minutes?.toString().padStart(2, "0")}
@@ -415,7 +441,13 @@ const ListView = () => {
                     {totalHoursWeeks.map((element) => {
                       return (
                         <CustomTableHead
-                          sx={{ p: 0, textAlign: "center", fontWeight: "bold" ,border:'none',color:'black', }}
+                          sx={{
+                            p: 0,
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            border: "none",
+                            color: "black",
+                          }}
                         >
                           <Box>
                             {element.hours?.toString().padStart(2, "0") +
@@ -429,7 +461,13 @@ const ListView = () => {
                 )}
                 {log === "weekly" && (
                   <>
-                    <CustomTableCell sx={{border:'none',fontWeight: "bold",color:'black', }}>
+                    <CustomTableCell
+                      sx={{
+                        border: "none",
+                        fontWeight: "bold",
+                        color: "black",
+                      }}
+                    >
                       {totalValue.hours?.toString().padStart(2, "0") +
                         ":" +
                         totalValue.minutes?.toString().padStart(2, "0")}

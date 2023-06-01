@@ -44,9 +44,11 @@ const ManageEmployees = () => {
     "",
   ];
 
+  
   const { data, refetch } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
+  console.log(data)
 
   let employeeList = data?.data.userList;
 
@@ -54,14 +56,17 @@ const ManageEmployees = () => {
     setSearchBarValue(event.target.value);
   };
   useEffect(() => {
-    if (searchBarValue != "") {
-      const filteredData = employeeList?.filter((name) => {
-        const fullName = name.firstName + " " + name.lastName;
-        return (
-          fullName.toLowerCase().indexOf(searchBarValue.toLowerCase()) !== -1
-        );
-      });
-      setEmployeeData(filteredData);
+    if (searchBarValue != "" ) {
+      
+      const filterdData = employeeList?.filter(
+        (element) =>
+          element.firstName
+            .toLowerCase()
+            .includes(searchBarValue.toLowerCase()) ||
+          element.lastName.toLowerCase().includes(searchBarValue.toLowerCase())
+      );
+
+      setEmployeeData(filterdData);
     } else if (employeeList) {
       setEmployeeData(employeeList);
     }
@@ -94,7 +99,7 @@ const ManageEmployees = () => {
           <TextField
             onChange={searchEmployee}
             value={searchBarValue}
-            placeholder="Serach Employee"
+            placeholder="Search Employee"
             sx={{
               "& .css-1iulo1y-MuiInputBase-root-MuiFilledInput-root": {
                 background: "none",

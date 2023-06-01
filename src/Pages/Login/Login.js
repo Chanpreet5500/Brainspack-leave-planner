@@ -25,7 +25,7 @@ function googleAuthentication() {
 }
 
 function Login() {
-  const [role, setRole] = useState("client");
+  const [role, setRole] = useState("");
   const [open, setOpen] = useState(false);
   const [loginSuccess, setIsLoginSuccess] = useState(false);
 
@@ -175,6 +175,8 @@ function Login() {
     role: Yup.string().required("Please select a role"),
   });
 
+  console.log(role,'role')
+
   return (
     <>
       <Formik
@@ -248,15 +250,13 @@ function Login() {
                     >
                       {props.errors.password}
                     </Typography>
-                  </Grid>
-                  <Box>
                     <FormControl
                       sx={{
                         width: "450px",
-                        marginTop: "30px",
+                       
                       }}
                     >
-                      <InputLabel>Role</InputLabel>
+                    <InputLabel id="demo-simple-select-label"></InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -266,6 +266,31 @@ function Login() {
                           setRole(e.target.value);
                         }}
                         label="Role"
+                      
+                       
+                        sx={{
+                          width:"70%",
+                          boxShadow: "none",
+                          ".MuiOutlinedInput-notchedOutline": {
+                            border: 0,
+                            borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+                            borderRadius: "0px",
+                          },
+                          "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                            {
+                              border: 0,
+                              borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+                            },
+                            textAlign:"left",
+                            '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input ':{
+
+                            padding:"25px 14px 10px"
+                            },
+                            '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+
+                            top: 'calc(60% - 0.5em)'
+                            }
+                        }}
                       >
                         <MenuItem value="client">Client</MenuItem>
                         <MenuItem value="admin">Admin</MenuItem>
@@ -283,6 +308,8 @@ function Login() {
                         {props.errors.role}
                       </Typography>
                     </FormControl>
+                  </Grid>
+                  <Box>
                   </Box>
                   <Box sx={forgotPasswordLink}>
                     <Link
