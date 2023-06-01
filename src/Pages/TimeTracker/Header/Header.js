@@ -174,9 +174,10 @@ const Header = ({ data }) => {
   const firstDay = date.getDate() - date.getDay() + 1;
 
   const lastDay = firstDay + 4;
+  
+  const firstDayOfWeek = new Date(date.getFullYear(), date.getMonth(),firstDay);
+  const lastDayOfWeek = new Date(date.getFullYear(), date.getMonth(),lastDay);
 
-  const firstDayOfWeek = new Date(date.setDate(firstDay));
-  const lastDayOfWeek = new Date(date.setDate(lastDay));
 
   const firstDayFormat = `${firstDayOfWeek.getDate()}-${months[firstDayOfWeek.getMonth()]
     }-${firstDayOfWeek.getFullYear()}`;
