@@ -51,6 +51,8 @@ export const AdminCalenderView = () => {
     refetch: refetedUser,
   } = GetLeaveDataById(userId, "my_leave");
 
+  console.log(apiData, 'api data')
+
   const handleChange = (event) => {
     setUserId(event.target.value);
     setDropdown(event.target.value);
@@ -79,10 +81,11 @@ export const AdminCalenderView = () => {
   useEffect(() => {
     if (apiData && colorToUser) {
       const allLeaves = apiData?.data?.data?.map((e, i) => {
+        console.log(e, 'data from map')
         let colorValue = putColor(e.userId?.firstName);
         return {
           start: e.leaveDates,
-          title: e.userId.firstName + " " + e.userId.lastName,
+          title: e.userId?.firstName + " " + e.userId?.lastName,
           allDay: true,
           display: e.description,
           constraint: e.userId?.firstName,
@@ -91,8 +94,8 @@ export const AdminCalenderView = () => {
           borderColor: colorValue,
           extendedProps: {
             type: e.leaveType,
-            firstName: e.userId.firstName,
-            lastName: e.userId.lastName,
+            firstName: e.userId?.firstName,
+            lastName: e.userId?.lastName,
           },
         };
       });
