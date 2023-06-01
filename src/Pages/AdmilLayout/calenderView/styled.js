@@ -14,7 +14,6 @@ export const CalendarContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const DropDown = styled(Select)(({ theme }) => ({
-  // width: "200px",
   width:'auto',
   minWidth:'200px',
   height: "40px",
@@ -35,6 +34,4 @@ export const CustomBox = styled(Box)(({ theme }) => ({
   width: "20px !important",
   height: "20px",
   borderRadius: "50%",
-  // display:'inline',
-//  position: "absolute",
 }));

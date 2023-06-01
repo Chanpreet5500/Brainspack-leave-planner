@@ -95,6 +95,7 @@ const ManageEmployees = () => {
           <TextField
             onChange={searchEmployee}
             value={searchBarValue}
+            placeholder="Serach Employee"
             sx={{
               "& .css-1iulo1y-MuiInputBase-root-MuiFilledInput-root": {
                 background: "none",
