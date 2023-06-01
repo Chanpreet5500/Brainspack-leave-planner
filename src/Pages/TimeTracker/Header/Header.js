@@ -2,8 +2,17 @@ import React, { useState } from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { ArrowBack, ArrowForward, DateBox, FormControlBox, FormControlPannel, HeaderMainBox , UserDetailsBox, Username } from "../styled";
-import { Box, Select, MenuItem} from "@mui/material";
+import {
+  ArrowBack,
+  ArrowForward,
+  DateBox,
+  FormControlBox,
+  FormControlPannel,
+  HeaderMainBox,
+  UserDetailsBox,
+  Username,
+} from "../styled";
+import { Box, Select, MenuItem } from "@mui/material";
 
 const Header = ({ data }) => {
   const {
@@ -24,7 +33,7 @@ const Header = ({ data }) => {
       const dataDate = {
         formatDate: navBarDate.formatDate,
         date: navBarDate.date,
-      }
+      };
       setWeekFirstDay(dataDate);
       setWeekLastDay(dataDate);
     } else {
@@ -39,7 +48,6 @@ const Header = ({ data }) => {
     }
     setLog(event.target.value);
   };
-
 
   const months = [
     "Jan",
@@ -64,12 +72,13 @@ const Header = ({ data }) => {
       );
 
       const month = newFormatDate.getMonth();
-      const newDate = ` ${newFormatDate.getDate()}-${months[month]
-        }-${newFormatDate.getFullYear()}`;
+      const newDate = ` ${newFormatDate.getDate()}-${
+        months[month]
+      }-${newFormatDate.getFullYear()}`;
       const setNewDate = {
         formatDate: newFormatDate,
         date: newDate,
-      }
+      };
       setNavbarDate(setNewDate);
       setWeekFirstDay(setNewDate);
       setWeekLastDay(setNewDate);
@@ -81,10 +90,12 @@ const Header = ({ data }) => {
         weekLastDay.formatDate.setDate(weekLastDay.formatDate.getDate() - 7)
       );
 
-      const firstDayDateStyle = `${newFirstFormatDate.getDate()}-${months[newFirstFormatDate.getMonth()]
-        }-${newFirstFormatDate.getFullYear()}`;
-      const LastDayDateStyle = `${newLastFormatDate.getDate()}-${months[newLastFormatDate.getMonth()]
-        }-${newLastFormatDate.getFullYear()}`;
+      const firstDayDateStyle = `${newFirstFormatDate.getDate()}-${
+        months[newFirstFormatDate.getMonth()]
+      }-${newFirstFormatDate.getFullYear()}`;
+      const LastDayDateStyle = `${newLastFormatDate.getDate()}-${
+        months[newLastFormatDate.getMonth()]
+      }-${newLastFormatDate.getFullYear()}`;
 
       setWeekFirstDay({
         formatDate: newFirstFormatDate,
@@ -106,12 +117,13 @@ const Header = ({ data }) => {
       );
 
       const month = newFormatDate.getMonth();
-      const newDate = ` ${newFormatDate.getDate()}-${months[month]
-        }-${newFormatDate.getFullYear()}`;
+      const newDate = ` ${newFormatDate.getDate()}-${
+        months[month]
+      }-${newFormatDate.getFullYear()}`;
       const setNewDate = {
         formatDate: newFormatDate,
         date: newDate,
-      }
+      };
 
       setNavbarDate(setNewDate);
       setWeekFirstDay(setNewDate);
@@ -124,11 +136,13 @@ const Header = ({ data }) => {
         weekLastDay.formatDate.setDate(weekLastDay.formatDate.getDate() + 7)
       );
 
-      const firstDayDateStyle = `${newFirstFormatDate.getDate()}-${months[newFirstFormatDate.getMonth()]
-        }-${newFirstFormatDate.getFullYear()}`;
+      const firstDayDateStyle = `${newFirstFormatDate.getDate()}-${
+        months[newFirstFormatDate.getMonth()]
+      }-${newFirstFormatDate.getFullYear()}`;
 
-      const LastDayDateStyle = `${newLastFormatDate.getDate()}-${months[newLastFormatDate.getMonth()]
-        }-${newLastFormatDate.getFullYear()}`;
+      const LastDayDateStyle = `${newLastFormatDate.getDate()}-${
+        months[newLastFormatDate.getMonth()]
+      }-${newLastFormatDate.getFullYear()}`;
 
       setWeekFirstDay({
         formatDate: newFirstFormatDate,
@@ -142,18 +156,20 @@ const Header = ({ data }) => {
   };
   const compareDate = () => {
     const tempDate = navBarDate.formatDate;
-
-    const dateForToday = `${tempDate.getFullYear()}/${tempDate.getMonth()}/${tempDate.getDate() + 1
-      }`;
+const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tempDate.getDate()+1 )
+    const dateForToday = `${newDateForToday.getFullYear()}/${newDateForToday.getMonth()}/${
+      newDateForToday.getDate()
+    }`;
 
     const date = new Date();
 
     const currDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+    
     if (dateForToday == currDate) {
       const data = {
         formatDate: new Date(),
         date: "Today",
-      }
+      };
       setNavbarDate(data);
       setWeekFirstDay(data);
       setWeekLastDay({
@@ -173,14 +189,29 @@ const Header = ({ data }) => {
 
   const lastDay = firstDay + 4;
 
-  const firstDayOfWeek = new Date(date.setDate(firstDay));
-  const lastDayOfWeek = new Date(date.setDate(lastDay));
+  const firstDayOfWeek = new Date(
+    date.getFullYear(),
+    date.getMonth() ,
+    firstDay
+  );
 
-  const firstDayFormat = `${firstDayOfWeek.getDate()}-${months[firstDayOfWeek.getMonth()]
-    }-${firstDayOfWeek.getFullYear()}`;
+  const lastDayOfWeek = new Date(
+    date.getFullYear(),
+    date.getMonth() ,
+    lastDay
+  );
 
-  const lastDayFormat = `${lastDayOfWeek.getDate()}-${months[lastDayOfWeek.getMonth()]
-    }-${lastDayOfWeek.getFullYear()}`;
+  console.log(firstDayOfWeek)
+  console.log(lastDayOfWeek)
+  
+
+  const firstDayFormat = `${firstDayOfWeek.getDate()}-${
+    months[firstDayOfWeek.getMonth()]
+  }-${firstDayOfWeek.getFullYear()}`;
+
+  const lastDayFormat = `${lastDayOfWeek.getDate()}-${
+    months[lastDayOfWeek.getMonth()]
+  }-${lastDayOfWeek.getFullYear()}`;
 
   const checkCurrDate = () => {
     const navDate = navBarDate.formatDate;
@@ -237,16 +268,15 @@ const Header = ({ data }) => {
 
   return (
     <>
-      <HeaderMainBox
-      >
-        <UserDetailsBox >
+      <HeaderMainBox>
+        <UserDetailsBox>
           <ArrowBackIosNewIcon sx={{ color: "#174dc2" }} />
           <AccountCircleIcon sx={{ color: "#ebebeb", fontSize: "3rem" }} />
           <Username component="span">C1936 - {loggedUserName}</Username>
           <KeyboardArrowDownIcon sx={{ padding: "10px" }} />
         </UserDetailsBox>
 
-        <DateBox >
+        <DateBox>
           <ArrowBack
             onClick={() => {
               setDateBackward();
@@ -260,14 +290,10 @@ const Header = ({ data }) => {
             </Box>
           )}
 
-          <ArrowForward
-            onClick={checkCurrDate}
-          />
+          <ArrowForward onClick={checkCurrDate} />
         </DateBox>
         <FormControlBox>
-          <FormControlPannel
-            size="small"
-          >
+          <FormControlPannel size="small">
             <Select value={log ? log : "daily"} onChange={handleChange}>
               <MenuItem value="daily">Daily Log</MenuItem>
               <MenuItem value="weekly">Weekly Log</MenuItem>

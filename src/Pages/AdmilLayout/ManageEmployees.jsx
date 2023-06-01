@@ -45,35 +45,11 @@ const ManageEmployees = () => {
     "",
   ];
 
-  const usersData = [
-    {
-      name: "Tushar Maheshwari",
-      email: "jai@yoyo.com",
-      phoneNo: "7418529632",
-      designation: "Intern Trainee",
-    },
-    {
-      name: "Gourav Kashyap",
-      email: "	gourav@yoyo.com",
-      phoneNo: "4564565256",
-      designation: "Intern Trainee",
-    },
-    {
-      name: "Amam Sharma",
-      email: "	amam@yoyo.com",
-      phoneNo: "7858596589",
-      designation: "Intern Trainee",
-    },
-    {
-      name: "Vaibhav Mani",
-      email: "	vaibhav@yoyo.com",
-      phoneNo: "7485965652",
-      designation: "Intern Trainee",
-    },
-  ];
+  
   const { data, refetch } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
+  console.log(data)
 
   let employeeList = data?.data.userList;
 
