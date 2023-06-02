@@ -46,8 +46,9 @@ export const AdminCalenderView = () => {
   useEffect(() => {
     let arrayOfColor = [];
     employeeList?.map((element, index) => {
+      console.log(element,'empoloyee')
       arrayOfColor.push({
-        firstName: element.firstName,
+        _id: element._id,
         userColor: setBg(),
       });
     });
@@ -57,7 +58,7 @@ export const AdminCalenderView = () => {
 
   const putColor = (name) => {
     const givenColor = colorToUser.filter(
-      (element) => element.firstName === name
+      (element) => element._id === name
     );
     return givenColor[0]?.userColor;
   };
@@ -65,7 +66,7 @@ export const AdminCalenderView = () => {
   useEffect(() => {
     if (apiData && colorToUser) {
       const allLeaves = apiData?.data?.data?.map((e, i) => {
-        let colorValue = putColor(e.userId?.firstName);
+        let colorValue = putColor(e.userId?._id);
         return {
           start: e.leaveDates,
           title: e.userId?.firstName + " " + e.userId?.lastName,
@@ -76,6 +77,7 @@ export const AdminCalenderView = () => {
           backgroundColor: colorValue,
           borderColor: colorValue,
           textColor: "black",
+          cursorColor: colorValue,
           extendedProps: {
             type: e.leaveType,
             firstName: e.userId?.firstName,
@@ -102,9 +104,19 @@ export const AdminCalenderView = () => {
       lastName: events.event.extendedProps.lastName,
     });
   }
-  const setBg = () => {
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    return "#" + randomColor;
+  function setBg() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    
+    // Generating light colors by ensuring high values for red, green, and blue
+    var red = Math.floor(Math.random() * 8) + 8;
+    var green = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
+    var blue = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
+    
+    // Converting the decimal values to hexadecimal
+    color += letters.charAt(red) + letters.charAt(green) + letters.charAt(blue);
+    
+    return color;
   };
   return (
     <>
@@ -120,20 +132,23 @@ export const AdminCalenderView = () => {
               <em>All User Data</em>
             </MenuItem>
             {dropDownList?.map((element, index) => {
+              console.log(element,'_id')
               return (
                 <CustomMenu value={element._id}>
                   <Typography>
                     {element.firstName + " " + element.lastName}
                   </Typography>
                   <CustomBox
-                    sx={{ background: putColor(element.firstName) }}
+                    sx={{ background: putColor(element._id) }}
                   ></CustomBox>
                 </CustomMenu>
               );
             })}
           </DropDown>
         </CalendarContainer>
-        <CalendarContainer>
+        <CalendarContainer 
+        // sx={{cursor:'pointer'}}
+        >
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
             initialView="dayGridMonth"
@@ -144,6 +159,7 @@ export const AdminCalenderView = () => {
             }}
             events={leavesData?.length ? leavesData : []}
             eventClick={(e) => (e ? visibleModal(e) : "")}
+            style={{cursor:'pointer'}}
           />
         </CalendarContainer>
         <Modal
