@@ -1,28 +1,26 @@
-import React, {useEffect} from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import NavbarComponent from '../Pages/Navbar/Navbar';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import NavbarComponent from "../Pages/Navbar/Navbar";
 
 function PrivateRouteComponent(props) {
-    const {Component} = props;
+  const { Component } = props;
 
-    const values = localStorage.getItem('value');
-    const finalUserValues = JSON.parse(values)
-    
-    const navigate = useNavigate()
+  const values = localStorage.getItem("value");
+  const finalUserValues = JSON.parse(values);
 
-    useEffect(() => {
-        const token = localStorage.getItem('tokenn')
-        if(!token)(
-            navigate('/')
-        ) 
-    }, [])
+  const navigate = useNavigate();
 
-    return (
-        <>
-    <NavbarComponent values={finalUserValues}/>
-    <Component/>
-        </>
-    )
+  useEffect(() => {
+    const token = localStorage.getItem("tokenn");
+    if (!token) navigate("/");
+  }, []);
+
+  return (
+    <>
+      <NavbarComponent values={finalUserValues} />
+      <Component />
+    </>
+  );
 }
 
 export default PrivateRouteComponent;
