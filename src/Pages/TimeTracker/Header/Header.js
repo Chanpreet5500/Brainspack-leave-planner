@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -26,7 +26,7 @@ const Header = ({ data }) => {
     setWeekLastDay,
     userId,
     firstName,
-    lastName
+    lastName,
   } = data;
   const date = new Date();
 
@@ -158,15 +158,17 @@ const Header = ({ data }) => {
   };
   const compareDate = () => {
     const tempDate = navBarDate.formatDate;
-const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tempDate.getDate()+1 )
-    const dateForToday = `${newDateForToday.getFullYear()}/${newDateForToday.getMonth()}/${
-      newDateForToday.getDate()
-    }`;
+    const newDateForToday = new Date(
+      tempDate.getFullYear(),
+      tempDate.getMonth(),
+      tempDate.getDate() + 1
+    );
+    const dateForToday = `${newDateForToday.getFullYear()}/${newDateForToday.getMonth()}/${newDateForToday.getDate()}`;
 
     const date = new Date();
 
     const currDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
-    
+
     if (dateForToday == currDate) {
       const data = {
         formatDate: new Date(),
@@ -190,25 +192,14 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
   const firstDay = date.getDate() - date.getDay() + 1;
 
   const lastDay = firstDay + 4;
-  
-  // const firstDayOfWeek = new Date(date.getFullYear(), date.getMonth(),firstDay);
-  // const lastDayOfWeek = new Date(date.getFullYear(), date.getMonth(),lastDay);
 
   const firstDayOfWeek = new Date(
     date.getFullYear(),
-    date.getMonth() ,
+    date.getMonth(),
     firstDay
   );
 
-  const lastDayOfWeek = new Date(
-    date.getFullYear(),
-    date.getMonth() ,
-    lastDay
-  );
-
-  // console.log(firstDayOfWeek)
-  // console.log(lastDayOfWeek)
-  
+  const lastDayOfWeek = new Date(date.getFullYear(), date.getMonth(), lastDay);
 
   const firstDayFormat = `${firstDayOfWeek.getDate()}-${
     months[firstDayOfWeek.getMonth()]
@@ -268,7 +259,6 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
     }
   };
 
-
   return (
     <>
       <HeaderMainBox>
@@ -286,9 +276,7 @@ const newDateForToday = new Date(tempDate.getFullYear(),tempDate.getMonth(), tem
             }}
           />
           {log == "daily" ? (
-            <Box component="p">
-              {navBarDate.date}
-              </Box>
+            <Box component="p">{navBarDate.date}</Box>
           ) : (
             <Box component="p">
               {weekFIrstDay.date} - {weekLastDay.date}

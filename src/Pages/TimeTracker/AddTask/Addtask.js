@@ -7,7 +7,11 @@ import {
   TableHead,
   Paper,
   TableRow,
-  Box, Button,  Typography, Snackbar, IconButton
+  Box,
+  Button,
+  Typography,
+  Snackbar,
+  IconButton,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -22,21 +26,23 @@ import { ValidationSchema } from "./ValidationSchema";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { CircularBar } from "../CalendarView/CalenderStyled";
 
-const loggedInUser = localStorage.getItem("value");
-const finalData = JSON.parse(loggedInUser);
-const userId = finalData?._id;
-const initialValues = {
-  userId: userId,
-  projectName: "",
-  date: "",
-  taskName: "",
-  taskDescription: "",
-  status: false,
-  hours: "",
-};
-
 const Addtask = ({ setValue }) => {
   const [open, setOpen] = useState(false);
+
+  const loggedInUser = localStorage.getItem("value");
+  const finalData = JSON.parse(loggedInUser);
+  const userId = finalData?._id;
+
+  const initialValues = {
+    userId: userId,
+    projectName: "",
+    date: "",
+    taskName: "",
+    taskDescription: "",
+    status: false,
+    hours: "",
+  };
+
   const addProjectData = useMutation(userId, (values) => {
     return axios.post(`http://localhost:5233/sendData/${userId}`, values);
   });

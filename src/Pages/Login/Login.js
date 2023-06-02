@@ -7,7 +7,6 @@ import {
   Button,
   Box,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
 } from "@mui/material";
@@ -25,7 +24,7 @@ function googleAuthentication() {
 }
 
 function Login() {
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("select-role");
   const [open, setOpen] = useState(false);
   const [loginSuccess, setIsLoginSuccess] = useState(false);
 
@@ -55,7 +54,7 @@ function Login() {
 
   const popupFieldsParent = {
     width: "60%",
-    // backgroundColor: "#c9c9c9e0;",
+
     backgroundColor: "#ffffff",
   };
 
@@ -79,10 +78,6 @@ function Login() {
     paddingLeft: "10px",
   };
 
-  const logo = {
-    height: "63px",
-  };
-
   const loginButtonParent = {
     marginBottom: "20px",
   };
@@ -93,7 +88,7 @@ function Login() {
 
   const forgotPasswordText = {
     fontSize: "12px",
-    marginLeft: "135px",
+    marginLeft: "180px",
     textDecoration: "none",
   };
 
@@ -175,8 +170,6 @@ function Login() {
     role: Yup.string().required("Please select a role"),
   });
 
-  console.log(role,'role')
-
   return (
     <>
       <Formik
@@ -253,10 +246,8 @@ function Login() {
                     <FormControl
                       sx={{
                         width: "450px",
-                       
                       }}
                     >
-                    <InputLabel id="demo-simple-select-label"></InputLabel>
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
@@ -265,12 +256,12 @@ function Login() {
                           props.handleChange(e);
                           setRole(e.target.value);
                         }}
-                        label="Role"
-                      
-                       
+                        value={role}
+                        placeholder="select-role"
                         sx={{
-                          width:"70%",
+                          width: "70%",
                           boxShadow: "none",
+                          color: "gray",
                           ".MuiOutlinedInput-notchedOutline": {
                             border: 0,
                             borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
@@ -281,17 +272,19 @@ function Login() {
                               border: 0,
                               borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
                             },
-                            textAlign:"left",
-                            '& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input ':{
-
-                            padding:"25px 14px 10px"
+                          textAlign: "left",
+                          "& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input ":
+                            {
+                              padding: "25px 14px 10px",
                             },
-                            '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
-
-                            top: 'calc(60% - 0.5em)'
-                            }
+                          "& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon": {
+                            top: "calc(60% - 0.5em)",
+                          },
                         }}
                       >
+                        <MenuItem selected disabled value="select-role">
+                          Select Role
+                        </MenuItem>
                         <MenuItem value="client">Client</MenuItem>
                         <MenuItem value="admin">Admin</MenuItem>
                       </Select>
@@ -309,8 +302,7 @@ function Login() {
                       </Typography>
                     </FormControl>
                   </Grid>
-                  <Box>
-                  </Box>
+                  <Box></Box>
                   <Box sx={forgotPasswordLink}>
                     <Link
                       to="/forgot"

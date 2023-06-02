@@ -68,7 +68,7 @@ export const AdminCalenderView = () => {
         let colorValue = putColor(e.userId?.firstName);
         return {
           start: e.leaveDates,
-          title: e.userId.firstName + " " + e.userId.lastName,
+          title: e.userId?.firstName + " " + e.userId?.lastName,
           allDay: true,
           display: e.description,
           constraint: e.userId?.firstName,
@@ -78,8 +78,8 @@ export const AdminCalenderView = () => {
           textColor: "black",
           extendedProps: {
             type: e.leaveType,
-            firstName: e.userId.firstName,
-            lastName: e.userId.lastName,
+            firstName: e.userId?.firstName,
+            lastName: e.userId?.lastName,
           },
         };
       });
