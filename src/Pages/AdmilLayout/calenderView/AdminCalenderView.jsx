@@ -13,14 +13,13 @@ import {
 import { Box, MenuItem, Modal, Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import axios from "axios";
-import { GetLeaveDataById } from "../../ReactQuery/CustomHooks/LeavePlanner";
+import { GetLeaveDataForAdmin } from "../../ReactQuery/CustomHooks/LeavePlanner";
 import {
   Heading,
   MainContainer,
 } from "../../TimeTracker/CalendarView/CalenderStyled";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
-
 
 export const AdminCalenderView = () => {
   const localData = JSON.parse(localStorage.getItem("value"));
@@ -37,11 +36,7 @@ export const AdminCalenderView = () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   const employeeList = data?.data?.userList;
-  const { data: apiData, refetch: refetedUser } = GetLeaveDataById(
-    userId,
-    "my_leave"
-  );
-
+  const { data: apiData, refetch: refetedUser } = GetLeaveDataForAdmin(userId);
   const handleChange = (event) => {
     setUserId(event.target.value);
     setDropdown(event.target.value);
@@ -53,7 +48,7 @@ export const AdminCalenderView = () => {
     employeeList?.map((element, index) => {
       arrayOfColor.push({
         firstName: element.firstName,
-        userColor:setBg(),
+        userColor: setBg(),
       });
     });
     setColorToUser(arrayOfColor);
@@ -80,7 +75,7 @@ export const AdminCalenderView = () => {
           id: e._id,
           backgroundColor: colorValue,
           borderColor: colorValue,
-          textColor:'black',
+          textColor: "black",
           extendedProps: {
             type: e.leaveType,
             firstName: e.userId?.firstName,
@@ -109,7 +104,7 @@ export const AdminCalenderView = () => {
   }
   const setBg = () => {
     const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    return  "#" + randomColor;
+    return "#" + randomColor;
   };
   return (
     <>
