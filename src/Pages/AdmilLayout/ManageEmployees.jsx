@@ -1,16 +1,12 @@
 import {
-  Avatar,
   Box,
-  Button,
   InputAdornment,
-  InputBase,
   Table,
   TableBody,
   TableHead,
   TableRow,
   TextField,
   Typography,
-  alpha,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -136,7 +132,7 @@ const ManageEmployees = () => {
               employeeData.map((element, index) => {
                 return (
                   <>
-                    <TableRow sx={{ cursor: "url(Logo-light-versuion.png)" }}>
+                    <TableRow key={index} sx={{ cursor: "url(Logo-light-versuion.png)" }}>
                       <CustomTableCell>{index + 1}.</CustomTableCell>
                       <CustomTableCell>
                         {`${element.firstName} ${element.lastName}`}

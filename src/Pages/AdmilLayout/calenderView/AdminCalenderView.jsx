@@ -22,8 +22,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 
 export const AdminCalenderView = () => {
-  const localData = JSON.parse(localStorage.getItem("value"));
-  const { _id } = localData;
   const [userId, setUserId] = useState("all-users");
   const [colorToUser, setColorToUser] = useState([]);
   const [dropdown, setDropdown] = useState("all-users");
@@ -32,7 +30,7 @@ export const AdminCalenderView = () => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-  const { data, refetch } = useQuery("employee-list", () => {
+  const { data } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   const employeeList = data?.data?.userList;
@@ -46,7 +44,6 @@ export const AdminCalenderView = () => {
   useEffect(() => {
     let arrayOfColor = [];
     employeeList?.map((element, index) => {
-      console.log(element,'empoloyee')
       arrayOfColor.push({
         _id: element._id,
         userColor: setBg(),
@@ -57,9 +54,7 @@ export const AdminCalenderView = () => {
   }, [data]);
 
   const putColor = (name) => {
-    const givenColor = colorToUser.filter(
-      (element) => element._id === name
-    );
+    const givenColor = colorToUser.filter((element) => element._id === name);
     return givenColor[0]?.userColor;
   };
 
@@ -77,7 +72,6 @@ export const AdminCalenderView = () => {
           backgroundColor: colorValue,
           borderColor: colorValue,
           textColor: "black",
-          cursorColor: colorValue,
           extendedProps: {
             type: e.leaveType,
             firstName: e.userId?.firstName,
@@ -104,20 +98,17 @@ export const AdminCalenderView = () => {
       lastName: events.event.extendedProps.lastName,
     });
   }
+
   function setBg() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    
-    // Generating light colors by ensuring high values for red, green, and blue
+    var letters = "0123456789ABCDEF";
+    var color = "#";
     var red = Math.floor(Math.random() * 8) + 8;
-    var green = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
-    var blue = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
-    
-    // Converting the decimal values to hexadecimal
+    var green = Math.floor(Math.random() * 8) + 8;
+    var blue = Math.floor(Math.random() * 8) + 8;
     color += letters.charAt(red) + letters.charAt(green) + letters.charAt(blue);
-    
     return color;
-  };
+  }
+
   return (
     <>
       <MainContainerCalender>
@@ -132,9 +123,8 @@ export const AdminCalenderView = () => {
               <em>All User Data</em>
             </MenuItem>
             {dropDownList?.map((element, index) => {
-              console.log(element,'_id')
               return (
-                <CustomMenu value={element._id}>
+                <CustomMenu key={element._id} value={element._id}>
                   <Typography>
                     {element.firstName + " " + element.lastName}
                   </Typography>
@@ -146,9 +136,7 @@ export const AdminCalenderView = () => {
             })}
           </DropDown>
         </CalendarContainer>
-        <CalendarContainer 
-        // sx={{cursor:'pointer'}}
-        >
+        <CalendarContainer>
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
             initialView="dayGridMonth"
@@ -159,7 +147,6 @@ export const AdminCalenderView = () => {
             }}
             events={leavesData?.length ? leavesData : []}
             eventClick={(e) => (e ? visibleModal(e) : "")}
-            style={{cursor:'pointer'}}
           />
         </CalendarContainer>
         <Modal
