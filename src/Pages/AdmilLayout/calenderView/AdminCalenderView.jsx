@@ -23,7 +23,6 @@ import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal
 
 export const AdminCalenderView = () => {
   const localData = JSON.parse(localStorage.getItem("value"));
-  const { _id } = localData;
   const [userId, setUserId] = useState("all-users");
   const [colorToUser, setColorToUser] = useState([]);
   const [dropdown, setDropdown] = useState("all-users");
@@ -32,7 +31,7 @@ export const AdminCalenderView = () => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-  const { data, refetch } = useQuery("employee-list", () => {
+  const { data } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   const employeeList = data?.data?.userList;
@@ -45,8 +44,8 @@ export const AdminCalenderView = () => {
 
   useEffect(() => {
     let arrayOfColor = [];
-    employeeList?.map((element, index) => {
-      console.log(element,'empoloyee')
+    employeeList?.map((element) => {
+      console.log(element, "empoloyee");
       arrayOfColor.push({
         _id: element._id,
         userColor: setBg(),
@@ -57,9 +56,7 @@ export const AdminCalenderView = () => {
   }, [data]);
 
   const putColor = (name) => {
-    const givenColor = colorToUser.filter(
-      (element) => element._id === name
-    );
+    const givenColor = colorToUser.filter((element) => element._id === name);
     return givenColor[0]?.userColor;
   };
 
@@ -104,20 +101,15 @@ export const AdminCalenderView = () => {
       lastName: events.event.extendedProps.lastName,
     });
   }
-  function setBg() {
-    let letters = '0123456789ABCDEF';
-    let color = '#';
-    
-    // Generating light colors by ensuring high values for red, green, and blue
-    let red = Math.floor(Math.random() * 8) + 8;
-    let green = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
-    let blue = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
-    
-    // Converting the decimal values to hexadecimal
-    color += letters.charAt(red) + letters.charAt(green) + letters.charAt(blue);
-    
+  const setBg = () => {
+    let letters = "BCDEF".split("");
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * letters.length)];
+    }
     return color;
   };
+
   return (
     <>
       <MainContainerCalender>
@@ -131,8 +123,8 @@ export const AdminCalenderView = () => {
             <MenuItem selected value={"all-users"}>
               <em>All User Data</em>
             </MenuItem>
-            {dropDownList?.map((element, index) => {
-              console.log(element,'_id')
+            {dropDownList?.map((element) => {
+              console.log(element, "_id");
               return (
                 <CustomMenu value={element._id}>
                   <Typography>
@@ -146,9 +138,7 @@ export const AdminCalenderView = () => {
             })}
           </DropDown>
         </CalendarContainer>
-        <CalendarContainer 
-        // sx={{cursor:'pointer'}}
-        >
+        <CalendarContainer>
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
             initialView="dayGridMonth"
@@ -159,7 +149,7 @@ export const AdminCalenderView = () => {
             }}
             events={leavesData?.length ? leavesData : []}
             eventClick={(e) => (e ? visibleModal(e) : "")}
-            style={{cursor:'pointer'}}
+            style={{ cursor: "pointer" }}
           />
         </CalendarContainer>
         <Modal

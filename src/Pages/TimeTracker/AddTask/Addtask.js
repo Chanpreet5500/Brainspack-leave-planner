@@ -44,7 +44,7 @@ const Addtask = ({ setValue }) => {
   };
 
   const addProjectData = useMutation(userId, (values) => {
-    return axios.post(`http://localhost:5233/sendData/${userId}`, values);
+    return axios.post(`http://localhost:5233/setTimeTrackerData/${userId}`, values);
   });
 
   const handleSubmit = (values) => {

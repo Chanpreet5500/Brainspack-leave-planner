@@ -7,7 +7,6 @@ import {
   TableRow,
   TextField,
   Typography,
-  alpha,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -41,7 +40,7 @@ const ManageEmployees = () => {
     "",
   ];
 
-  const { data, refetch } = useQuery("employee-list", () => {
+  const { data } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
 
