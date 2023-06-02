@@ -124,12 +124,17 @@ export const UserTask = (props) => {
   ];
 
   const checkHours = (headerDate, projectDate, hour) => {
-    const [tempDate, tempDate2] = headerDate.date.split("T");
-    let [year, month, date] = tempDate.split("-");
+    const checkDateFromHeader = new Date( headerDate.date);
+   
+    const checkYear = checkDateFromHeader.getFullYear();
+    const checkMonth = checkDateFromHeader.getMonth() + 1;
+    const checkDate = checkDateFromHeader.getDate();
+
     const year2 = projectDate.formatDate.getFullYear();
     const month2 = projectDate.formatDate.getMonth() + 1;
     const date2 = projectDate.formatDate.getDate();
-    if (+year === year2 && +month === month2 && ++date === date2) {
+   
+    if (checkYear === year2 && checkMonth === month2 && checkDate === date2) {
       return true;
     }
   };
