@@ -41,7 +41,7 @@ const ManageEmployees = () => {
     "",
   ];
 
-  const { data, refetch } = useQuery("employee-list", () => {
+  const { data } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
 
