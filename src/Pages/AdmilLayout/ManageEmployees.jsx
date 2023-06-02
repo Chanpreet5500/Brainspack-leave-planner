@@ -44,7 +44,6 @@ const ManageEmployees = () => {
     "",
   ];
 
-  
   const { data, refetch } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
@@ -55,8 +54,7 @@ const ManageEmployees = () => {
     setSearchBarValue(event.target.value);
   };
   useEffect(() => {
-    if (searchBarValue != "" ) {
-      
+    if (searchBarValue != "") {
       const filterdData = employeeList?.filter(
         (element) =>
           element.firstName

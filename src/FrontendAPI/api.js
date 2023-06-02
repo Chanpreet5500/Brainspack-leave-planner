@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 
- const loggedUserData = async (id) => {
-    try {
-      const { data } =  await axios.get(`http://localhost:5233/logged-user-data/${id}`)
-      
-      return data;
-    } catch (error) {
-        throw error("Unable to fetch Post");
-    }
+const loggedUserData = async (id) => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:5233/logged-user-data/${id}`
+    );
+
+    return data;
+  } catch (error) {
+    throw error("Unable to fetch Post");
   }
+};
 
-export const GetUserLoggedData = (id)=>{
-    return useQuery('DATA', ()=>loggedUserData(id))
-}
-
-
+export const GetUserLoggedData = (id) => {
+  return useQuery("DATA", () => loggedUserData(id));
+};
