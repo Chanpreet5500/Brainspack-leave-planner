@@ -103,9 +103,14 @@ export const AdminCalenderView = () => {
     });
   }
   const setBg = () => {
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    return "#" + randomColor;
+    let letters = "BCDEF".split("");
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return color;
   };
+  
   return (
     <>
       <MainContainerCalender>
