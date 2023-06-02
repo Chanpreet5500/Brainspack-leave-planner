@@ -84,7 +84,7 @@ export const UpdateUserData = (id) => {
 };
 
 const deleteApi = (data) => {
-  return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`);
+  return axiosInstance.delete(`http://localhost:5233/deleteTimeTrackerData/${data}`);
 };
 
 const updateProjectStatus = (data) => {
