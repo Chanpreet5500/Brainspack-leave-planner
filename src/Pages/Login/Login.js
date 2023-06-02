@@ -120,7 +120,7 @@ function Login() {
       role: props.role,
     };
 
-    const sendData = client(values, {
+    const clientLoginValues = client(values, {
       onError() {
         setOpen(true);
       },
@@ -128,7 +128,7 @@ function Login() {
         setIsLoginSuccess(true);
       },
     });
-    return sendData;
+    return clientLoginValues;
   }
 
   useEffect(() => {

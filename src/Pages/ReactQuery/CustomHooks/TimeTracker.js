@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 const axiosInstance = axios.create();
 
 const fetchTimeTracker = (id) => {
-  return axiosInstance.get(`http://localhost:5233/testData/${id}`);
+  return axiosInstance.get(`http://localhost:5233/getTimeTrackerData/${id}`);
 };
 
 export const GetUserData = (id) => {
@@ -84,7 +84,7 @@ export const UpdateUserData = (id) => {
 };
 
 const deleteApi = (data) => {
-  return axiosInstance.delete(`http://localhost:5233/delete-user/${data}`);
+  return axiosInstance.delete(`http://localhost:5233/deleteTimeTrackerData/${data}`);
 };
 
 const updateProjectStatus = (data) => {
@@ -93,11 +93,11 @@ const updateProjectStatus = (data) => {
 };
 
 export const UpdateStatus = (data) => {
-  const queryClients = useQueryClient()
-  const result = useMutation(updateProjectStatus,{
-    onSuccess(){
-      queryClients.invalidateQueries("logged-user-week-data")
-    }
+  const queryClients = useQueryClient();
+  const result = useMutation(updateProjectStatus, {
+    onSuccess() {
+      queryClients.invalidateQueries("logged-user-week-data");
+    },
   });
   return result;
 };

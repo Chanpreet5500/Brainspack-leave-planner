@@ -22,6 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 
 export const AdminCalenderView = () => {
+  const localData = JSON.parse(localStorage.getItem("value"));
   const [userId, setUserId] = useState("all-users");
   const [colorToUser, setColorToUser] = useState([]);
   const [dropdown, setDropdown] = useState("all-users");
@@ -98,16 +99,14 @@ export const AdminCalenderView = () => {
       lastName: events.event.extendedProps.lastName,
     });
   }
-
-  function setBg() {
-    var letters = "0123456789ABCDEF";
-    var color = "#";
-    var red = Math.floor(Math.random() * 8) + 8;
-    var green = Math.floor(Math.random() * 8) + 8;
-    var blue = Math.floor(Math.random() * 8) + 8;
-    color += letters.charAt(red) + letters.charAt(green) + letters.charAt(blue);
+  const setBg = () => {
+    let letters = "BCDEF".split("");
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * letters.length)];
+    }
     return color;
-  }
+  };
 
   return (
     <>
@@ -123,7 +122,7 @@ export const AdminCalenderView = () => {
               <em>All User Data</em>
             </MenuItem>
             {dropDownList?.map((element, index) => {
-              return (
+              return <>(
                 <CustomMenu key={element._id} value={element._id}>
                   <Typography>
                     {element.firstName + " " + element.lastName}
@@ -132,7 +131,7 @@ export const AdminCalenderView = () => {
                     sx={{ background: putColor(element._id) }}
                   ></CustomBox>
                 </CustomMenu>
-              );
+              )</>
             })}
           </DropDown>
         </CalendarContainer>
@@ -147,6 +146,7 @@ export const AdminCalenderView = () => {
             }}
             events={leavesData?.length ? leavesData : []}
             eventClick={(e) => (e ? visibleModal(e) : "")}
+            style={{ cursor: "pointer" }}
           />
         </CalendarContainer>
         <Modal

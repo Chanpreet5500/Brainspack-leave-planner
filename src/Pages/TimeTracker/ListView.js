@@ -162,7 +162,7 @@ const ListView = () => {
 
   const deleteProjectData = useMutation(
     () => {
-      return axiosInstance.delete(`http://localhost:5233/delete-user/${rowId}`);
+      return axiosInstance.delete(`http://localhost:5233/deleteTimeTrackerData/${rowId}`);
     },
     {
       onSuccess() {
