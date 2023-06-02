@@ -35,8 +35,6 @@ import Timetracker from "./Pages/TimeTracker/Timetracker";
 import EditTask from "./Pages/TimeTracker/AddTask/EditTask.js";
 import EditCalendarTask from "./Pages/TimeTracker/CalendarView/EditCalendarTask";
 import ManageEmployees from "./Pages/AdmilLayout/ManageEmployees";
-import AdminRegister from "./Pages/Admin/AdminRegister";
-import Hello from "./Pages/Admin/Hello";
 import EmployeeDetails from "./Pages/AdmilLayout/EmployeeDetails";
 import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
 import PrivateDashboard from "../src/PrivateRouting/PrivateDashboard";
@@ -74,7 +72,6 @@ function App() {
             <ThemeProvider theme={theme}>
               <Routes>
                 <Route path="/" element={<LoginComponent />} />
-                <Route path="/adminRegister" element={<AdminRegister />} />
                 <Route
                   path="/dashboard"
                   element={
