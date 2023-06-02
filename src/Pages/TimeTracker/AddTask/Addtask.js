@@ -44,7 +44,10 @@ const Addtask = ({ setValue }) => {
   };
 
   const addProjectData = useMutation(userId, (values) => {
-    return axios.post(`http://localhost:5233/setTimeTrackerData/${userId}`, values);
+    return axios.post(
+      `http://localhost:5233/setTimeTrackerData/${userId}`,
+      values
+    );
   });
 
   const handleSubmit = (values) => {
@@ -58,7 +61,7 @@ const Addtask = ({ setValue }) => {
     setOpen(true);
   };
 
-  const handleClose = (event, reason) => {
+  const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
     }

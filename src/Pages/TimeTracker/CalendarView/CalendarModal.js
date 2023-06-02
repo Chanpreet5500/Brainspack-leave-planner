@@ -8,10 +8,17 @@ import { ButtonContainer, ButtonWrapper, Text } from "./CalenderStyled";
 
 function CalendarModalComponent(props) {
   const navigate = useNavigate();
-  const { eventVal, setShowModal, setConfirmDelete, handleDelete, admin } =
-    props;
-  const { title, start, description, name, hours, eventId, display, end ,type,firstName,lastName} =
-    eventVal;
+  const { eventVal, setShowModal, handleDelete, admin } = props;
+  const {
+    title,
+    start,
+    description,
+    hours,
+    eventId,
+    type,
+    firstName,
+    lastName,
+  } = eventVal;
   const formattedDate = format(new Date(start), "yyyy-dd-MM");
 
   const handleEdit = () => {
@@ -56,9 +63,9 @@ function CalendarModalComponent(props) {
         )
       ) : (
         <>
-            <Text variant="h5">Name :- {firstName + " " + lastName}</Text>
-            <Text variant="h5">Date :- {formattedDate}</Text>
-            <Text variant="h5">Leave Type :- {type}</Text>
+          <Text variant="h5">Name :- {firstName + " " + lastName}</Text>
+          <Text variant="h5">Date :- {formattedDate}</Text>
+          <Text variant="h5">Leave Type :- {type}</Text>
         </>
       )}
     </>

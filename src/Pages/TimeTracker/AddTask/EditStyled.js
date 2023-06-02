@@ -22,29 +22,23 @@ export const ButtonContainer = styled(Button)(({ theme }) => ({
 export const ErrorText = styled(Typography)(({ theme }) => ({
   color: "red",
   fontSize: "14px",
-  // position:'absolute',
 }));
 
 export const PickDate = styled(DatePicker)(({ theme }) => ({
-  padding:'0px',
+  padding: "0px",
   "& .MuiInputBase-input": {
-    padding: '0 !important',
-    paddingLeft: 0
+    padding: "0 !important",
+    paddingLeft: 0,
   },
-  
-  // "& .MuiInputBase-input-MuiOutlinedInput-input":{
-  //   padding: "0px",
-  // },
-  "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-    borderWidth: "0px !important", 
-       padding: '0 !important',
 
+  "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+    borderWidth: "0px !important",
+    padding: "0 !important",
   },
   "& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
     {
       borderColor: "#000 !important",
-      padding: '0 !important',
-
+      padding: "0 !important",
     },
 }));
 

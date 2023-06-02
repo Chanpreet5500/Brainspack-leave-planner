@@ -5,10 +5,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import { GetLeaveDataById } from "../../ReactQuery/CustomHooks/LeavePlanner";
 import { Box, Modal } from "@mui/material";
-import { Heading, MainContainer } from "../../TimeTracker/CalendarView/CalenderStyled";
+import {
+  Heading,
+  MainContainer,
+} from "../../TimeTracker/CalendarView/CalenderStyled";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 import CloseIcon from "@mui/icons-material/Close";
-
 
 export const UserLeave = (props) => {
   const { userId } = props;
@@ -16,11 +18,7 @@ export const UserLeave = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-
-  const { data: apiData, refetch: refetedUser } = GetLeaveDataById(
-    userId,
-    "my_leave"
-  );
+  const { data: apiData } = GetLeaveDataById(userId, "my_leave");
 
   function visibleModal(events) {
     setShowModal(true);

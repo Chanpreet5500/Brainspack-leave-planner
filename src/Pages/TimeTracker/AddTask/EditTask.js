@@ -10,10 +10,7 @@ import Paper from "@mui/material/Paper";
 import { Input, Snackbar, IconButton, TextField } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  EditUserData,
-  GetDataById,
-} from "../../ReactQuery/CustomHooks/TimeTracker";
+import { GetDataById } from "../../ReactQuery/CustomHooks/TimeTracker";
 import {
   ButtonContainer,
   ButtonWrapper,
@@ -23,7 +20,7 @@ import {
 import { Formik } from "formik";
 import { useMutation } from "react-query";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import validationSchema  from "../formvalidation/validationSchema"
+import validationSchema from "../formvalidation/validationSchema";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import moment from "moment";
@@ -39,15 +36,15 @@ let initialValues = {
 };
 
 const EditTask = () => {
-  const [projectTitle, setProjectTitle] = useState({});
+  const [projectData, setProjectData] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
   const axiosInstance = axios.create();
-  const id = location.state;
+  const taskID = location.state;
 
   const [open, setOpen] = useState(false);
 
-  const { data } = GetDataById(id);
+  const { data } = GetDataById(taskID);
   const apiData = data?.data?.data;
   if (apiData) {
     const {
@@ -72,7 +69,7 @@ const EditTask = () => {
 
   useEffect(() => {
     if (apiData) {
-      setProjectTitle({
+      setProjectData({
         projectName: apiData[0].projectName,
         date: apiData[0].date,
         taskName: apiData[0].taskName,
@@ -174,7 +171,7 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.projectName &&
-                          props.touched.projectName ? (
+                        props.touched.projectName ? (
                           <ErrorText>{props.errors.projectName}</ErrorText>
                         ) : null}
                       </CustomTableCell>
@@ -218,7 +215,7 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.taskDescription &&
-                          props.touched.taskDescription ? (
+                        props.touched.taskDescription ? (
                           <ErrorText>{props.errors.taskDescription}</ErrorText>
                         ) : null}
                       </CustomTableCell>

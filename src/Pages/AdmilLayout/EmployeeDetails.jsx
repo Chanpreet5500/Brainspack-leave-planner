@@ -11,7 +11,7 @@ const EmployeeDetails = () => {
   const location = useLocation();
   const { id, firstName, lastName } = location.state;
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
   return (

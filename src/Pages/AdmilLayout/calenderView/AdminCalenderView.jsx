@@ -22,7 +22,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 
 export const AdminCalenderView = () => {
-  const localData = JSON.parse(localStorage.getItem("value"));
   const [userId, setUserId] = useState("all-users");
   const [colorToUser, setColorToUser] = useState([]);
   const [dropdown, setDropdown] = useState("all-users");
@@ -48,22 +47,22 @@ export const AdminCalenderView = () => {
       console.log(element, "empoloyee");
       arrayOfColor.push({
         _id: element._id,
-        userColor: setBg(),
+        userColor: setRandomColor(),
       });
     });
     setColorToUser(arrayOfColor);
     setDropdownList(employeeList);
   }, [data]);
 
-  const putColor = (name) => {
+  const randomColorForNames = (name) => {
     const givenColor = colorToUser.filter((element) => element._id === name);
     return givenColor[0]?.userColor;
   };
 
   useEffect(() => {
     if (apiData && colorToUser) {
-      const allLeaves = apiData?.data?.data?.map((e, i) => {
-        let colorValue = putColor(e.userId?._id);
+      const allLeaves = apiData?.data?.data?.map((e) => {
+        let colorValue = randomColorForNames(e.userId?._id);
         return {
           start: e.leaveDates,
           title: e.userId?.firstName + " " + e.userId?.lastName,
@@ -101,7 +100,7 @@ export const AdminCalenderView = () => {
       lastName: events.event.extendedProps.lastName,
     });
   }
-  const setBg = () => {
+  const setRandomColor = () => {
     let letters = "BCDEF".split("");
     let color = "#";
     for (let i = 0; i < 6; i++) {
@@ -131,7 +130,7 @@ export const AdminCalenderView = () => {
                     {element.firstName + " " + element.lastName}
                   </Typography>
                   <CustomBox
-                    sx={{ background: putColor(element._id) }}
+                    sx={{ background: randomColorForNames(element._id) }}
                   ></CustomBox>
                 </CustomMenu>
               );

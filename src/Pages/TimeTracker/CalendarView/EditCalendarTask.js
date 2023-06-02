@@ -57,15 +57,8 @@ const EditCalendarTask = () => {
   const apiData = data?.data?.data;
 
   if (apiData) {
-    const {
-      date,
-      hours,
-      projectName,
-      status,
-      taskDescription,
-      taskName,
-      userId,
-    } = apiData[0];
+    const { date, hours, projectName, status, taskDescription, taskName, userId } =
+      apiData[0];
     initialValues = {
       date: date,
       hours: hours,
@@ -78,17 +71,6 @@ const EditCalendarTask = () => {
     };
   }
 
-  // const { mutate, isError } = UpdateUserData();
-
-  // const saveData = (data) => {
-  //   mutate(data);
-  //   if (!isError) {
-  //     setTimeout(() => {
-  //       navigate(-1);
-  //     }, 2000);
-  //   }
-  //   setOpen(true);
-  // };
   const UpdateTask = useMutation(_id, (data) => {
     axiosInstance.patch(`http://localhost:5233/update/${_id}`, data);
     if (!UpdateTask.isError) {
@@ -98,7 +80,7 @@ const EditCalendarTask = () => {
     }
     setOpen(true);
   });
-  const handleClose = (event, reason) => {
+  const handleClose = (reason) => {
     if (reason === "clickaway") {
       return;
     }

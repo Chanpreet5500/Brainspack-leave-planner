@@ -23,7 +23,12 @@ import {
   WeekDayBox,
 } from "../../TimeTracker/styled";
 import { UpdateStatus } from "../../ReactQuery/CustomHooks/TimeTracker";
-import { ButtonContainer, ButtonWrapper, HeadingModal, MainContainer } from "../../TimeTracker/CalendarView/CalenderStyled";
+import {
+  ButtonContainer,
+  ButtonWrapper,
+  HeadingModal,
+  MainContainer,
+} from "../../TimeTracker/CalendarView/CalenderStyled";
 
 const months = [
   "Jan",
@@ -44,12 +49,12 @@ export const UserTask = (props) => {
   const dateForWeek = new Date();
   const { userId, firstName, lastName } = props;
   const [log, setLog] = useState("daily");
-  const [approveUserId,setApproveUserId] = useState();
+  const [approveUserId, setApproveUserId] = useState();
   const [open, setOpen] = useState(false);
   const [totalHours, setTotalHours] = useState({});
   const [totalValue, setTotalValue] = useState({});
   const [totalHoursWeeks, setTotalHoursWeeks] = useState([]);
-  const [navBarDate, setNavbarDate] = useState({
+  const [navbarDate, setNavbarDate] = useState({
     formatDate: new Date(),
     date: "Today",
   });
@@ -124,8 +129,8 @@ export const UserTask = (props) => {
   ];
 
   const checkHours = (headerDate, projectDate, hour) => {
-    const checkDateFromHeader = new Date( headerDate.date);
-   
+    const checkDateFromHeader = new Date(headerDate.date);
+
     const checkYear = checkDateFromHeader.getFullYear();
     const checkMonth = checkDateFromHeader.getMonth() + 1;
     const checkDate = checkDateFromHeader.getDate();
@@ -133,7 +138,7 @@ export const UserTask = (props) => {
     const year2 = projectDate.formatDate.getFullYear();
     const month2 = projectDate.formatDate.getMonth() + 1;
     const date2 = projectDate.formatDate.getDate();
-   
+
     if (checkYear === year2 && checkMonth === month2 && checkDate === date2) {
       return true;
     }
@@ -191,35 +196,29 @@ export const UserTask = (props) => {
   const { mutate } = UpdateStatus();
 
   const updateStatus = (value) => {
-    setOpen(true)
-    setApproveUserId(value)
+    setOpen(true);
+    setApproveUserId(value);
   };
 
-  const confirmApprove=()=>{
+  const confirmApprove = () => {
     mutate({
       id: approveUserId,
       status: true,
     });
-    setOpen(false)
-  }
+    setOpen(false);
+  };
   return (
     <>
-       <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        sx={{ width: "100%" }}
-      >
+      <Modal open={open} onClose={() => setOpen(false)} sx={{ width: "100%" }}>
         <MainContainer>
           <HeadingModal id="modal-modal-title" component="h4">
-          Confirm Approve ?
+            Confirm Approve ?
           </HeadingModal>
           <ButtonContainer>
             <CustomEditButton onClick={() => setOpen(false)}>
               <ButtonWrapper component="span">Cancel</ButtonWrapper>
             </CustomEditButton>
-            <CustomDeleteButton
-             onClick={() => confirmApprove()}
-             >
+            <CustomDeleteButton onClick={() => confirmApprove()}>
               <ButtonWrapper component="span">Approve</ButtonWrapper>
             </CustomDeleteButton>
           </ButtonContainer>
@@ -230,7 +229,7 @@ export const UserTask = (props) => {
         data={{
           log,
           setLog,
-          navBarDate,
+          navbarDate,
           setNavbarDate,
           weekFIrstDay,
           setWeekFirstDay,
@@ -318,10 +317,7 @@ export const UserTask = (props) => {
                   )}
 
                   <CustomTableCell>
-                 
-                       {row.status === true ? "Approved" : "Pending"}
-                  
-                     
+                    {row.status === true ? "Approved" : "Pending"}
                   </CustomTableCell>
                   {log === "weekly"
                     ? weekCleander.map((element, index) => {

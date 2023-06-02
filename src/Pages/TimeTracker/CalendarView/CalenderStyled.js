@@ -40,14 +40,14 @@ export const ButtonWrapper = styled(Box)(({ theme }) => ({
   fontFamily: "sans-serif",
 }));
 
-export const HeadingModal =styled(Typography)(({theme})=>({
-    margin: "15px 0px 30px 0px",
-    textAlign: "center",
-    fontWeight:'bold',
-}))
+export const HeadingModal = styled(Typography)(({ theme }) => ({
+  margin: "15px 0px 30px 0px",
+  textAlign: "center",
+  fontWeight: "bold",
+}));
 
-export const CircularBar =styled(CircularProgress)(({theme})=>({
-      width: "20px !important",
-      height: "20px!important",
-      color:'#ffffff',
-}))
+export const CircularBar = styled(CircularProgress)(({ theme }) => ({
+  width: "20px !important",
+  height: "20px!important",
+  color: "#ffffff",
+}));
