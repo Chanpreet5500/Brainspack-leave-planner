@@ -122,7 +122,7 @@ export const AdminCalenderView = () => {
               <em>All User Data</em>
             </MenuItem>
             {dropDownList?.map((element, index) => {
-              return <>(
+              return <>
                 <CustomMenu key={element._id} value={element._id}>
                   <Typography>
                     {element.firstName + " " + element.lastName}
@@ -131,7 +131,7 @@ export const AdminCalenderView = () => {
                     sx={{ background: putColor(element._id) }}
                   ></CustomBox>
                 </CustomMenu>
-              )</>
+              </>
             })}
           </DropDown>
         </CalendarContainer>
