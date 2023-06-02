@@ -1,9 +1,6 @@
 import {
-  Avatar,
   Box,
-  Button,
   InputAdornment,
-  InputBase,
   Table,
   TableBody,
   TableHead,
