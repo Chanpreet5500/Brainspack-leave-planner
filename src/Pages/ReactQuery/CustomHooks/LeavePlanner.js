@@ -58,6 +58,12 @@ const getLeaveDataById = async (id, userType) => {
   );
 };
 
+const getLeaveDataForAdmin = async (id) => {
+  return await axiosInstance.get(
+    `http://localhost:5233/leave-data-admin/${id}`
+  );
+};
+
 const creatingNewPassword = async (data) => {
   return await axiosInstance.post("http://localhost:5233/reset-password", data);
 };
@@ -99,6 +105,17 @@ export const GetLeaveDataById = (id, userType) => {
   return useQuery(
     ["get-leave-data-id", id, userType],
     () => getLeaveDataById(id, userType),
+    {
+      refetchOnMount: true,
+      retry: false
+    }
+  );
+};
+
+export const GetLeaveDataForAdmin = (id) => {
+  return useQuery(
+    ["get-leave-data-admin", id],
+    () => getLeaveDataForAdmin(id),
     {
       refetchOnMount: true,
       retry: false
