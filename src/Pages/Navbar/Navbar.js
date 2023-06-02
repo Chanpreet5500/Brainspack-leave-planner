@@ -95,6 +95,7 @@ function NavbarComponent(props) {
     margin: "10px 20px 0 0",
     width: "19%",
     justifyContent: "space-between",
+    cursor:'pointer'
   };
 
   const notificationButton = {
@@ -110,6 +111,7 @@ function NavbarComponent(props) {
     padding: "5px 10px 10px",
     height: "56px",
     backgroundColor: "antiquewhite",
+    cursor:'pointer'
   };
 
   const imageSearchParent = {
@@ -260,6 +262,7 @@ function NavbarComponent(props) {
                   fontSize: "34px",
                   borderRadius: "30px",
                   padding: "0px 10px",
+                 
                 }}
               >
                 {firstName ? <PersonIcon /> : ""}

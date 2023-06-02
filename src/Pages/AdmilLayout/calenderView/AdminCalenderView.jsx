@@ -105,13 +105,13 @@ export const AdminCalenderView = () => {
     });
   }
   function setBg() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
+    let letters = '0123456789ABCDEF';
+    let color = '#';
     
     // Generating light colors by ensuring high values for red, green, and blue
-    var red = Math.floor(Math.random() * 8) + 8;
-    var green = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
-    var blue = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
+    let red = Math.floor(Math.random() * 8) + 8;
+    let green = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
+    let blue = Math.floor(Math.random() * 8) + 8; // Random value between 8 and 15
     
     // Converting the decimal values to hexadecimal
     color += letters.charAt(red) + letters.charAt(green) + letters.charAt(blue);
