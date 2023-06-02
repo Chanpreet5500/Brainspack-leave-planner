@@ -7,7 +7,6 @@ import {
   Button,
   Box,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
 } from "@mui/material";
@@ -77,10 +76,6 @@ function Login() {
 
   const googleIcon = {
     paddingLeft: "10px",
-  };
-
-  const logo = {
-    height: "63px",
   };
 
   const loginButtonParent = {
@@ -174,8 +169,6 @@ function Login() {
     password: Yup.string().required("Password is required"),
     role: Yup.string().required("Please select a role"),
   });
-
-  console.log(role, "role");
 
   return (
     <>

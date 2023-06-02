@@ -141,7 +141,6 @@ function NavbarComponent(props) {
     alignContent: "flex-start",
   };
   const roleType =JSON.parse( localStorage.getItem('value'));
-  // console.log(roleType,'roleTyperoleType')
 
   return (
     <>

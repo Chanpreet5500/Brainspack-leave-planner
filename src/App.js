@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 // import DashboardPage from './pages/dashboard/dashboard';
 import RegisterComponent from "./Pages/Register/Register";
 import LoginComponent from "./Pages/Login/Login";
@@ -77,23 +83,17 @@ function App() {
                 />
                 <Route
                   path="/manage-employees"
-                  element={
-                    <PrivateDashboard Component={ManageEmployees} />
-                  }
+                  element={<PrivateDashboard Component={ManageEmployees} />}
                 />
-                
+
                 <Route
                   path="/admin-calender"
-                  element={
-                    <PrivateDashboard Component={AdminCalenderView} />
-                  }
+                  element={<PrivateDashboard Component={AdminCalenderView} />}
                 />
 
                 <Route
                   path="/employe-details"
-                  element={
-                    <PrivateDashboard Component={EmployeeDetails} />
-                  }
+                  element={<PrivateDashboard Component={EmployeeDetails} />}
                 />
                 <Route
                   path="/calendar"
@@ -149,8 +149,7 @@ function App() {
                 <Route
                   path="/timetracker"
                   element={<PrivateRouteComponent Component={Timetracker} />}
-                >
-                </Route>
+                ></Route>
                 <Route
                   path="/editTask"
                   element={<PrivateRouteComponent Component={EditTask} />}
@@ -165,14 +164,14 @@ function App() {
                   path="/reset-password/:token"
                   element={<CreateNewPasswordComponent />}
                 />
-                 {/* <Route
+                {/* <Route
                   path='/manage-employees'
                   element={
                     <PrivateRouteComponent Component={ManageEmployees} />
                   }
                 /> */}
 
-                 {/* <Route
+                {/* <Route
                   path='/employe-details'
                   element={
                     <PrivateRouteComponent Component={EmployeeDetails} />

@@ -1,13 +1,12 @@
 import React from "react";
+import { Grid, Typography } from "@mui/material";
 import {
-  Grid,
-  Typography,
-} from "@mui/material";
-import { GetDashboardData, GetLeaveDataById } from "../ReactQuery/CustomHooks/LeavePlanner";
+  GetDashboardData,
+  GetLeaveDataById,
+} from "../ReactQuery/CustomHooks/LeavePlanner";
 import { useNavigate } from "react-router-dom";
 
 function DashboardComponent() {
-
   const loggedInUserData = localStorage.getItem("value");
   const userFinalData = JSON.parse(loggedInUserData);
   const userId = userFinalData._id;
@@ -18,7 +17,7 @@ function DashboardComponent() {
     backgroundColor: "#26b78a1c",
     height: "auto",
     width: "95%",
-    height : '550px',
+    height: "550px",
     margin: "20px 0 0 31px",
     borderRadius: "7px",
   };
@@ -41,28 +40,35 @@ function DashboardComponent() {
 
   const { data, isError } = userData;
 
-  const networkStatus = data?.status
+  const networkStatus = data?.status;
 
   const userDataMapping = data?.data?.data;
 
   const totalLeaveAvailable = userDataMapping?.leaveAvailable;
   const totalLeaveTaken = userDataMapping?.leaveTaken;
 
-  const sendUserIdForLeaveData = GetLeaveDataById(userId)
+  const sendUserIdForLeaveData = GetLeaveDataById(userId);
 
-  const leaveDates = sendUserIdForLeaveData?.data?.data?.data?.map(e => e.leaveDates)
-  const leaveType = sendUserIdForLeaveData?.data?.data?.data?.map(e => e.leaveType)
+  const leaveDates = sendUserIdForLeaveData?.data?.data?.data?.map(
+    (e) => e.leaveDates
+  );
+  const leaveType = sendUserIdForLeaveData?.data?.data?.data?.map(
+    (e) => e.leaveType
+  );
 
   return (
     <>
-    
-    {/* <NavbarComponent userData = {userFinalData}/> */}
+      {/* <NavbarComponent userData = {userFinalData}/> */}
 
-      <Grid >
+      <Grid>
         <Grid sx={dashboardParent}>
-        
           <Grid>
-            <Typography variant="h5" style={{fontSize: '4rem', padding: '20px 0 20px 30px'}}>Leaves Information :- </Typography>
+            <Typography
+              variant="h5"
+              style={{ fontSize: "4rem", padding: "20px 0 20px 30px" }}
+            >
+              Leaves Information :-{" "}
+            </Typography>
           </Grid>
           <Grid sx={dashboardCardParent}>
             <Grid sx={dashboardCard}>

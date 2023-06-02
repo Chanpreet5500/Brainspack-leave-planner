@@ -30,8 +30,8 @@ const ListView = () => {
   const navigate = useNavigate();
   const loggedInUser = localStorage.getItem("value");
   const finalData = JSON.parse(loggedInUser);
-  const firstName=finalData?.firstName;
-  const lastName=finalData?.lastName;
+  const firstName = finalData?.firstName;
+  const lastName = finalData?.lastName;
   const userId = finalData?._id;
 
   const [totalHours, setTotalHours] = useState({});
@@ -59,7 +59,7 @@ const ListView = () => {
       new Date(
         dateForWeek.getFullYear(),
         dateForWeek.getMonth(),
-        dateForWeek.getDate() 
+        dateForWeek.getDate()
       )
     ),
     date: "Today",
@@ -138,10 +138,8 @@ const ListView = () => {
   ];
 
   const checkHours = (headerDate, projectDate) => {
-  
-    
-    const checkDateFromHeader = new Date( headerDate.date);
-   
+    const checkDateFromHeader = new Date(headerDate.date);
+
     const checkYear = checkDateFromHeader.getFullYear();
     const checkMonth = checkDateFromHeader.getMonth() + 1;
     const checkDate = checkDateFromHeader.getDate();
@@ -149,7 +147,7 @@ const ListView = () => {
     const year2 = projectDate.formatDate.getFullYear();
     const month2 = projectDate.formatDate.getMonth() + 1;
     const date2 = projectDate.formatDate.getDate();
-   
+
     if (checkYear === year2 && checkMonth === month2 && checkDate === date2) {
       return true;
     }
@@ -218,8 +216,6 @@ const ListView = () => {
       setTotalHoursWeeks(arr);
     }
   }, [weekDataUser]);
-
-  
 
   return (
     <>
