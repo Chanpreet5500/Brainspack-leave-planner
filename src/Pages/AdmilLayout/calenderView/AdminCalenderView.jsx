@@ -42,7 +42,6 @@ export const AdminCalenderView = () => {
     "my_leave"
   );
 
-
   const handleChange = (event) => {
     setUserId(event.target.value);
     setDropdown(event.target.value);
