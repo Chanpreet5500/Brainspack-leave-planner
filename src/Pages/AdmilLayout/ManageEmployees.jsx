@@ -45,12 +45,13 @@ const ManageEmployees = () => {
   ];
 
   
-  const { data, refetch } = useQuery("employee-list", () => {
+  const { data } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   console.log(data)
 
   let employeeList = data?.data.userList;
+  console.log(employeeList, 'data from api')
 
   const searchEmployee = (event) => {
     setSearchBarValue(event.target.value);
