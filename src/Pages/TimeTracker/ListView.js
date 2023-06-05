@@ -1,7 +1,5 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import {
   CustomTableCell,
   CustomTableHead,
@@ -10,18 +8,20 @@ import {
   TableFooterNoRecord,
   WeekDayBox,
 } from "./styled";
+import { FetchFilterdWeekData } from "../ReactQuery/CustomHooks/TimeTracker";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
+import { Box, Typography, TableFooter } from "@mui/material";
+import TableBody from "@mui/material/TableBody";
+import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Typography, TableFooter } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
 import Modal from "../Dialog/Modal";
-import { FetchFilterdWeekData } from "../ReactQuery/CustomHooks/TimeTracker";
-import { QueryClient, useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ListView = () => {
