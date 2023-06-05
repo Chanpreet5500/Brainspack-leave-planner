@@ -8,7 +8,6 @@ import { TextField, FormControl } from "@mui/material";
 export const CustomTableCell = styled(TableCell)(({ theme }) => ({
   borderColor: "#ededed",
   fontSize: "18px",
-  // maxWidth:"142px",
   overflow:'hidden'
 }));
 export const CustomTableHead = styled(TableCell)(({ theme }) => ({
@@ -17,7 +16,6 @@ export const CustomTableHead = styled(TableCell)(({ theme }) => ({
 }));
 export const CustomEditButton = styled(Button)(({ theme }) => ({
   background: "#355edb",
-  // zIndex: 10,
   fontSize: "16px",
   marginRight: "5%",
   color: "#fff",
@@ -70,7 +68,6 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
 
 export const Input = styled(Field)(({ theme }) => ({
   border: "none",
-  maxWidth: "100px",
   fontSize: "16px",
   "&:focus-visible": {
     outline: "none",

@@ -43,12 +43,12 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
 }));
 
 export const RemoveRowButton = styled(Button)(({ theme }) => ({
-  background: "#c94328",
+  background: "#ba351a",
   marginTop: "15px",
   color: "#fff",
   textTransform: "capitalize",
   fontSize: "14px",
   "&:hover": {
-    background: "#ba351a",
+    background: "#c94328",
   },
 }));
