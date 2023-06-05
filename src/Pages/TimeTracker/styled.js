@@ -53,7 +53,7 @@ export const Main = styled(Box)(({ theme }) => ({
 export const Username = styled(Box)(({ theme }) => ({
   padding: "5px",
   fontSize: "18px",
-  color: "#7c7c7c",
+  color: "black",
   fontWeight: "500",
 }));
 
