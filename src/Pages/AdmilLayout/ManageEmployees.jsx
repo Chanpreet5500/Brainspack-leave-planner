@@ -132,7 +132,7 @@ const ManageEmployees = () => {
               employeeData.map((element, index) => {
                 return (
                   <>
-                    <TableRow sx={{ cursor: "url(Logo-light-versuion.png)" }}>
+                    <TableRow key={index} sx={{ cursor: "url(Logo-light-versuion.png)" }}>
                       <CustomTableCell>{index + 1}.</CustomTableCell>
                       <CustomTableCell>
                         {`${element.firstName} ${element.lastName}`}

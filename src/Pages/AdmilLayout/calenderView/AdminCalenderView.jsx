@@ -43,8 +43,7 @@ export const AdminCalenderView = () => {
 
   useEffect(() => {
     let arrayOfColor = [];
-    employeeList?.map((element) => {
-      console.log(element, "empoloyee");
+    employeeList?.map((element, index) => {
       arrayOfColor.push({
         _id: element._id,
         userColor: setRandomColor(),
@@ -73,7 +72,6 @@ export const AdminCalenderView = () => {
           backgroundColor: colorValue,
           borderColor: colorValue,
           textColor: "black",
-          cursorColor: colorValue,
           extendedProps: {
             type: e.leaveType,
             firstName: e.userId?.firstName,
@@ -122,10 +120,9 @@ export const AdminCalenderView = () => {
             <MenuItem selected value={"all-users"}>
               <em>All User Data</em>
             </MenuItem>
-            {dropDownList?.map((element) => {
-              console.log(element, "_id");
-              return (
-                <CustomMenu value={element._id}>
+            {dropDownList?.map((element, index) => {
+              return <>
+                <CustomMenu key={element._id} value={element._id}>
                   <Typography>
                     {element.firstName + " " + element.lastName}
                   </Typography>
@@ -133,7 +130,7 @@ export const AdminCalenderView = () => {
                     sx={{ background: randomColorForNames(element._id) }}
                   ></CustomBox>
                 </CustomMenu>
-              );
+              </>
             })}
           </DropDown>
         </CalendarContainer>

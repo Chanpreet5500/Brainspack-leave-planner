@@ -18,7 +18,11 @@ export const UserLeave = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-  const { data: apiData } = GetLeaveDataById(userId, "my_leave");
+
+  const { data: apiData } = GetLeaveDataById(
+    userId,
+    "my_leave"
+  );
 
   function visibleModal(events) {
     setShowModal(true);
@@ -37,7 +41,7 @@ export const UserLeave = (props) => {
 
   useEffect(() => {
     if (apiData) {
-      const allLeaves = apiData?.data?.data?.map((e, i) => {
+      const allLeaves = apiData?.data?.data?.map((e) => {
         return {
           start: e.leaveDates,
           title: e.userId.firstName + " " + e.userId.lastName,
