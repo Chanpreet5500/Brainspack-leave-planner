@@ -7,9 +7,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ListView from "./ListView";
 import CalendarView from "./CalendarView/CalendarView";
-import { Button } from "@mui/material";
 import Addtask from "./AddTask/Addtask";
-import { Outlet } from "react-router-dom";
 
 const Timetracker = () => {
   const [value, setValue] = useState("listView");
@@ -65,7 +63,7 @@ const Timetracker = () => {
             <CalendarView />
           </TabPanel>
           <TabPanel value="addTask">
-            <Addtask setValue={setValue}/>
+            <Addtask setValue={setValue} />
           </TabPanel>
         </TabContext>
       </Box>
