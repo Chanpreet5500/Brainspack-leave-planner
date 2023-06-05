@@ -247,9 +247,7 @@ function Login() {
                       {props.errors.password}
                     </Typography>
                     <FormControl
-                      sx={{
-                        // width: "450px",
-                      }}
+                     
                     >
                       <Select
                         labelId="demo-simple-select-label"

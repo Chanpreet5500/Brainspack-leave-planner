@@ -60,9 +60,9 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
     borderWidth: "0px !important",
   },
   "& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
-  {
-    borderColor: "#000 !important",
-  },
+    {
+      borderColor: "#000 !important",
+    },
   maxWidth: "170px !important",
 }));
 

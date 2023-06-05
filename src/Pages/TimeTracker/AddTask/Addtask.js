@@ -223,7 +223,7 @@ const Addtask = ({ setValue }) => {
                                             />
                                           </Box>
                                         </CustomTableCell>
-                                        <CustomTableCell>
+                                        <CustomTableCell sx={{ paddingTop: 0 }}>
                                           <RemoveRowButton
                                             sx={{
                                               opacity:

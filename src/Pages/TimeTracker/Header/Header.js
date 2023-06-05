@@ -261,7 +261,7 @@ const Header = ({ data }) => {
   return (
     <>
       <HeaderMainBox>
-        <UserDetailsBox>
+        <UserDetailsBox  >
           <ArrowBackIosNewIcon sx={{ color: "#174dc2" }} />
           <AccountCircleIcon sx={{ color: "#ebebeb", fontSize: "3rem" }} />
           <Username component={"span"}>{firstName + " " + lastName}</Username>
