@@ -27,15 +27,14 @@ import ManageEmployees from "../AdmilLayout/ManageEmployees";
 import GroupIcon from '@mui/icons-material/Group';
 import { useQuery } from "react-query";
 import axios from "axios";
-// import  Alert  from '@mui/material/Alert'
-// import  Snackbar  from '@mui/material/Snackbar'
+
 
 function NavbarComponent(props) {
   const { values } = props;
   const firstName = values?.firstName;
   const [open, setOpen] = useState(false);
 
-  // const loggedInUserName = props?.userData?.name
+  
   const [logoutButton, setLogoutButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -76,9 +75,7 @@ function NavbarComponent(props) {
   }
 
   function navigation(value) {
-    // <Snackbar open={open} autoHideDuration={2000}>
-    //   <Alert severity='success'>Good</Alert>
-    // </Snackbar>
+   
 
     if (value) {
       navigate(`/${value}`);
@@ -92,9 +89,8 @@ function NavbarComponent(props) {
 
   const navbarButtonParent = {
     display: "flex",
-    margin: "10px 20px 0 0",
-    width: "19%",
-    justifyContent: "space-between",
+    margin: "10px 30px 0 0",
+
     cursor:'pointer'
   };
 
@@ -164,7 +160,7 @@ function NavbarComponent(props) {
             </IconButton>
 
             <Drawer
-              // aria-label="drawer"
+              
               open={isOpen}
               onClose={() => setIsOpen(false)}
               anchor="left"
@@ -247,11 +243,11 @@ function NavbarComponent(props) {
         </Grid>
 
         <Grid sx={navbarButtonParent}>
-          <Grid sx={notificationButton}>
+          {/* <Grid sx={notificationButton}>
             <NotificationsIcon
               style={{ fontSize: "25px", padding: "4px 8px" }}
             />
-          </Grid>
+          </Grid> */}
 
           <Grid sx={profileButtonParent} onClick={ShowLogout}>
             <Grid>
