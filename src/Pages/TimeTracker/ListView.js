@@ -66,8 +66,6 @@ const ListView = () => {
     date: "Today",
   });
 
-  
-
   const {
     data: weekDataUser,
     refetch,
@@ -222,18 +220,18 @@ const ListView = () => {
   }, [weekDataUser]);
 
   const confirmDelete = (id) => {
-    setRowId(id)
+    setRowId(id);
     setOpenModal(true);
   };
 
   const handleModalClose = () => {
     setOpenModal(false);
-  }
+  };
 
   return (
     <>
       <Box>
-      {isFetching ? <Loader /> : ""}
+        {isFetching ? <Loader /> : ""}
         <ConfirmationModal
           openModal={openModal}
           setOpenModal={setOpenModal}
@@ -311,7 +309,6 @@ const ListView = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-         
             {apiData?.map((row, index) => {
               dayTotalHours.push(parseInt(row.hours));
               return (
