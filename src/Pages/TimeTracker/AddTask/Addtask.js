@@ -72,9 +72,9 @@ const Addtask = ({ setValue }) => {
     setOpen(false);
   };
 
-  const disableWeekEnds = (date) =>{
+  const disableWeekEnds = (date) => {
     return date.$d.getDay() === 0 || date.$d.getDay() === 6;
-  }
+  };
 
   return (
     <>
