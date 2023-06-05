@@ -276,7 +276,7 @@ const Header = ({ data }) => {
             }}
           />
           {log == "daily" ? (
-            <Box component="p">{navBarDate.date}</Box>
+            <Box component="p">{navBarDate?.date}</Box>
           ) : (
             <Box component="p">
               {weekFIrstDay.date} - {weekLastDay.date}
