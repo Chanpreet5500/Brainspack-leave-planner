@@ -221,6 +221,12 @@ const Addtask = ({ setValue }) => {
                                         </CustomTableCell>
                                         <CustomTableCell>
                                           <RemoveRowButton
+                                            sx={{
+                                              opacity:
+                                                props.values.tasks.length === 1
+                                                  ? 0.5
+                                                  : 1,
+                                            }}
                                             onClick={() =>
                                               arrayForm.remove(index)
                                             }
