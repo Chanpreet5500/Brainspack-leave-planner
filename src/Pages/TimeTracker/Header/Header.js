@@ -1,7 +1,7 @@
 import React from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
 import {
   ArrowBack,
   ArrowForward,
@@ -267,7 +267,8 @@ console.log(navbarDate,'navbarDate')
           <ArrowBackIosNewIcon sx={{ color: "#174dc2" }} />
           <AccountCircleIcon sx={{ color: "#ebebeb", fontSize: "3rem" }} />
           <Username component={"span"}>{firstName + " " + lastName}</Username>
-          <KeyboardArrowDownIcon sx={{ padding: "10px" }} />
+          
+          
         </UserDetailsBox>
 
         <DateBox>
