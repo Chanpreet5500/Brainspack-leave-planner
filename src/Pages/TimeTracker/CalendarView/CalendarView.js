@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Box, Snackbar, IconButton } from "@mui/material";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
 import CalendarModalComponent from "./CalendarModal";
 import {
   DeleteUserData,
@@ -19,6 +15,7 @@ import {
 } from "./CalenderStyled";
 import { CustomDeleteButton, CustomEditButton } from "../styled";
 import Loader from "../../Loader/Loader";
+import { FullCalender } from "../../FullCalender/FullCalender";
 
 const CalendarView = () => {
   const [events, setEvents] = useState([]);
@@ -30,9 +27,9 @@ const CalendarView = () => {
   const loggedInUserData = localStorage.getItem("value");
   const userFinalData = JSON.parse(loggedInUserData);
   const userId = userFinalData._id;
-  const { data ,isFetching} = GetUserData(userId);
+  const { data, isFetching } = GetUserData(userId);
 
-  const { mutate, isError ,isLoading} = DeleteUserData();
+  const { mutate, isError, isLoading } = DeleteUserData();
 
   const handleDelete = (eventId) => {
     setUserId(eventId);
@@ -59,7 +56,7 @@ const CalendarView = () => {
       return arrayOfEvents.push({
         title: element.projectName,
         date: element.date,
-        start: element.date,
+        allDay: true,
         id: element._id,
         display: element.taskDescription,
         backgroundColor: "#0f8d47",
@@ -84,8 +81,8 @@ const CalendarView = () => {
         const event = {
           title: "Weekend Holiday",
           start: date,
-          end: date,
-          display: "true",
+          allDay: true,
+          display: "Weekend Holiday",
           backgroundColor: "#1976d2a6",
           borderColor: "#fff",
           borderRadius: "3px",
@@ -112,7 +109,7 @@ const CalendarView = () => {
 
   return (
     <>
-    {isLoading || isFetching?<Loader/>:""}
+      {isLoading || isFetching ? <Loader /> : ""}
       <Snackbar
         open={open}
         autoHideDuration={2000}
@@ -136,17 +133,7 @@ const CalendarView = () => {
           </>
         }
       ></Snackbar>
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-        initialView="dayGridMonth"
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,listWeek",
-        }}
-        events={events?.length ? events : []}
-        eventClick={(e) => (e ? visibleModal(e) : "")}
-      />
+      <FullCalender events={events} eventClick={visibleModal} />
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}

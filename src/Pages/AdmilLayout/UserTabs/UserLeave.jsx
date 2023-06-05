@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
 import { GetLeaveDataById } from "../../ReactQuery/CustomHooks/LeavePlanner";
 import { Box, Modal } from "@mui/material";
 import {
@@ -11,6 +7,7 @@ import {
 } from "../../TimeTracker/CalendarView/CalenderStyled";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 import CloseIcon from "@mui/icons-material/Close";
+import { FullCalender } from "../../FullCalender/FullCalender";
 
 export const UserLeave = (props) => {
   const { userId } = props;
@@ -18,11 +15,7 @@ export const UserLeave = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-
-  const { data: apiData } = GetLeaveDataById(
-    userId,
-    "my_leave"
-  );
+  const { data: apiData } = GetLeaveDataById(userId, "my_leave");
 
   function visibleModal(events) {
     setShowModal(true);
@@ -64,22 +57,10 @@ export const UserLeave = (props) => {
   }, [apiData]);
   return (
     <>
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-        initialView="dayGridMonth"
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,listWeek",
-        }}
-        events={leavesData?.length ? leavesData : []}
-        eventClick={(e) => (e ? visibleModal(e) : "")}
-      />
+      <FullCalender events={leavesData} eventClick={visibleModal} />
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
         sx={{ width: "100%" }}
       >
         <MainContainer>
