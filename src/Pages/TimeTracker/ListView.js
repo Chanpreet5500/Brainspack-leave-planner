@@ -23,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
 import ConfirmationModal from "../Dialog/ConfirmationModal";
 import axios from "axios";
+import Loader from "../Loader/Loader";
 
 const ListView = () => {
   const dateForWeek = new Date();
@@ -65,7 +66,13 @@ const ListView = () => {
     date: "Today",
   });
 
-  const { data: weekDataUser, refetch } = FetchFilterdWeekData({
+  
+
+  const {
+    data: weekDataUser,
+    refetch,
+    isFetching,
+  } = FetchFilterdWeekData({
     userId,
     weekFIrstDay,
     weekLastDay,
@@ -226,6 +233,7 @@ const ListView = () => {
   return (
     <>
       <Box>
+      {isFetching ? <Loader /> : ""}
         <ConfirmationModal
           openModal={openModal}
           setOpenModal={setOpenModal}
@@ -303,6 +311,7 @@ const ListView = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+         
             {apiData?.map((row, index) => {
               dayTotalHours.push(parseInt(row.hours));
               return (

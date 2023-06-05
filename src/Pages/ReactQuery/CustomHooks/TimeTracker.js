@@ -39,8 +39,7 @@ const fetchWeekData = (data) => {
 export const FetchFilterdWeekData = (id) => {
   return useQuery("logged-user-week-data", () => fetchWeekData(id), {
     retry: false,
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
+    
   });
 };
 
@@ -53,7 +52,7 @@ export const GetDataById = (id) => {
     retry: false,
     refetchOnMount: true,
   });
-  // refetchInterval:2000,
+  
 };
 
 const fetchEditData = (id) => {

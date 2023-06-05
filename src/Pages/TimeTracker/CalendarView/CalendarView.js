@@ -18,6 +18,7 @@ import {
   MainContainer,
 } from "./CalenderStyled";
 import { CustomDeleteButton, CustomEditButton } from "../styled";
+import Loader from "../../Loader/Loader";
 
 const CalendarView = () => {
   const [events, setEvents] = useState([]);
@@ -29,9 +30,9 @@ const CalendarView = () => {
   const loggedInUserData = localStorage.getItem("value");
   const userFinalData = JSON.parse(loggedInUserData);
   const userId = userFinalData._id;
-  const { data } = GetUserData(userId);
+  const { data ,isFetching} = GetUserData(userId);
 
-  const { mutate, isError } = DeleteUserData();
+  const { mutate, isError ,isLoading} = DeleteUserData();
 
   const handleDelete = (eventId) => {
     setUserId(eventId);
@@ -111,6 +112,7 @@ const CalendarView = () => {
 
   return (
     <>
+    {isLoading || isFetching?<Loader/>:""}
       <Snackbar
         open={open}
         autoHideDuration={2000}

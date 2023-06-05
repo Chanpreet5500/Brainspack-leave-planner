@@ -26,6 +26,7 @@ import {
 } from "@mui/icons-material";
 import { useQuery } from "react-query";
 import axios from "axios";
+import Loader from "../Loader/Loader";
 const ManageEmployees = () => {
   const [employeeData, setEmployeeData] = useState([]);
   const [searchBarValue, setSearchBarValue] = useState("");
@@ -40,7 +41,7 @@ const ManageEmployees = () => {
     "",
   ];
 
-  const { data } = useQuery("employee-list", () => {
+  const { data,isFetching } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
 
@@ -72,6 +73,7 @@ const ManageEmployees = () => {
 
   return (
     <>
+    {isFetching?<Loader/>:""}
       <Box sx={{ margin: "40px" }}>
         <Box
           sx={{

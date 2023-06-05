@@ -20,6 +20,7 @@ import {
 } from "../../TimeTracker/CalendarView/CalenderStyled";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
+import Loader from "../../Loader/Loader";
 
 export const AdminCalenderView = () => {
   const [userId, setUserId] = useState("all-users");
@@ -30,7 +31,7 @@ export const AdminCalenderView = () => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-  const { data } = useQuery("employee-list", () => {
+  const { data,isFetching } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   const employeeList = data?.data?.userList;
@@ -109,6 +110,7 @@ export const AdminCalenderView = () => {
 
   return (
     <>
+    {isFetching?<Loader/>:""}
       <MainContainerCalender>
         <CalendarContainer>
           <DropDown

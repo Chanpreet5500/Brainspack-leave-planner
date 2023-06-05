@@ -25,6 +25,7 @@ import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import { ValidationSchema } from "./ValidationSchema";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { CircularBar } from "../CalendarView/CalenderStyled";
+import Loader from "../../Loader/Loader";
 
 const Addtask = ({ setValue }) => {
   const [open, setOpen] = useState(false);
@@ -49,7 +50,7 @@ const Addtask = ({ setValue }) => {
       values
     );
   });
-
+ const {mutate,isSubmitting} = addProjectData
   const handleSubmit = (values) => {
     addProjectData.mutate(values.tasks);
 
@@ -69,6 +70,8 @@ const Addtask = ({ setValue }) => {
   };
 
   return (
+    <>
+
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <Snackbar
         open={open}
@@ -107,6 +110,7 @@ const Addtask = ({ setValue }) => {
                 {(arrayForm) => {
                   return (
                     <>
+                    {isSubmitting?<Loader/>:""}
                       <TableContainer
                         component={Paper}
                         sx={{
@@ -301,6 +305,7 @@ const Addtask = ({ setValue }) => {
         }}
       </Formik>
     </LocalizationProvider>
+    </>
   );
 };
 
