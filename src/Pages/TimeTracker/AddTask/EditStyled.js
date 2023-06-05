@@ -30,7 +30,6 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
     padding: "0 !important",
     paddingLeft: 0,
   },
-
   "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
     borderWidth: "0px !important",
     padding: "0 !important",

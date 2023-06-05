@@ -70,7 +70,6 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
 
 export const Input = styled(Field)(({ theme }) => ({
   border: "none",
-  maxWidth: "100px",
   fontSize: "16px",
   "&:focus-visible": {
     outline: "none",
