@@ -9,106 +9,137 @@ import {
   Button,
   InputLabel,
   FormControl,
+  OutlinedInput,
+  Box,
 } from "@mui/material";
-import { DatePicker, LocalizationProvider,StaticDatePicker } from "@mui/x-date-pickers";
+import {
+  DatePicker,
+  LocalizationProvider,
+  StaticDatePicker,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { GetDashboardData } from "../ReactQuery/CustomHooks/LeavePlanner";
 import NavbarComponent from "../Navbar/Navbar";
 import { Formik } from "formik";
-import { LeaveValues } from '../ReactQuery/CustomHooks/LeavePlanner';
-import { differenceInDays, format } from 'date-fns';
+import { LeaveValues } from "../ReactQuery/CustomHooks/LeavePlanner";
+import { differenceInDays, format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 function LeaveComponent() {
-
-  const userData = localStorage.getItem('value');
-  const id = JSON.parse(userData)
-  const finalUserId = id._id
-  console.log(finalUserId)
+  const userData = localStorage.getItem("value");
+  const id = JSON.parse(userData);
+  const finalUserId = id._id;
+  console.log(finalUserId);
 
   const holidayType = ["Sick Leave", "Travel Leave", "Ocassional Leave"];
 
   const popupFieldsParent = {
     display: "flex",
-    height: "340px",
+    height: "100%",
+    width: "100%",
     flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems : 'center',
+    justifyContent: "space-around",
+    alignItems: "center",
   };
 
   const loginButton = {
     backgroundColor: "#26b78a",
-    margin: "0 84px",
+    marginBottom: "20px",
   };
 
   const dashboardParent = {
-    backgroundColor: "#26b78a1c",
-    height : '562px',
-    paddingTop : '30px',
-    marginTop : '10px'
+    background:
+      " linear-gradient(to left top,  rgba(51, 51, 51, 1) 0%,  rgb(0 0 0 / 90%)  ,rgba(85 173 136), rgba(51, 51, 51, 1)   100% )",
+
+    height: "90vh",
+    paddingTop: "30px",
+    marginTop: "10px",
+    display: "grid",
+    placeItems: "center",
   };
+
+  const selectLeaveType ={
+    width: "80%",
+    boxShadow: "none",
+
+    ".MuiOutlinedInput-notchedOutline": {
+      border: 0,
+      borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+      borderRadius: "0px",
+    },
+    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+      {
+        border: 0,
+        borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+      },
+    textAlign: "left",
+    "& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input ":
+      {
+        padding: "25px 14px 10px",
+      },
+    "& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon": {
+      top: "calc(60% - 0.5em)",
+    },
+  }
+
+  
 
   const x = LeaveValues();
 
   const { mutate } = x;
 
+  const navigate = useNavigate();
+
   const submitFormValue = (props) => {
+    const { startDateValue, endDateValue, leaveType, description } =
+      props.values;
 
-    const userValues = props.values ;
+    if (
+      startDateValue != "" &&
+      endDateValue != "" &&
+      leaveType != "" &&
+      description != ""
+    ) {
+      const dateValue = differenceInDays(
+        new Date(endDateValue.$d),
+        new Date(startDateValue.$d)
+      );
+      let startDateMonthHourValue = startDateValue.$d;
+      const finalDateForLeave = [];
 
-    const dateValue = differenceInDays(
-      new Date(userValues.endDateValue.$d),
-      new Date(userValues.startDateValue.$d)
-      )
+      for (let i = 0; i <= dateValue; i++) {
+        const a = new Date(startDateMonthHourValue);
 
-    let startDateMonthHourValue = userValues.startDateValue.$d
+        a.setDate(a.getDate() + i);
 
-    const startDateValue = userValues.startDateValue.$D
-    
-    const endDateValue = userValues.endDateValue.$D
+        const x = a.getDay();
 
-    const finalDateForLeave = []
-    
-    for(let i = 0 ; i <= dateValue ; i++){
-
-      const a = new Date(startDateMonthHourValue)
-
-      a.setDate(a.getDate() + i)
-
-      const x = a.getDay()
-
-      if(x != 0) {
-
-        let isoDate = format(new Date(a), 'yyyy-MM-dd');
-        finalDateForLeave.push(isoDate)
-
+        if (x != 0) {
+          let isDate = format(new Date(a), "yyyy-MM-dd");
+          finalDateForLeave.push(isDate);
+        }
       }
+      const data = {
+        leaveType: leaveType,
+        leaveDates: finalDateForLeave.map((leaves) => leaves),
+        description: description,
+        userId: finalUserId,
+      };
 
+      mutate(data);
+      navigate("/calendar");
     }
-
-    const data = {
-      leaveType : userValues?.leaveType,
-      leaveDates : finalDateForLeave.map(leaves => leaves),
-      description : userValues.description,
-      userId : finalUserId
-    }
-
-    let x = mutate(data)
-    
-  }
-
-  const gettingValueFromLocal = localStorage.getItem('value')
-  const userParsedData = JSON.parse(gettingValueFromLocal)
+  };
 
   return (
     <>
-      {/* <NavbarComponent userData={userParsedData} /> */}
-
       <Grid sx={dashboardParent}>
         <Paper
-          elevation={20}
-          style={{ height: "380px", width: "35%", margin: "0 auto", paddingTop : '40px' }}
+          style={{
+            height: "380px",
+            width: "30%",
+          }}
         >
-
           <Formik
             initialValues={{
               startDateValue: "",
@@ -117,7 +148,6 @@ function LeaveComponent() {
               description: "",
             }}
             validate={(value) => {
-              console.log(value, "VALIDATE VALUE");
               const errors = {};
               if (!value.startDateValue) {
                 errors.startDateValue = "Required";
@@ -132,33 +162,52 @@ function LeaveComponent() {
             }}
           >
             {(props) => {
-              console.log(props.values.startDateValue, 'BALUE')
               return (
                 <Grid sx={popupFieldsParent}>
-                  <Grid style={{width : '60%', alignContent : 'center'}}>
-                    <FormControl style={{width : '100%'}}>
-                      <InputLabel id="leavetypeBox">
-                        Select leave type
-                      </InputLabel>
-                      <Select
-                        name="leaveType"
-                        value={props.values.leaveType}
-                        labelId="leavetypeBox"
-                        label="Select leave type"
-                        onChange={props.handleChange}
-                      >
-                        {holidayType.map((e) => (
-                          <MenuItem value={e} key={e}>
-                            {e}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                  <Grid
+                    style={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Select
+                      labelId="leavetypeBox"
+                      label="Select leave type"
+                      name="leaveType"
+                      onChange={props.handleChange}
+                      value={props.values.leaveType}
+                      renderValue={(selected) => {
+                        if (selected.length === 0) {
+                          return <Box component="span">Select Leave Type</Box>;
+                        }
+
+                        return selected;
+                      }}
+                      displayEmpty
+                      sx={selectLeaveType}
+                    >
+                      <MenuItem disabled value="">
+                        Select Leave Type
+                      </MenuItem>
+                      {holidayType.map((e, index) => (
+                        <MenuItem value={e} key={e}>
+                          {e}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </Grid>
 
-                  <Grid>
+                  <Grid
+                    sx={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
+                        sx={{ width: "80%" }}
                         name="startDateValue"
                         label="Start Date"
                         value={props.values.startDateValue}
@@ -170,15 +219,25 @@ function LeaveComponent() {
                     </LocalizationProvider>
                   </Grid>
 
-                  <Grid>
+                  <Grid
+                    sx={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      {/* <Box style={{ height: "20px" }}></Box> */}
-
                       <DatePicker
+                        sx={{ width: "80%" }}
                         name="endDateValue"
                         label="End Date"
                         minDate={props.values.startDateValue}
-                        value={(props.values.startDateValue <= props.values.endDateValue ? props.values.endDateValue : '' )}
+                        value={
+                          props.values.startDateValue <=
+                          props.values.endDateValue
+                            ? props.values.endDateValue
+                            : ""
+                        }
                         onChange={(value) =>
                           props.setFieldValue("endDateValue", value, "true")
                         }
@@ -186,23 +245,35 @@ function LeaveComponent() {
                       />
                     </LocalizationProvider>
                   </Grid>
-                  <Grid style={{ height: "67px" }}>
+                  <Grid
+                    sx={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
                     <TextareaAutosize
                       name="description"
                       placeholder="Description"
                       variant="standard"
                       onChange={props.handleChange}
                       style={{
-                        width: "258px",
-                        marginBottom: "20px",
-                        height: "21px",
-                        padding: "15px 0 13px 13px",
-                        fontSize: "15px",
+                        width: "75%",
+                        marginBottom: "10px",
+
+                        padding: "15px 0 13px 15px",
+                        fontSize: "16px",
+                        borderRadius: "5px",
                       }}
                     />
                   </Grid>
 
-                  <Button variant="contained" sx={loginButton} onClick={() => submitFormValue(props)}>
+                  <Button
+                    variant="contained"
+                    sx={loginButton}
+                    onClick={() => submitFormValue(props)}
+                    type="submit"
+                  >
                     Submit
                   </Button>
                 </Grid>
@@ -210,8 +281,6 @@ function LeaveComponent() {
             }}
           </Formik>
         </Paper>
-
-        
       </Grid>
     </>
   );
