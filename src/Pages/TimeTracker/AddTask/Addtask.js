@@ -56,7 +56,6 @@ const Addtask = ({ setValue }) => {
   const { mutate, isSubmitting } = addProjectData;
   const handleSubmit = (values) => {
     mutate(values.tasks);
-
     if (!addProjectData.isError) {
       setTimeout(() => {
         setValue("listView");
