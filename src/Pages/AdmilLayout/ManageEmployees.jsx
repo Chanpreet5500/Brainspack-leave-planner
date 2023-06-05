@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import {
   ArrowBackIosNew,
   AccountCircle,
-  KeyboardArrowDown,
+ 
 } from "@mui/icons-material";
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -89,7 +89,8 @@ const ManageEmployees = () => {
             <Username component="span">
               {uniqueId.toUpperCase()} - {admin.firstName} {admin.lastName}
             </Username>
-            <KeyboardArrowDown sx={{ padding: "10px" }} />
+          
+          
           </UserDetailsBox>
 
           <TextField
