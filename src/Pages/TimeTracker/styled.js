@@ -62,13 +62,15 @@ export const PickDate = styled(DatePicker)(({ theme }) => ({
     borderWidth: "0px !important",
   },
   "& .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
-    {
-      borderColor: "#000 !important",
-    },
+  {
+    borderColor: "#000 !important",
+  },
+  maxWidth: "170px !important",
 }));
 
 export const Input = styled(Field)(({ theme }) => ({
   border: "none",
+  maxWidth: "100px",
   fontSize: "16px",
   "&:focus-visible": {
     outline: "none",

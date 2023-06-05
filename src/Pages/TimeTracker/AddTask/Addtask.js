@@ -25,6 +25,7 @@ import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import { ValidationSchema } from "./ValidationSchema";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { CircularBar } from "../CalendarView/CalenderStyled";
+import dayjs from "dayjs";
 
 const Addtask = ({ setValue }) => {
   const [open, setOpen] = useState(false);
@@ -43,8 +44,14 @@ const Addtask = ({ setValue }) => {
     hours: "",
   };
 
+
+  const date = dayjs()
+
   const addProjectData = useMutation(userId, (values) => {
-    return axios.post(`http://localhost:5233/setTimeTrackerData/${userId}`, values);
+    return axios.post(
+      `http://localhost:5233/setTimeTrackerData/${userId}`,
+      values
+    );
   });
 
   const handleSubmit = (values) => {
@@ -154,6 +161,7 @@ const Addtask = ({ setValue }) => {
                                       <CustomTableCell>
                                         <Field
                                           as={PickDate}
+                                          maxDate={date}
                                           value={props.values.date}
                                           name={`tasks.${index}.date`}
                                           onChange={(value) =>

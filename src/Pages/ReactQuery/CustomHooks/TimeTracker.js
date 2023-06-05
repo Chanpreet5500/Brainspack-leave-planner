@@ -10,8 +10,8 @@ const fetchTimeTracker = (id) => {
 export const GetUserData = (id) => {
   return useQuery("getTimeTrackerData", () => fetchTimeTracker(id), {
     retry: false,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
+    // refetchOnWindowFocus: true,
+    // refetchOnMount: true,
   });
 };
 
@@ -61,7 +61,12 @@ const fetchEditData = (id) => {
 };
 
 export const DeleteUserData = (data) => {
-  const result = useMutation(deleteApi);
+  const queryClients = useQueryClient();
+  const result = useMutation(deleteApi,{
+    onSuccess(){
+      queryClients.invalidateQueries("getTimeTrackerData");
+    }
+  });
   return result;
 };
 

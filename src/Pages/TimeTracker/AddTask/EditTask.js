@@ -7,7 +7,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Input, Snackbar, IconButton, TextField } from "@mui/material";
+import {
+  Input,
+  Snackbar,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -23,10 +29,11 @@ import {
 import { Formik } from "formik";
 import { useMutation } from "react-query";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import validationSchema  from "../formvalidation/validationSchema"
+import validationSchema from "../formvalidation/validationSchema";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import moment from "moment";
+import { CircularBar } from "../CalendarView/CalenderStyled";
 
 let initialValues = {
   date: "",
@@ -174,7 +181,7 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.projectName &&
-                          props.touched.projectName ? (
+                        props.touched.projectName ? (
                           <ErrorText>{props.errors.projectName}</ErrorText>
                         ) : null}
                       </CustomTableCell>
@@ -218,7 +225,7 @@ const EditTask = () => {
                           placeholder="Enter project name"
                         />
                         {props.errors.taskDescription &&
-                          props.touched.taskDescription ? (
+                        props.touched.taskDescription ? (
                           <ErrorText>{props.errors.taskDescription}</ErrorText>
                         ) : null}
                       </CustomTableCell>
@@ -253,8 +260,24 @@ const EditTask = () => {
                 </Table>
               </TableContainer>
               <ButtonWrapper>
-                <ButtonContainer type="submit" onClick={props.handleSubmit}>
-                  Update Task
+                <ButtonContainer
+                  type="submit"
+                  onClick={props.handleSubmit}
+                  disabled={props.isSubmitting}
+                  sx={{
+                    opacity: props.isSubmitting ? 0.7 : 1,
+                  }}
+                >
+                  {props.isSubmitting ? (
+                    <>
+                      <CircularBar />
+                      <Typography sx={{ color: "#fff", marginLeft: "4px" }}>
+                        Updating
+                      </Typography>
+                    </>
+                  ) : (
+                    "Update Task"
+                  )}
                 </ButtonContainer>
               </ButtonWrapper>
             </>

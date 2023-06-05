@@ -117,7 +117,7 @@ export const GetLeaveDataForAdmin = (id) => {
     ["get-leave-data-admin", id],
     () => getLeaveDataForAdmin(id),
     {
-      refetchOnMount: true,
+      // refetchOnMount: true,
       retry: false
     }
   );

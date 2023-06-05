@@ -22,7 +22,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 
 export const AdminCalenderView = () => {
-  const localData = JSON.parse(localStorage.getItem("value"));
   const [userId, setUserId] = useState("all-users");
   const [colorToUser, setColorToUser] = useState([]);
   const [dropdown, setDropdown] = useState("all-users");
@@ -36,15 +35,16 @@ export const AdminCalenderView = () => {
   });
   const employeeList = data?.data?.userList;
   const { data: apiData, refetch: refetedUser } = GetLeaveDataForAdmin(userId);
-  const handleChange = (event) => {
-    setUserId(event.target.value);
+
+  const changeDropDown = (event) => {
     setDropdown(event.target.value);
+    setUserId(event.target.value);
     refetedUser();
   };
 
   useEffect(() => {
     let arrayOfColor = [];
-    employeeList?.map((element, index) => {
+    employeeList?.map(element => {
       arrayOfColor.push({
         _id: element._id,
         userColor: setBg(),
@@ -113,16 +113,14 @@ export const AdminCalenderView = () => {
       <MainContainerCalender>
         <CalendarContainer>
           <DropDown
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
             value={dropdown}
-            onChange={handleChange}
+            onChange={(e)=>changeDropDown(e)}
           >
-            <MenuItem selected value={"all-users"}>
+            <MenuItem  value={"all-users"}>
               <em>All User Data</em>
             </MenuItem>
-            {dropDownList?.map((element, index) => {
-              return <>
+            {dropDownList?.map((element) => {
+              return( 
                 <CustomMenu key={element._id} value={element._id}>
                   <Typography>
                     {element.firstName + " " + element.lastName}
@@ -131,7 +129,7 @@ export const AdminCalenderView = () => {
                     sx={{ background: putColor(element._id) }}
                   ></CustomBox>
                 </CustomMenu>
-              </>
+              )
             })}
           </DropDown>
         </CalendarContainer>
