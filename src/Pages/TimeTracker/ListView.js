@@ -23,6 +23,7 @@ import { FetchFilterdWeekData } from "../ReactQuery/CustomHooks/TimeTracker";
 import { QueryClient, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loader from "../Loader/Loader";
 
 const ListView = () => {
   const dateForWeek = new Date();
@@ -65,7 +66,13 @@ const ListView = () => {
     date: "Today",
   });
 
-  const { data: weekDataUser, refetch } = FetchFilterdWeekData({
+  
+
+  const {
+    data: weekDataUser,
+    refetch,
+    isFetching,
+  } = FetchFilterdWeekData({
     userId,
     weekFIrstDay,
     weekLastDay,
@@ -162,7 +169,9 @@ const ListView = () => {
 
   const deleteProjectData = useMutation(
     () => {
-      return axiosInstance.delete(`http://localhost:5233/deleteTimeTrackerData/${rowId}`);
+      return axiosInstance.delete(
+        `http://localhost:5233/deleteTimeTrackerData/${rowId}`
+      );
     },
     {
       onSuccess() {
@@ -219,7 +228,8 @@ const ListView = () => {
 
   return (
     <>
-      <Box>
+       {isFetching ? <Loader /> : ""}
+      <Box sx={{position:'relative'}}>
         {openModal && (
           <Modal
             openModal={openModal}
@@ -300,6 +310,7 @@ const ListView = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+         
             {apiData?.map((row, index) => {
               dayTotalHours.push(parseInt(row.hours));
               return (

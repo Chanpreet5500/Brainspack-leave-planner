@@ -20,6 +20,7 @@ import {
 } from "../../TimeTracker/CalendarView/CalenderStyled";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
+import Loader from "../../Loader/Loader";
 
 export const AdminCalenderView = () => {
   const localData = JSON.parse(localStorage.getItem("value"));
@@ -31,7 +32,7 @@ export const AdminCalenderView = () => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-  const { data } = useQuery("employee-list", () => {
+  const { data,isFetching } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   const employeeList = data?.data?.userList;
@@ -112,6 +113,7 @@ export const AdminCalenderView = () => {
 
   return (
     <>
+    {isFetching?<Loader/>:""}
       <MainContainerCalender>
         <CalendarContainer>
           <DropDown
@@ -124,14 +126,14 @@ export const AdminCalenderView = () => {
               <em>All User Data</em>
             </MenuItem>
             {dropDownList?.map((element) => {
-              console.log(element, "_id");
+             
               return (
-                <CustomMenu value={element._id}>
+                <CustomMenu value={element._id} >
                   <Typography>
                     {element.firstName + " " + element.lastName}
                   </Typography>
                   <CustomBox
-                    sx={{ background: putColor(element._id) }}
+                    sx={{ background: putColor(element._id) ,cursor:"pointer !important"}}
                   ></CustomBox>
                 </CustomMenu>
               );

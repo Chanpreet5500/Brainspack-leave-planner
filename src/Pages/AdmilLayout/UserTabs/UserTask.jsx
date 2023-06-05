@@ -24,6 +24,7 @@ import {
 } from "../../TimeTracker/styled";
 import { UpdateStatus } from "../../ReactQuery/CustomHooks/TimeTracker";
 import { ButtonContainer, ButtonWrapper, HeadingModal, MainContainer } from "../../TimeTracker/CalendarView/CalenderStyled";
+import Loader from "../../Loader/Loader";
 
 const months = [
   "Jan",
@@ -72,7 +73,7 @@ export const UserTask = (props) => {
     date: "Today",
   });
 
-  const { data: weekDataUser, refetch } = FetchFilterdWeekData({
+  const { data: weekDataUser, refetch ,isFetching} = FetchFilterdWeekData({
     userId,
     weekFIrstDay,
     weekLastDay,
@@ -207,6 +208,7 @@ export const UserTask = (props) => {
   }
   return (
     <>
+    {isFetching?<Loader/>:''}
        <Modal
         open={open}
         onClose={() => setOpen(false)}

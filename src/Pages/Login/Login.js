@@ -84,12 +84,14 @@ function Login() {
 
   const forgotPasswordLink = {
     marginBottom: "20px",
+    marginTop:"12px"
   };
 
   const forgotPasswordText = {
     fontSize: "12px",
     marginLeft: "180px",
     textDecoration: "none",
+  
   };
 
   const textFields = {
@@ -219,6 +221,7 @@ function Login() {
                         position: "absolute",
                         zIndex: 13,
                         top: "265px",
+                       
                       }}
                     >
                       {props.errors.email}
@@ -245,7 +248,7 @@ function Login() {
                     </Typography>
                     <FormControl
                       sx={{
-                        width: "450px",
+                        // width: "450px",
                       }}
                     >
                       <Select
