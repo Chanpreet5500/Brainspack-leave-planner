@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
 import {
   CalendarContainer,
   CustomBox,
@@ -21,6 +17,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarModalComponent from "../../TimeTracker/CalendarView/CalendarModal";
 import Loader from "../../Loader/Loader";
+import { FullCalender } from "../../FullCalender/FullCalender";
 
 export const AdminCalenderView = () => {
   const [userId, setUserId] = useState("all-users");
@@ -136,17 +133,9 @@ export const AdminCalenderView = () => {
           </DropDown>
         </CalendarContainer>
         <CalendarContainer>
-          <FullCalendar
-            plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
-            initialView="dayGridMonth"
-            headerToolbar={{
-              left: "prev,next today",
-              center: "title",
-              right: "dayGridMonth,timeGridWeek,listWeek",
-            }}
-            events={leavesData?.length ? leavesData : []}
-            eventClick={(e) => (e ? visibleModal(e) : "")}
-            style={{ cursor: "pointer" }}
+          <FullCalender
+          events={leavesData}
+          eventClick={visibleModal}
           />
         </CalendarContainer>
         <Modal

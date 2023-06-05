@@ -15,7 +15,6 @@ import {
 import { Box, Select, MenuItem } from "@mui/material";
 
 const Header = ({ data }) => {
-  console.log(data);
   const {
     log,
     setLog,
@@ -259,7 +258,6 @@ const Header = ({ data }) => {
       compareDate();
     }
   };
-console.log(navbarDate,'navbarDate')
   return (
     <>
       <HeaderMainBox>

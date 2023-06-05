@@ -23,7 +23,6 @@ export default function ConfirmationModal({
   submit,
   handleClose,
 }) {
-  console.log(openModal, setOpenModal, title, submit);
   return (
     <>
       <Modal

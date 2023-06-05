@@ -8,7 +8,6 @@ import {
   Paper,
   TableRow,
   Box,
-  Button,
   Typography,
   Snackbar,
   IconButton,
@@ -27,6 +26,7 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import { CircularBar } from "../CalendarView/CalenderStyled";
 import Loader from "../../Loader/Loader";
 import dayjs from "dayjs";
+import { AddRow, ButtonBox, SaveButton } from "./AddStyled";
 
 const Addtask = ({ setValue }) => {
   const [open, setOpen] = useState(false);
@@ -71,6 +71,10 @@ const Addtask = ({ setValue }) => {
     }
     setOpen(false);
   };
+
+  const disableWeekEnds = (date) =>{
+    return date.$d.getDay() === 0 || date.$d.getDay() === 6;
+  }
 
   return (
     <>
@@ -164,6 +168,7 @@ const Addtask = ({ setValue }) => {
                                           <Field
                                             as={PickDate}
                                             maxDate={date}
+                                            shouldDisableDate={disableWeekEnds}
                                             value={props.values.date}
                                             name={`tasks.${index}.date`}
                                             onChange={(value) =>
@@ -250,41 +255,16 @@ const Addtask = ({ setValue }) => {
                             </TableBody>
                           </Table>
                         </TableContainer>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <Button
-                            onClick={() => arrayForm.push(initialValues)}
-                            sx={{
-                              background: "#55AD88",
-                              marginTop: "15px",
-                              color: "#fff",
-                              textTransform: "capitalize",
-                              fontSize: "14px",
-                              "&:hover": {
-                                background: "#4d9b78",
-                              },
-                            }}
-                          >
+                        <ButtonBox>
+                          <AddRow onClick={() => arrayForm.push(initialValues)}>
                             Add Row <AddIcon />{" "}
-                          </Button>
-                          <Button
+                          </AddRow>
+                          <SaveButton
                             sx={{
-                              background: "#355edb",
-                              marginTop: "15px",
-                              color: "#fff",
-                              textTransform: "capitalize",
-                              fontSize: "14px",
                               padding: props.isSubmitting
                                 ? "5px 11px"
                                 : "5px 25px",
                               opacity: props.isSubmitting ? 0.7 : 1,
-                              "&:hover": {
-                                background: "#3547bd",
-                              },
                             }}
                             type="submit"
                             disabled={props.isSubmitting}
@@ -303,8 +283,8 @@ const Addtask = ({ setValue }) => {
                             ) : (
                               "Save"
                             )}
-                          </Button>
-                        </Box>
+                          </SaveButton>
+                        </ButtonBox>
                       </>
                     );
                   }}
