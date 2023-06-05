@@ -90,7 +90,6 @@ function NavbarComponent(props) {
   const navbarButtonParent = {
     display: "flex",
     margin: "10px 30px 0 0",
-
     cursor:'pointer'
   };
 

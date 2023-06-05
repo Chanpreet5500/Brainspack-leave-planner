@@ -219,14 +219,13 @@ const Addtask = ({ setValue }) => {
                                             />
                                           </Box>
                                         </CustomTableCell>
-                                        <CustomTableCell sx={{ paddingTop:0}}>
+                                        <CustomTableCell sx={{ paddingTop: 0 }}>
                                           <RemoveRowButton
                                             sx={{
                                               opacity:
                                                 props.values.tasks.length === 1
                                                   ? 0.5
                                                   : 1,
-                                                 
                                             }}
                                             onClick={() =>
                                               arrayForm.remove(index)
@@ -238,7 +237,7 @@ const Addtask = ({ setValue }) => {
                                             <RemoveCircleOutlineOutlinedIcon
                                               sx={{ mr: "8px", color: "#fff" }}
                                             />
-                                            <Typography sx={{ color: "#fff"}}>
+                                            <Typography sx={{ color: "#fff" }}>
                                               Remove
                                             </Typography>
                                           </RemoveRowButton>
