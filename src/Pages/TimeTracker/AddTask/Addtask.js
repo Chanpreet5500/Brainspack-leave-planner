@@ -222,9 +222,11 @@ const Addtask = ({ setValue }) => {
                                           }
                                         >
                                           <RemoveCircleOutlineOutlinedIcon
-                                            sx={{ mr: "8px" }}
+                                            sx={{ mr: "8px", color: "#fff" }}
                                           />
-                                          Remove
+                                          <Typography sx={{ color: "#fff" }}>
+                                            Remove
+                                          </Typography>
                                         </RemoveRowButton>
                                       </CustomTableCell>
                                     </TableRow>

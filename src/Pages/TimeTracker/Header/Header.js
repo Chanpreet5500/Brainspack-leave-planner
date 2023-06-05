@@ -15,10 +15,11 @@ import {
 import { Box, Select, MenuItem } from "@mui/material";
 
 const Header = ({ data }) => {
+  console.log(data);
   const {
     log,
     setLog,
-    navBarDate,
+    navbarDate,
     setNavbarDate,
     weekFIrstDay,
     setWeekFirstDay,
@@ -33,8 +34,8 @@ const Header = ({ data }) => {
   const handleChange = (event) => {
     if (event.target.value == "daily") {
       const dataDate = {
-        formatDate: navBarDate.formatDate,
-        date: navBarDate.date,
+        formatDate: navbarDate.formatDate,
+        date: navbarDate.date,
       };
       setWeekFirstDay(dataDate);
       setWeekLastDay(dataDate);
@@ -68,9 +69,9 @@ const Header = ({ data }) => {
   const setDateBackward = () => {
     if (log != "weekly") {
       const newFormatDate = new Date(
-        navBarDate.formatDate.getFullYear(),
-        navBarDate.formatDate.getMonth(),
-        navBarDate.formatDate.getDate() - 1
+        navbarDate.formatDate.getFullYear(),
+        navbarDate.formatDate.getMonth(),
+        navbarDate.formatDate.getDate() - 1
       );
 
       const month = newFormatDate.getMonth();
@@ -113,9 +114,9 @@ const Header = ({ data }) => {
   const setDateForward = () => {
     if (log != "weekly") {
       const newFormatDate = new Date(
-        navBarDate.formatDate.getFullYear(),
-        navBarDate.formatDate.getMonth(),
-        navBarDate.formatDate.getDate() + 1
+        navbarDate.formatDate.getFullYear(),
+        navbarDate.formatDate.getMonth(),
+        navbarDate.formatDate.getDate() + 1
       );
 
       const month = newFormatDate.getMonth();
@@ -157,7 +158,7 @@ const Header = ({ data }) => {
     }
   };
   const compareDate = () => {
-    const tempDate = navBarDate.formatDate;
+    const tempDate = navbarDate.formatDate;
     const newDateForToday = new Date(
       tempDate.getFullYear(),
       tempDate.getMonth(),
@@ -210,7 +211,7 @@ const Header = ({ data }) => {
   }-${lastDayOfWeek.getFullYear()}`;
 
   const checkCurrDate = () => {
-    const navDate = navBarDate.formatDate;
+    const navDate = navbarDate.formatDate;
 
     const navBarsYear = navDate.getFullYear();
     const navBarsMonth = navDate.getMonth();
@@ -258,7 +259,7 @@ const Header = ({ data }) => {
       compareDate();
     }
   };
-
+console.log(navbarDate,'navbarDate')
   return (
     <>
       <HeaderMainBox>
@@ -276,7 +277,7 @@ const Header = ({ data }) => {
             }}
           />
           {log == "daily" ? (
-            <Box component="p">{navBarDate?.date}</Box>
+            <Box component="p">{navbarDate.date}</Box>
           ) : (
             <Box component="p">
               {weekFIrstDay.date} - {weekLastDay.date}

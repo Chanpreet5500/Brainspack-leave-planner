@@ -9,9 +9,9 @@ import {
   WeekDayBox,
 } from "./styled";
 import { FetchFilterdWeekData } from "../ReactQuery/CustomHooks/TimeTracker";
-import { QueryClient, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, TableFooter } from "@mui/material";
+import { Box, Typography, TableFooter, Button } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
@@ -21,7 +21,7 @@ import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header/Header";
-import Modal from "../Dialog/Modal";
+import ConfirmationModal from "../Dialog/ConfirmationModal";
 import axios from "axios";
 
 const ListView = () => {
@@ -49,7 +49,7 @@ const ListView = () => {
     date: "Today",
   });
 
-  const [navBarDate, setNavbarDate] = useState({
+  const [navbarDate, setNavbarDate] = useState({
     formatDate: new Date(),
     date: "Today",
   });
@@ -162,7 +162,9 @@ const ListView = () => {
 
   const deleteProjectData = useMutation(
     () => {
-      return axiosInstance.delete(`http://localhost:5233/deleteTimeTrackerData/${rowId}`);
+      return axiosInstance.delete(
+        `http://localhost:5233/deleteTimeTrackerData/${rowId}`
+      );
     },
     {
       onSuccess() {
@@ -170,11 +172,6 @@ const ListView = () => {
       },
     }
   );
-
-  const confirmModal = (id) => {
-    setRowId(id);
-    setOpenModal(true);
-  };
 
   let dayTotalHours = [];
 
@@ -217,28 +214,34 @@ const ListView = () => {
     }
   }, [weekDataUser]);
 
+  const confirmDelete = (id) => {
+    setRowId(id)
+    setOpenModal(true);
+  };
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+  }
+
   return (
     <>
       <Box>
-        {openModal && (
-          <Modal
-            openModal={openModal}
-            setOpenModal={setOpenModal}
-            title="Delete Project Detail"
-            message="Are you sure you want to delete?"
-            submit={() => {
-              deleteProjectData.mutate(rowId);
-
-              setOpenModal(false);
-            }}
-          />
-        )}
+        <ConfirmationModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          handleClose={handleModalClose}
+          title="Are you sure you want to delete?"
+          submit={() => {
+            deleteProjectData.mutate(rowId);
+            setOpenModal(false);
+          }}
+        />
       </Box>
       <Header
         data={{
           log,
           setLog,
-          navBarDate,
+          navbarDate,
           setNavbarDate,
           weekFIrstDay,
           setWeekFirstDay,
@@ -367,7 +370,7 @@ const ListView = () => {
                         </CustomEditButton>
 
                         <CustomDeleteButton
-                          onClick={() => confirmModal(row._id)}
+                          onClick={() => confirmDelete(row._id)}
                         >
                           <DeleteIcon />{" "}
                           <Box
