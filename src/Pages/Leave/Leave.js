@@ -132,6 +132,7 @@ function LeaveComponent() {
             }}
           >
             {(props) => {
+              console.log(props.values.startDateValue, 'BALUE')
               return (
                 <Grid sx={popupFieldsParent}>
                   <Grid style={{width : '60%', alignContent : 'center'}}>
