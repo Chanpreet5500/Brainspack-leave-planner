@@ -6,6 +6,10 @@ import {
   Grid,
   Button,
   TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { Formik } from "formik";
 import { RegisterData } from "../ReactQuery/CustomHooks/LeavePlanner";
@@ -158,7 +162,6 @@ function RegisterComponent() {
   const { mutate, data, isSuccess } = RegisterData();
 
   const RegisterDataValues = (props) => {
-
     // const stringifyDate = date.toString()
     // const finalDate = stringifyDate.slice(4,15)
 
@@ -173,9 +176,10 @@ function RegisterComponent() {
       email: props.values.email,
       password: props.values.password,
       birthdate: finalBirthdate,
+      gender: props.values.gender,
     };
 
-     const x = mutate(data);
+    mutate(data);
   };
 
   if (data && isSuccess) {
@@ -370,6 +374,7 @@ function RegisterComponent() {
             phoneNumber: "",
             designation: "",
             birthDate: "",
+            gender: "",
           }}
           validate={(values) => {
             const errors = {};
@@ -387,6 +392,8 @@ function RegisterComponent() {
               errors.designation = "Required";
             } else if (!values.birthDate) {
               errors.birthDate = "Required";
+            } else if (!values.gender) {
+              errors.gender = "Required";
             }
             return errors;
           }}
@@ -554,7 +561,24 @@ function RegisterComponent() {
                       {props.errors.lastName}
                     </Typography>
                   </Grid>
-
+                  <Grid>
+                    <FormControl
+                      sx={{
+                        width: "80%",
+                      }}
+                    >
+                      <InputLabel>Gender</InputLabel>
+                      <Select
+                        defaultValue=""
+                        label="Gender"
+                        onChange={props.handleChange}
+                        name="gender"
+                      >
+                        <MenuItem value="male">Male</MenuItem>
+                        <MenuItem value="female">Female</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                   <Grid>
                     <Grid>
                       <Typography variant="span" sx={rightFullStop}>

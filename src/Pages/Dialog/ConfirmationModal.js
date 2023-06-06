@@ -18,7 +18,6 @@ const style = {
 
 export default function ConfirmationModal({
   openModal,
-  setOpenModal,
   title,
   submit,
   handleClose,
@@ -56,7 +55,7 @@ export default function ConfirmationModal({
               onClick={handleClose}
               sx={{
                 textTransform: "capitalize",
-                fontSize: "18px"
+                fontSize: "18px",
               }}
             >
               Cancel
@@ -69,7 +68,7 @@ export default function ConfirmationModal({
                 "&:hover": {
                   background: "#ba351a",
                 },
-                fontSize: "18px"
+                fontSize: "18px",
               }}
               onClick={submit}
             >

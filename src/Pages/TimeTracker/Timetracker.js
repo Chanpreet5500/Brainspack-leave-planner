@@ -64,7 +64,7 @@ const Timetracker = () => {
             <CalendarView />
           </TabPanel>
           <TabPanel value="addTask">
-            <Addtask setValue={setValue}/>
+            <Addtask setValue={setValue} />
           </TabPanel>
         </TabContext>
       </Box>

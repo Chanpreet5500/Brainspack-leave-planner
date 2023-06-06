@@ -28,7 +28,7 @@ export const AdminCalenderView = () => {
   const [showModal, setShowModal] = useState(false);
   const [event, setEvent] = useState([]);
 
-  const { data,isFetching } = useQuery("employee-list", () => {
+  const { data, isFetching } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
   const employeeList = data?.data?.userList;
@@ -108,7 +108,7 @@ export const AdminCalenderView = () => {
 
   return (
     <>
-    {isFetching?<Loader/>:""}
+      {isFetching ? <Loader /> : ""}
       <MainContainerCalender>
         <CalendarContainer>
           <DropDown
@@ -128,7 +128,7 @@ export const AdminCalenderView = () => {
                     sx={{ background: randomColorForNames(element._id) }}
                   ></CustomBox>
                 </CustomMenu>
-              )
+              );
             })}
           </DropDown>
         </CalendarContainer>
