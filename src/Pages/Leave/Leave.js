@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   TextField,
   TextareaAutosize,
@@ -7,23 +7,29 @@ import {
   Select,
   Paper,
   Button,
+  InputLabel,
+  FormControl,
+  OutlinedInput,
   Box,
 } from "@mui/material";
 import {
   DatePicker,
   LocalizationProvider,
+  StaticDatePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { ErrorMessage, Form, Formik } from "formik";
+import { GetDashboardData } from "../ReactQuery/CustomHooks/LeavePlanner";
+import NavbarComponent from "../Navbar/Navbar";
+import { Formik } from "formik";
 import { LeaveValues } from "../ReactQuery/CustomHooks/LeavePlanner";
 import { differenceInDays, format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { ErrorText } from "../TimeTracker/AddTask/EditStyled";
 
 function LeaveComponent() {
   const userData = localStorage.getItem("value");
   const id = JSON.parse(userData);
   const finalUserId = id._id;
+  console.log(finalUserId);
 
   const holidayType = ["Sick Leave", "Travel Leave", "Ocassional Leave"];
 
@@ -82,8 +88,8 @@ function LeaveComponent() {
   const navigate = useNavigate();
 
   const submitFormValue = (props) => {
-    console.log(props, "submit");
-    const { startDateValue, endDateValue, leaveType, description } = props;
+    const { startDateValue, endDateValue, leaveType, description } =
+      props.values;
 
     if (
       startDateValue != "" &&
@@ -95,7 +101,6 @@ function LeaveComponent() {
         new Date(endDateValue.$d),
         new Date(startDateValue.$d)
       );
-      console.log(dateValue, "difference in days");
       let startDateMonthHourValue = startDateValue.$d;
       const finalDateForLeave = [];
 
@@ -111,7 +116,6 @@ function LeaveComponent() {
           finalDateForLeave.push(isDate);
         }
       }
-      console.log(finalDateForLeave, "array of leaves Date");
       const data = {
         leaveType: leaveType,
         leaveDates: finalDateForLeave.map((leaves) => leaves),
@@ -142,24 +146,114 @@ function LeaveComponent() {
             }}
             validate={(value) => {
               const errors = {};
-              if (!value.leaveType) {
-                errors.leaveType = "Required";
-              } else if (!value.startDateValue) {
+              if (!value.startDateValue) {
                 errors.startDateValue = "Required";
               } else if (!value.endDateValue) {
                 errors.endDateValue = "Required";
-              } else if (!value.description) {
-                errors.description = "Required";
+              } else if (!value.leaveType) {
+                errors.leaveType = "Required";
+              } else if (!value.holidayType) {
+                errors.holidayType = "Required";
               }
               return errors;
             }}
-            onSubmit={submitFormValue}
           >
             {(props) => {
               return (
-                <Form style={{ width: "100%", height: "100%" }}>
-                  <Grid sx={popupFieldsParent}>
-                    <Grid
+                <Grid sx={popupFieldsParent}>
+                  <Grid
+                    style={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Select
+                      labelId="leavetypeBox"
+                      label="Select leave type"
+                      name="leaveType"
+                      onChange={props.handleChange}
+                      value={props.values.leaveType}
+                      renderValue={(selected) => {
+                        if (selected.length === 0) {
+                          return <Box component="span">Select Leave Type</Box>;
+                        }
+
+                        return selected;
+                      }}
+                      displayEmpty
+                      sx={selectLeaveType}
+                    >
+                      <MenuItem disabled value="">
+                        Select Leave Type
+                      </MenuItem>
+                      {holidayType.map((e, index) => (
+                        <MenuItem value={e} key={e}>
+                          {e}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+
+                  <Grid
+                    sx={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        sx={{ width: "80%" }}
+                        name="startDateValue"
+                        label="Start Date"
+                        value={props.values.startDateValue}
+                        onChange={(value) =>
+                          props.setFieldValue("startDateValue", value, "true")
+                        }
+                        renderInput={(e) => <TextField {...e} />}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+
+                  <Grid
+                    sx={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        sx={{ width: "80%" }}
+                        name="endDateValue"
+                        label="End Date"
+                        minDate={props.values.startDateValue}
+                        value={
+                          props.values.startDateValue <=
+                          props.values.endDateValue
+                            ? props.values.endDateValue
+                            : ""
+                        }
+                        onChange={(value) =>
+                          props.setFieldValue("endDateValue", value, "true")
+                        }
+                        renderInput={(e) => <TextField {...e} />}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+                  <Grid
+                    sx={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TextareaAutosize
+                      name="description"
+                      placeholder="Description"
+                      variant="standard"
+                      onChange={props.handleChange}
                       style={{
                         width: "75%",
                         marginBottom: "10px",
@@ -171,145 +265,18 @@ function LeaveComponent() {
                         fontSize: "16px",
                         borderRadius: "5px",
                       }}
-                    >
-                      <Select
-                        labelId="leavetypeBox"
-                        label="Select leave type"
-                        name="leaveType"
-                        onChange={props.handleChange}
-                        value={props.values.leaveType}
-                        renderValue={(selected) => {
-                          if (selected.length === 0) {
-                            return (
-                              <Box component="span">Select Leave Type</Box>
-                            );
-                          }
-
-                          return selected;
-                        }}
-                        displayEmpty
-                        sx={selectLeaveType}
-                      >
-                        <MenuItem disabled value="">
-                          Select Leave Type
-                        </MenuItem>
-                        {holidayType.map((e, index) => (
-                          <MenuItem value={e} key={e}>
-                            {e}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Grid>
-                    <Box sx={{ width: "50%" }}>
-                      {props.errors && props.touched ? (
-                        <ErrorMessage
-                          style={{ textAlign: "left", width: "70%" }}
-                          component={ErrorText}
-                          name="leaveType"
-                        />
-                      ) : null}
-                    </Box>
-
-                    <Grid
-                      sx={{
-                        width: "70%",
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          sx={{ width: "80%" }}
-                          name="startDateValue"
-                          label="Start Date"
-                          value={props.values.startDateValue}
-                          onChange={(value) =>
-                            props.setFieldValue("startDateValue", value, "true")
-                          }
-                          renderInput={(e) => <TextField {...e} />}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                    <Box sx={{ width: "50%" }}>
-                      {props.errors && props.touched ? (
-                        <ErrorMessage
-                          component={ErrorText}
-                          name="startDateValue"
-                        />
-                      ) : null}
-                    </Box>
-                    <Grid
-                      sx={{
-                        width: "70%",
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          sx={{ width: "80%" }}
-                          name="endDateValue"
-                          label="End Date"
-                          minDate={props.values.startDateValue}
-                          value={
-                            props.values.startDateValue <=
-                            props.values.endDateValue
-                              ? props.values.endDateValue
-                              : ""
-                          }
-                          onChange={(value) =>
-                            props.setFieldValue("endDateValue", value, "true")
-                          }
-                          renderInput={(e) => <TextField {...e} />}
-                        />
-                      </LocalizationProvider>
-                    </Grid>
-                    <Box sx={{ width: "50%" }}>
-                      {props.errors && props.touched ? (
-                        <ErrorMessage
-                          component={ErrorText}
-                          name="endDateValue"
-                        />
-                      ) : null}
-                    </Box>
-                    <Grid
-                      sx={{
-                        width: "70%",
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <TextareaAutosize
-                        name="description"
-                        placeholder="Description"
-                        variant="standard"
-                        onChange={props.handleChange}
-                        style={{
-                          width: "75%",
-                          marginBottom: "10px",
-                          padding: "15px 0 13px 15px",
-                          fontSize: "16px",
-                          borderRadius: "5px",
-                        }}
-                      />
-                    </Grid>
-                    <Box sx={{ width: "50%" }}>
-                      {props.errors && props.touched ? (
-                        <ErrorMessage
-                          component={ErrorText}
-                          name="description"
-                        />
-                      ) : null}
-                    </Box>
-                    <Button
-                      variant="contained"
-                      sx={loginButton}
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
+                    />
                   </Grid>
-                </Form>
+
+                  <Button
+                    variant="contained"
+                    sx={loginButton}
+                    onClick={() => submitFormValue(props)}
+                    type="submit"
+                  >
+                    Submit
+                  </Button>
+                </Grid>
               );
             }}
           </Formik>

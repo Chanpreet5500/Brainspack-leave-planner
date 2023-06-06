@@ -23,14 +23,11 @@ export default function EditProfile() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+   
   };
   const location = useLocation();
   const { data: profileDetails } = location.state;
-  console.log(profileDetails, "location");
+
 
   React.useEffect(() => {
     setUserDetails(profileDetails);
@@ -42,40 +39,45 @@ export default function EditProfile() {
       [event.target.name]: event.target.value,
     });
   };
-  console.log(userDetails, "userDetails");
+  
 
   const { mutate } = UpdateProfileDetails();
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const updateUserDetails = () => {
     if (
-      (userDetails.firstName != "" &&
-        userDetails.lastName != "" &&
-        userDetails.email != "" &&
-        userDetails.designation != "",
-      userDetails.phoneNumber != "")
-    ){
-
-        mutate(userDetails);
-        navigate('/profile')
+      userDetails.firstName != "" &&
+      userDetails.lastName != "" &&
+      userDetails.email != "" &&
+      userDetails.designation != "" &&
+      userDetails.phoneNumber != ""
+    ) {
+      mutate(userDetails);
+      navigate("/profile");
     }
   };
   return (
     <ThemeProvider theme={defaultTheme}>
-      {/* <Container component="main" maxWidth="xs"> */}
-        <CssBaseline />
-        <Box sx={{width:'100%',height:'90vh',display:"grid",placeItems:"center",
-        background: "linear-gradient(90deg, rgba(85,173,136,1) 31%, rgba(17,98,64,1) 62%)"}}>
-
+    
+      <CssBaseline />
+      <Box
+        sx={{
+          width: "100%",
+          height: "90vh",
+          display: "grid",
+          placeItems: "center",
+          background: 'linear-gradient(to right bottom, rgb(81, 155, 99), rgba(0, 0, 0, 0.95))'
+        }}
+      >
         <Box
           sx={{
-            width:"30%",
+            width: "30%",
             // marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor:"#fff",
-            p:3.5,
-            borderRadius:"8px",
+            backgroundColor: "#fff",
+            p: 3.5,
+            borderRadius: "8px",
             boxShadow: "0px 0px 2px 0px",
           }}
         >
@@ -162,10 +164,14 @@ const navigate = useNavigate()
             >
               Update
             </Button>
+            <Typography sx={{width:'100%' ,    textAlign: 'center',textDecoration:'underline',fontSize:'13px',cursor:'pointer'}}
+            onClick={()=>navigate('/profile')}
+            >Go Back</Typography>
           </Box>
         </Box>
-        </Box>
-      {/* </Container> */}
+      </Box>
+      
+      
     </ThemeProvider>
   );
 }
