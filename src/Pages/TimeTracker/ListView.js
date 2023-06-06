@@ -275,14 +275,12 @@ const ListView = () => {
                 <>
                   <CustomTableHead>Date</CustomTableHead>
                   <CustomTableHead>Hours</CustomTableHead>
+                  <CustomTableHead>Status</CustomTableHead>
+                  <CustomTableHead colSpan={2}>Actions</CustomTableHead>
                 </>
               ) : (
-                ""
-              )}
-
-              {log === "daily" ? <CustomTableHead>Status</CustomTableHead> : ""}
-              {log === "weekly"
-                ? weekCleander.map((element) => {
+                <>
+                  {weekCleander.map((element) => {
                     return (
                       <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
                         <Box>
@@ -295,16 +293,12 @@ const ListView = () => {
                         </WeekDayBox>
                       </CustomTableHead>
                     );
-                  })
-                : ""}
-
-              {log === "daily" ? (
-                <CustomTableHead colSpan={2}>Actions</CustomTableHead>
-              ) : (
-                <CustomTableHead align="center">
-                  <Box>Total</Box>
-                  <WeekDayBox>(Hours)</WeekDayBox>
-                </CustomTableHead>
+                  })}
+                  <CustomTableHead align="center">
+                    <Box>Total</Box>
+                    <WeekDayBox>(Hours)</WeekDayBox>
+                  </CustomTableHead>
+                </>
               )}
             </TableRow>
           </TableHead>
@@ -326,42 +320,13 @@ const ListView = () => {
                     <>
                       <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
                       <CustomTableCell>{row.hours}</CustomTableCell>
-                    </>
-                  ) : (
-                    ""
-                  )}
-
-                  {log === "daily" ? (
-                    <CustomTableCell>
-                      {row.status === 0
-                        ? "Pending"
-                        : row.status === 1
-                        ? "Approved"
-                        : "Cancelled"}
-                    </CustomTableCell>
-                  ) : (
-                    ""
-                  )}
-                  {log === "weekly"
-                    ? weekCleander.map((element, index) => {
-                        const dateCheck = checkHours(row, element);
-                        return (
-                          <CustomTableCell
-                            align="center"
-                            key={index}
-                            sx={{
-                              fontWeight: dateCheck ? "bold" : "",
-                              minWidth: "65px",
-                            }}
-                          >
-                            {dateCheck ? row.hours : "00:00"}
-                          </CustomTableCell>
-                        );
-                      })
-                    : ""}
-
-                  {log === "daily" ? (
-                    <>
+                      <CustomTableCell>
+                        {row.status === 0
+                          ? "Pending"
+                          : row.status === 1
+                          ? "Approved"
+                          : "Cancelled"}
+                      </CustomTableCell>
                       <CustomTableCell>
                         <CustomEditButton
                           onClick={() => editTask(row._id, row.userId)}
@@ -400,11 +365,28 @@ const ListView = () => {
                       </CustomTableCell>
                     </>
                   ) : (
-                    <CustomTableCell
-                      sx={{ fontWeight: "bold", color: "black" }}
-                    >
-                      {row.hours}
-                    </CustomTableCell>
+                    <>
+                      {weekCleander.map((element, index) => {
+                        const dateCheck = checkHours(row, element);
+                        return (
+                          <CustomTableCell
+                            align="center"
+                            key={index}
+                            sx={{
+                              fontWeight: dateCheck ? "bold" : "",
+                              minWidth: "65px",
+                            }}
+                          >
+                            {dateCheck ? row.hours : "00:00"}
+                          </CustomTableCell>
+                        );
+                      })}
+                      <CustomTableCell
+                        sx={{ fontWeight: "bold", color: "black" }}
+                      >
+                        {row.hours}
+                      </CustomTableCell>
+                    </>
                   )}
                 </TableRow>
               );
@@ -421,7 +403,7 @@ const ListView = () => {
               <>
                 <CustomTableCell
                   sx={{ border: "none", fontWeight: "bold" }}
-                  colSpan={log === "daily" ? 4:3}
+                  colSpan={log === "daily" ? 4 : 3}
                   align="left"
                 ></CustomTableCell>
                 <CustomTableCell sx={{ padding: "12px 0px" }}>
