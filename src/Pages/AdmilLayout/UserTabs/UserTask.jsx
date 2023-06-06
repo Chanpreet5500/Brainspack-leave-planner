@@ -202,10 +202,17 @@ export const UserTask = (props) => {
   const confirmApprove = () => {
     mutate({
       id: approveUserId,
-      status: true,
+      status: 1,
     });
     setOpen(false);
   };
+  const confirmReject = () => {
+    mutate({
+      id: approveUserId,
+      status: 2
+    });
+    setOpen(false);
+  }
   return (
     <>
     {isFetching?<Loader/>:''}
@@ -216,15 +223,15 @@ export const UserTask = (props) => {
       >
         <MainContainer>
           <HeadingModal id="modal-modal-title" component="h4">
-            Confirm Approve ?
+            Confirm?
           </HeadingModal>
           <ButtonContainer>
-            <CustomEditButton onClick={() => setOpen(false)}>
-              <ButtonWrapper component="span">Cancel</ButtonWrapper>
-            </CustomEditButton>
-            <CustomDeleteButton onClick={() => confirmApprove()}>
-              <ButtonWrapper component="span">Approve</ButtonWrapper>
+            <CustomDeleteButton onClick={() => confirmReject()}>
+              <ButtonWrapper component="span">Reject</ButtonWrapper>
             </CustomDeleteButton>
+            <CustomEditButton onClick={() => confirmApprove()}>
+              <ButtonWrapper component="span">Approve</ButtonWrapper>
+            </CustomEditButton>
           </ButtonContainer>
         </MainContainer>
       </Modal>
@@ -268,6 +275,7 @@ export const UserTask = (props) => {
               )}
 
               <CustomTableHead>Status</CustomTableHead>
+              <CustomTableHead>Action</CustomTableHead>
               {log === "daily" ? <CustomTableHead></CustomTableHead> : ""}
 
               {log === "weekly"
@@ -321,7 +329,7 @@ export const UserTask = (props) => {
                   )}
 
                   <CustomTableCell>
-                    {row.status === true ? "Approved" : "Pending"}
+                    {row.status === 0 ? "Pending" : row.status === 1 ? "Approved" : "Cancelled"}
                   </CustomTableCell>
                   {log === "weekly"
                     ? weekCleander.map((element, index) => {
@@ -358,17 +366,17 @@ export const UserTask = (props) => {
                         <Button
                           onClick={() => updateStatus(row._id)}
                           sx={{
-                            background: "#55AD88",
-                            marginTop: "15px",
+                            background: "#1976f9",
                             color: "#fff",
                             textTransform: "capitalize",
-                            fontSize: "14px",
+                            fontSize: "16px",
+                            padding: "5px 12px",
                             "&:hover": {
-                              background: "#4d9b78",
+                              background: "#1976d2",
                             },
                           }}
                         >
-                          Approve
+                          Review
                         </Button>
                       </CustomTableCell>
                     </>

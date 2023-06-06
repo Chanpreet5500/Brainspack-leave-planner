@@ -35,8 +35,7 @@ export const ButtonContainer = styled(Box)(({ theme }) => ({
 }));
 
 export const ButtonWrapper = styled(Box)(({ theme }) => ({
-  paddingLeft: "5px",
-  paddingRight: "15px",
+  padding: "0px 10px 0px 10px",
   fontFamily: "sans-serif",
 }));
 

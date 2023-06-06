@@ -242,7 +242,7 @@ const EditTask = () => {
                         <Input
                           name={"status"}
                           value={
-                            props.values.status == true ? "Approved" : "Pending"
+                            props.values.status === 0 ? "Pending" : props.values.status === 1 ? "Approved" : "Cancelled"
                           }
                           onChange={props.handleChange}
                           disableUnderline={true}
