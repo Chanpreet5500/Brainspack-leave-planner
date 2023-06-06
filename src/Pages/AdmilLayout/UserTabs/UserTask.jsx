@@ -271,38 +271,33 @@ export const UserTask = (props) => {
                 <>
                   <CustomTableHead>Date</CustomTableHead>
                   <CustomTableHead>Hours</CustomTableHead>
+                  <CustomTableHead>Status</CustomTableHead>
+                  <CustomTableHead></CustomTableHead>
                 </>
               ) : (
-                ""
-              )}
-
-             {log=='daily' ? <CustomTableHead>Status</CustomTableHead>:""}
-              {log === "daily" ? <CustomTableHead></CustomTableHead> : ""}
-
-              {log === "weekly"
-                ? weekCleander.map((element) => {
+                <>
+                  {weekCleander.map((element) => {
                     return (
-                      <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
-                        <Box>
-                          {`${
-                            months[element.formatDate.getMonth()]
-                          } - ${element.formatDate.getDate()}`}
-                        </Box>
-                        <WeekDayBox>
-                          {`(${weekDays[element.formatDate.getDay()]})`}
-                        </WeekDayBox>
-                      </CustomTableHead>
+                      <>
+                        <CustomTableHead sx={{ p: 0, textAlign: "center" }}>
+                          <Box>
+                            {`${
+                              months[element.formatDate.getMonth()]
+                            } - ${element.formatDate.getDate()}`}
+                          </Box>
+                          <WeekDayBox>
+                            {`(${weekDays[element.formatDate.getDay()]})`}
+                          </WeekDayBox>
+                        </CustomTableHead>
+                      </>
                     );
-                  })
-                : ""}
+                  })}
 
-              {log === "daily" ? (
-                ""
-              ) : (
-                <CustomTableHead align="center">
-                  <Box>Total</Box>
-                  <WeekDayBox>(Hours)</WeekDayBox>
-                </CustomTableHead>
+                  <CustomTableHead align="center">
+                    <Box>Total</Box>
+                    <WeekDayBox>(Hours)</WeekDayBox>
+                  </CustomTableHead>
+                </>
               )}
             </TableRow>
           </TableHead>
@@ -324,22 +319,17 @@ export const UserTask = (props) => {
                     <>
                       <CustomTableCell>{ddMMYY(row.date)}</CustomTableCell>
                       <CustomTableCell>{row.hours}</CustomTableCell>
+                      <CustomTableCell>
+                        {row.status === 0
+                          ? "Pending"
+                          : row.status === 1
+                          ? "Approved"
+                          : "Cancelled"}
+                      </CustomTableCell>
                     </>
                   ) : (
-                    ""
-                  )}
-
-                 {log=='daily'?(
-                  <CustomTableCell>
-                    {row.status === 0
-                      ? "Pending"
-                      : row.status === 1
-                      ? "Approved"
-                      : "Cancelled"}
-                  </CustomTableCell>
-                 ):""}
-                  {log === "weekly"
-                    ? weekCleander.map((element, index) => {
+                    <>
+                      {weekCleander.map((element, index) => {
                         const dateCheck = checkHours(row, element);
                         return (
                           <CustomTableCell
@@ -353,20 +343,15 @@ export const UserTask = (props) => {
                             {dateCheck ? row.hours : "00:00"}
                           </CustomTableCell>
                         );
-                      })
-                    : ""}
-
-                  {log !== "daily" ? (
-                    <>
+                      })}
                       <CustomTableCell
                         sx={{ fontWeight: "bold", color: "black" }}
                       >
                         {row.hours}
                       </CustomTableCell>
                     </>
-                  ) : (
-                    ""
                   )}
+
                   {log === "daily" && !row.status ? (
                     <>
                       <CustomTableCell>
@@ -404,9 +389,8 @@ export const UserTask = (props) => {
             ) : (
               <>
                 <CustomTableCell
-
                   sx={{ border: "none", fontWeight: "bold" }}
-                  colSpan={log=='daily'?4:3}
+                  colSpan={log == "daily" ? 4 : 3}
                   align="right"
                 ></CustomTableCell>
                 <CustomTableCell>
