@@ -276,8 +276,8 @@ export const UserTask = (props) => {
                 ""
               )}
 
-              <CustomTableHead>Status</CustomTableHead>
-              <CustomTableHead></CustomTableHead>
+             {log=='daily'? <CustomTableHead>Status</CustomTableHead>:""}
+              {/* <CustomTableHead></CustomTableHead> */}
               {log === "daily" ? <CustomTableHead></CustomTableHead> : ""}
 
               {log === "weekly"
@@ -330,6 +330,7 @@ export const UserTask = (props) => {
                     ""
                   )}
 
+                 {log=='daily'?(
                   <CustomTableCell>
                     {row.status === 0
                       ? "Pending"
@@ -337,6 +338,7 @@ export const UserTask = (props) => {
                       ? "Approved"
                       : "Cancelled"}
                   </CustomTableCell>
+                 ):""}
                   {log === "weekly"
                     ? weekCleander.map((element, index) => {
                         const dateCheck = checkHours(row, element);
@@ -403,8 +405,9 @@ export const UserTask = (props) => {
             ) : (
               <>
                 <CustomTableCell
+
                   sx={{ border: "none", fontWeight: "bold" }}
-                  colSpan={4}
+                  colSpan={log=='daily'?4:3}
                   align="right"
                 ></CustomTableCell>
                 <CustomTableCell>
