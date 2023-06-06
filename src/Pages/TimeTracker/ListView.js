@@ -332,7 +332,7 @@ const ListView = () => {
                   )}
 
                   <CustomTableCell>
-                    {row.status === true ? "Approved" : "Pending"}
+                    {row.status === 0 ? "Pending" : row.status === 1 ? "Approved" : "Cancelled"}
                   </CustomTableCell>
                   {log === "weekly"
                     ? weekCleander.map((element, index) => {
