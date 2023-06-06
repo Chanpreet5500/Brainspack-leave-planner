@@ -5,6 +5,7 @@ import { CustomDeleteButton, CustomEditButton } from "../styled";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ButtonContainer, ButtonWrapper, Text } from "./CalenderStyled";
+import { UpdateLeaveStatus } from "../../ReactQuery/CustomHooks/LeavePlanner";
 
 function CalendarModalComponent(props) {
   const navigate = useNavigate();
@@ -18,8 +19,16 @@ function CalendarModalComponent(props) {
     type,
     firstName,
     lastName,
+    status,
   } = eventVal;
   const formattedDate = format(new Date(start), "yyyy-dd-MM");
+
+  const { mutate } = UpdateLeaveStatus();
+
+  const updateStaus=(status)=>{
+    mutate({_id:eventId,status})
+    setShowModal(false)
+  }
 
   const handleEdit = () => {
     navigate("/edituserdata", { state: { eventId } });
@@ -66,6 +75,20 @@ function CalendarModalComponent(props) {
           <Text variant="h5">Name :- {firstName + " " + lastName}</Text>
           <Text variant="h5">Date :- {formattedDate}</Text>
           <Text variant="h5">Leave Type :- {type}</Text>
+          {status !== 0 ? (
+            <Text varient="h5">
+              Status :- {status == 1 ? "Approved" : "Rejected"}
+            </Text>
+          ) : (
+            <ButtonContainer>
+              <CustomEditButton onClick={() => updateStaus(2)}>
+                <ButtonWrapper component="span">Reject</ButtonWrapper>
+              </CustomEditButton>
+              <CustomDeleteButton onClick={() => updateStaus(1)}>
+                <ButtonWrapper component="span">Appove</ButtonWrapper>
+              </CustomDeleteButton>
+            </ButtonContainer>
+          )}
         </>
       )}
     </>

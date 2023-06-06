@@ -16,7 +16,6 @@ export const UserLeave = (props) => {
   const [event, setEvent] = useState([]);
 
   const { data: apiData } = GetLeaveDataById(userId, "my_leave");
-
   function visibleModal(events) {
     setShowModal(true);
     setEvent({
@@ -29,6 +28,7 @@ export const UserLeave = (props) => {
       type: events.event.extendedProps.type,
       firstName: events.event.extendedProps.firstName,
       lastName: events.event.extendedProps.lastName,
+      status:events.event.extendedProps.status,
     });
   }
 
@@ -48,6 +48,7 @@ export const UserLeave = (props) => {
             type: e.leaveType,
             firstName: e.userId.firstName,
             lastName: e.userId.lastName,
+            status:e.status,
           },
         };
       });
@@ -70,7 +71,7 @@ export const UserLeave = (props) => {
           <Heading id="modal-modal-title" variant="h4" component="h2">
             Leaves Data
           </Heading>
-          <CalendarModalComponent eventVal={event} admin={true} />
+          <CalendarModalComponent eventVal={event} admin={true} setShowModal={setShowModal} />
         </MainContainer>
       </Modal>
     </>

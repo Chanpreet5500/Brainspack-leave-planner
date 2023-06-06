@@ -163,7 +163,7 @@ const Addtask = ({ setValue }) => {
                                             ) : null}
                                           </Box>
                                         </CustomTableCell>
-                                        <CustomTableCell>
+                                        <CustomTableCell >
                                           <Field
                                             as={PickDate}
                                             maxDate={date}
