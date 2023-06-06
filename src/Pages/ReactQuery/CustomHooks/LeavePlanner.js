@@ -145,7 +145,6 @@ export const LoginUserProfileDetails = (id) => {
 
 const updateProfile = (data)=>{
   const id = data._id;
-  console.log(data)
   return axiosInstance.patch(`http://localhost:5233/update-profile/${id}`,data)
 }
 

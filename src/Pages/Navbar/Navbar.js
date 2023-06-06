@@ -24,23 +24,16 @@ import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import EmployeeDetails from "../AdmilLayout/EmployeeDetails";
 import ManageEmployees from "../AdmilLayout/ManageEmployees";
-import GroupIcon from '@mui/icons-material/Group';
-import { useQuery } from "react-query";
-import axios from "axios";
-
+import GroupIcon from "@mui/icons-material/Group";
+import OutsideAlerter from "./OutsideAlerter";
 
 function NavbarComponent(props) {
   const { values } = props;
   const firstName = values?.firstName;
   const [open, setOpen] = useState(false);
 
-  
   const [logoutButton, setLogoutButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-
-
-
 
   const sidebarMenu = [
     { name: "Calendar", icon: <CalendarMonthIcon />, value: "calendar" },
@@ -65,8 +58,12 @@ function NavbarComponent(props) {
     setIsOpen(true);
   };
 
-  function ShowLogout() {
-    setLogoutButton(!logoutButton);
+  function ShowLogout(event) {
+    if (isOpen === true) {
+      setLogoutButton(false);
+    } else {
+      setLogoutButton(true);
+    }
   }
 
   function logoutUser() {
@@ -75,8 +72,6 @@ function NavbarComponent(props) {
   }
 
   function navigation(value) {
-   
-
     if (value) {
       navigate(`/${value}`);
     }
@@ -90,7 +85,7 @@ function NavbarComponent(props) {
   const navbarButtonParent = {
     display: "flex",
     margin: "10px 30px 0 0",
-    cursor:'pointer'
+    cursor: "pointer",
   };
 
   const notificationButton = {
@@ -106,7 +101,7 @@ function NavbarComponent(props) {
     padding: "5px 10px 10px",
     height: "56px",
     backgroundColor: "antiquewhite",
-    cursor:'pointer'
+    cursor: "pointer",
   };
 
   const imageSearchParent = {
@@ -119,6 +114,7 @@ function NavbarComponent(props) {
     padding: "20px",
     textAlign: "center",
     cursor: "pointer",
+    setLogoutButton,
   };
 
   const logoutButtonParent = {
@@ -137,7 +133,7 @@ function NavbarComponent(props) {
     flexWrap: "wrap",
     alignContent: "flex-start",
   };
-  const roleType =JSON.parse( localStorage.getItem('value'));
+  const roleType = JSON.parse(localStorage.getItem("value"));
 
   return (
     <>
@@ -159,7 +155,6 @@ function NavbarComponent(props) {
             </IconButton>
 
             <Drawer
-              
               open={isOpen}
               onClose={() => setIsOpen(false)}
               anchor="left"
@@ -181,60 +176,57 @@ function NavbarComponent(props) {
                     </Typography>
                   </Grid>
 
-                  { roleType.role!='admin'?
-                    sidebarMenu.map((e, i) => {
-                    return (
-                      <ListItem
-                        onClick={() => {
-                          setIsOpen(false);
-                          navigation(e.value);
-                        }}
-                        key={i}
-                      >
-                        <ListItemButton sx={defaultOptionParent}>
-                          <Grid>{e.icon}</Grid>
-                          <Typography
-                            variant="span"
-                            style={{
-                              position: "relative",
-                              fontStyle: "17px",
-                              marginLeft: "15px",
+                  {roleType.role != "admin"
+                    ? sidebarMenu.map((e, i) => {
+                        return (
+                          <ListItem
+                            onClick={() => {
+                              setIsOpen(false);
+                              navigation(e.value);
                             }}
+                            key={i}
                           >
-                            {e.name}
-                          </Typography>
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  }):
-                  adminSidebarMenu.map((e, i) => {
-                    return (
-                      <ListItem
-                        onClick={() => {
-                          setIsOpen(false);
-                          navigation(e.value);
-                        }}
-                        key={i}
-                      >
-                        <ListItemButton sx={defaultOptionParent}>
-                          <Grid>{e.icon}</Grid>
-                          <Typography
-                            variant="span"
-                            style={{
-                              position: "relative",
-                              fontStyle: "17px",
-                              marginLeft: "15px",
+                            <ListItemButton sx={defaultOptionParent}>
+                              <Grid>{e.icon}</Grid>
+                              <Typography
+                                variant="span"
+                                style={{
+                                  position: "relative",
+                                  fontStyle: "17px",
+                                  marginLeft: "15px",
+                                }}
+                              >
+                                {e.name}
+                              </Typography>
+                            </ListItemButton>
+                          </ListItem>
+                        );
+                      })
+                    : adminSidebarMenu.map((e, i) => {
+                        return (
+                          <ListItem
+                            onClick={() => {
+                              setIsOpen(false);
+                              navigation(e.value);
                             }}
+                            key={i}
                           >
-                            {e.name}
-                          </Typography>
-                        </ListItemButton>
-                      </ListItem>
-                    );
-                  })
-                  }
-
-                  
+                            <ListItemButton sx={defaultOptionParent}>
+                              <Grid>{e.icon}</Grid>
+                              <Typography
+                                variant="span"
+                                style={{
+                                  position: "relative",
+                                  fontStyle: "17px",
+                                  marginLeft: "15px",
+                                }}
+                              >
+                                {e.name}
+                              </Typography>
+                            </ListItemButton>
+                          </ListItem>
+                        );
+                      })}
                 </Grid>
               </Stack>
             </Drawer>
@@ -242,12 +234,6 @@ function NavbarComponent(props) {
         </Grid>
 
         <Grid sx={navbarButtonParent}>
-          {/* <Grid sx={notificationButton}>
-            <NotificationsIcon
-              style={{ fontSize: "25px", padding: "4px 8px" }}
-            />
-          </Grid> */}
-
           <Grid sx={profileButtonParent} onClick={ShowLogout}>
             <Grid>
               <Typography
@@ -257,37 +243,41 @@ function NavbarComponent(props) {
                   fontSize: "34px",
                   borderRadius: "30px",
                   padding: "0px 10px",
-                 
                 }}
               >
                 {firstName ? <PersonIcon /> : ""}
               </Typography>
             </Grid>
-            {logoutButton && (
-              <Paper elevation={20} style={logoutButtonParent}>
-                <Typography
-                  variant="h5"
-                  style={{ fontSize: "30px", padding: "5px 0 0 13px" }}
-                >
-                  Hey , {firstName}
-                </Typography>
-                <ListItem sx={logoutParent}>
-                  <ListItemButton onClick={logoutUser}>
-                    <LogoutIcon />
-                    <Typography variant="h5" style={{ margin: "0 0 0 13px" }}>
-                      {" "}
-                      Logout
-                    </Typography>
-                  </ListItemButton>
-                  <ListItemButton onClick={() => navigation("profile")}>
-                    <PersonOutlineIcon style={{ marginRight: "8px" }} />
-                    <Typography variant="h5" style={{ margin: "0 0 0 13px" }}>
-                      {" "}
-                      Profile
-                    </Typography>
-                  </ListItemButton>
-                </ListItem>
-              </Paper>
+            {logoutButton == true && (
+              <OutsideAlerter
+                setLogoutButton={setLogoutButton}
+                logoutButton={logoutButton}
+              >
+                <Paper elevation={20} style={logoutButtonParent}>
+                  <Typography
+                    variant="h5"
+                    style={{ fontSize: "30px", padding: "5px 0 0 13px" }}
+                  >
+                    Hey , {firstName}
+                  </Typography>
+                  <ListItem sx={logoutParent}>
+                    <ListItemButton onClick={logoutUser}>
+                      <LogoutIcon />
+                      <Typography variant="h5" style={{ margin: "0 0 0 13px" }}>
+                        {" "}
+                        Logout
+                      </Typography>
+                    </ListItemButton>
+                    <ListItemButton onClick={() => navigation("profile")}>
+                      <PersonOutlineIcon style={{ marginRight: "8px" }} />
+                      <Typography variant="h5" style={{ margin: "0 0 0 13px" }}>
+                        {" "}
+                        Profile
+                      </Typography>
+                    </ListItemButton>
+                  </ListItem>
+                </Paper>
+              </OutsideAlerter>
             )}
             <SettingsIcon
               style={{ fontSize: "30px", padding: "7px 2px 0 11px" }}

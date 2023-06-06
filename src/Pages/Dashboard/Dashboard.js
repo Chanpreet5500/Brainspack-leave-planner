@@ -1,10 +1,11 @@
 import React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import {
   GetDashboardData,
   GetLeaveDataById,
 } from "../ReactQuery/CustomHooks/LeavePlanner";
 import { useNavigate } from "react-router-dom";
+
 
 function DashboardComponent() {
   const loggedInUserData = localStorage.getItem("value");
@@ -58,9 +59,16 @@ function DashboardComponent() {
 
   return (
     <>
-      {/* <NavbarComponent userData = {userFinalData}/> */}
-
-      <Grid>
+      <Grid
+        sx={{
+          backgroundImage: "url(/dasboard.jpg)",
+          backgroundSize:"contain",
+          backgroundRepeat:'no-repeat',
+          height: "100%",
+          width: "100%",
+          backgroundPosition:'center'
+        }}
+      >
         <Grid sx={dashboardParent}>
           <Grid>
             <Typography
@@ -121,6 +129,7 @@ function DashboardComponent() {
           </Grid>
         </Grid>
       </Grid>
+      {/* </img> */}
     </>
   );
 }

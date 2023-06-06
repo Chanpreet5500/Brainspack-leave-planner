@@ -1,13 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Formik } from "formik";
-import { Input, Grid, Typography, Box, Avatar, Button } from "@mui/material";
+import React, { useEffect } from "react";
+import { Typography, Box, Avatar, Button } from "@mui/material";
 import { LoginUserProfileDetails } from "../ReactQuery/CustomHooks/LeavePlanner";
-import {
-  KeyboardArrowLeft,
-  KeyboardArrowLeftOutlined,
-  LocalPhone,
-  MailOutlineOutlined,
-} from "@mui/icons-material";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +15,12 @@ function ProfileComponent() {
   );
   const profileDetails = data?.data?.data;
   const createdAtDate = new Date(profileDetails?.createdAt);
+
+  useEffect(() => {
+    if (profileDetails) {
+      localStorage.setItem("value", JSON.stringify(profileDetails));
+    }
+  }, [profileDetails]);
 
   useEffect(() => {
     refetch();
