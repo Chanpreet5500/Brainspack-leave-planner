@@ -24,7 +24,8 @@ const Timetracker = () => {
           width: "100%",
           typography: "body1",
           overflow: "hidden",
-          paddingTop: "15px",
+          padding: "15px  15px 0px 15px",
+          boxSizing: "border-box",
         }}
       >
         <TabContext value={value}>

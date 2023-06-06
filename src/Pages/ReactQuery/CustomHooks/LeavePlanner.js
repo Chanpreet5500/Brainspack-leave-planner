@@ -94,7 +94,12 @@ export const GetDashboardData = (id) => {
   return useQuery("get-Data", () => fetchingDataWithId(id), { retry: false });
 };
 export const LeaveValues = () => {
-  return useMutation(submittingLeaveValue);
+  const queryClients = useQueryClient()
+  return useMutation(submittingLeaveValue,{
+    onSuccess(){
+      queryClients.invalidateQueries('get-leave-data-id')
+    }
+  });
 };
 export const StatisticsData = () => {
   return useQuery("get-all-data", allUserData);
@@ -120,8 +125,8 @@ export const GetLeaveDataForAdmin = (id) => {
     ["get-leave-data-admin", id],
     () => getLeaveDataForAdmin(id),
     {
-      // refetchOnMount: true,
-      retry: false,
+      refetchOnMount: true,
+      retry: false
     }
   );
 };
