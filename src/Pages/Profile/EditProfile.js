@@ -1,26 +1,30 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
+import { useState } from "react";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UpdateProfileDetails } from "../ReactQuery/CustomHooks/LeavePlanner";
 import { Field, Form, Formik } from "formik";
 import validationSchema from "./validationSchema";
 import { ErrorText } from "../TimeTracker/AddTask/EditStyled";
-
-const defaultTheme = createTheme();
+import { Snackbar, Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import MESSAGE from "./constant.json";
+import Loader from "../Loader/Loader";
 
 export default function EditProfile() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsOpen(false);
+  };
+
   const location = useLocation();
   const data = location?.state?.data;
 
@@ -33,19 +37,48 @@ export default function EditProfile() {
     _id: data?._id,
   };
 
-  const { mutate } = UpdateProfileDetails();
+  const { mutate, isSuccess, isLoading } = UpdateProfileDetails();
   const navigate = useNavigate();
 
   const updateUserDetails = (values) => {
     mutate(values);
-    navigate("/profile");
+    setIsOpen(true);
+    setTimeout(() => {
+      navigate("/profile");
+    }, 1000);
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
+    <>
+      {isLoading ? <Loader /> : null}
+      <Snackbar
+        open={isOpen}
+        onClose={handleClose}
+        autoHideDuration={1000}
+        ContentProps={{
+          sx: {
+            background: isSuccess ? "#4BB543" : "#F20000",
+            fontFamily: "Helvetica",
+            fontSize: "16px",
+            fontWeight: "bold",
+          },
+        }}
+        message={
+          isSuccess
+            ? MESSAGE.SUCCESS.userUpdated
+            : MESSAGE.FAILURE.userUpdateFailed
+        }
+        action={
+          <>
+            <IconButton color="inherit" onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
+      />
       <Box
         sx={{
+          marginTop: "10px",
           width: "100%",
           height: "90vh",
           display: "grid",
@@ -76,7 +109,6 @@ export default function EditProfile() {
               onSubmit={(values) => updateUserDetails(values)}
             >
               {(props) => {
-                console.log(props.values, "props of form");
                 return (
                   <>
                     <Form>
@@ -138,6 +170,7 @@ export default function EditProfile() {
                             name="designation"
                             label="Designation"
                             fullWidth
+                            disabled
                             value={props.values.designation}
                             onChange={props.handleChange}
                           />
@@ -164,6 +197,6 @@ export default function EditProfile() {
           </Box>
         </Box>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }

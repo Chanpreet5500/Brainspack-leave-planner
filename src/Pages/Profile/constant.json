@@ -1,0 +1,8 @@
+{
+  "SUCCESS": {
+    "userUpdated": "User updated successfully !"
+  },
+  "FAILURE": {
+    "userUpdateFailed": "Something went wrong !"
+  }
+}
