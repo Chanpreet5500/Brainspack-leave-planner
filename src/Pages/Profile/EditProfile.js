@@ -42,10 +42,10 @@ export default function EditProfile() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <CssBaseline />
+    <>
       <Box
         sx={{
+          marginTop: "10px",
           width: "100%",
           height: "90vh",
           display: "grid",
@@ -164,6 +164,6 @@ export default function EditProfile() {
           </Box>
         </Box>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }
