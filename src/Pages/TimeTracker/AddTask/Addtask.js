@@ -55,8 +55,7 @@ const Addtask = ({ setValue }) => {
   });
   const { mutate, isSubmitting } = addProjectData;
   const handleSubmit = (values) => {
-    addProjectData.mutate(values.tasks);
-
+    mutate(values.tasks);
     if (!addProjectData.isError) {
       setTimeout(() => {
         setValue("listView");
@@ -72,9 +71,9 @@ const Addtask = ({ setValue }) => {
     setOpen(false);
   };
 
-  const disableWeekEnds = (date) =>{
+  const disableWeekEnds = (date) => {
     return date.$d.getDay() === 0 || date.$d.getDay() === 6;
-  }
+  };
 
   return (
     <>

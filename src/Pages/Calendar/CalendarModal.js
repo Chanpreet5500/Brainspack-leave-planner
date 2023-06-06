@@ -34,7 +34,7 @@ function CalendarModalComponent(props) {
               <Typography variant="h5" sx={modalValues}>
                 Name :-{name}
               </Typography>
-              <Button onClick={() => deleteId(eventId)}>Delete</Button>
+              {/* <Button onClick={() => deleteId(eventId)}>Delete</Button> */}
             </>
           );
         }}

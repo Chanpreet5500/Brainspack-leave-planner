@@ -35,7 +35,7 @@ function ProfileComponent() {
           background:
             "linear-gradient(to right bottom, rgb(81, 155, 99), rgba(0, 0, 0, 0.95))",
           width: "100vw",
-          height: "90vh",
+          height: "95vh",
           marginTop: "10px",
           display: "grid",
           placeItems: "center",

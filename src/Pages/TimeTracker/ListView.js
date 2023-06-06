@@ -66,8 +66,6 @@ const ListView = () => {
     date: "Today",
   });
 
-  
-
   const {
     data: weekDataUser,
     refetch,
@@ -222,18 +220,18 @@ const ListView = () => {
   }, [weekDataUser]);
 
   const confirmDelete = (id) => {
-    setRowId(id)
+    setRowId(id);
     setOpenModal(true);
   };
 
   const handleModalClose = () => {
     setOpenModal(false);
-  }
+  };
 
   return (
     <>
       <Box>
-      {isFetching ? <Loader /> : ""}
+        {isFetching ? <Loader /> : ""}
         <ConfirmationModal
           openModal={openModal}
           setOpenModal={setOpenModal}
@@ -263,7 +261,7 @@ const ListView = () => {
       <TableContainer
         component={Paper}
         sx={{
-          padding: "10px",
+          boxSizing: "border-box",
         }}
       >
         <Table sx={{ minWidth: 650, flex: 1 }} aria-label="simple table">
@@ -311,7 +309,6 @@ const ListView = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-         
             {apiData?.map((row, index) => {
               dayTotalHours.push(parseInt(row.hours));
               return (
@@ -405,7 +402,7 @@ const ListView = () => {
               );
             })}
           </TableBody>
-          <TableFooter>
+          <TableFooter sx={{ border: "1px solid #ededed" }}>
             {!apiData?.length ? (
               <CustomTableCell colSpan={log === "daily" ? 8 : 11}>
                 <TableFooterNoRecord>
@@ -417,21 +414,28 @@ const ListView = () => {
                 <CustomTableCell
                   sx={{ border: "none", fontWeight: "bold" }}
                   colSpan={4}
-                  align="right"
+                  align="left"
                 ></CustomTableCell>
-                <CustomTableCell>
+                <CustomTableCell sx={{padding:'12px 0px'}}>
                   <CustomTableHead
                     sx={{ border: "none", fontWeight: "bold", color: "black" }}
                     align="left"
                   >
-                    {" "}
-                    Total{" "}
+                    Total
                   </CustomTableHead>
                 </CustomTableCell>
                 {log === "daily" && (
-                  <CustomTableCell align="left">
+                  <CustomTableCell
+                    align="left"
+                    sx={{
+                      padding: "0px !important",
+                      "& .css-aunawj-MuiTableCell-root": {
+                        backgroundColor:'black'
+                      },
+                    }}
+                  >
                     <CustomTableHead
-                      align="center"
+                      align="left"
                       sx={{
                         fontWeight: "bold",
                         border: "none",
