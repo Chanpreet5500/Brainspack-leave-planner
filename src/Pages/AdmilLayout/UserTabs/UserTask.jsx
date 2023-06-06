@@ -276,8 +276,7 @@ export const UserTask = (props) => {
                 ""
               )}
 
-             {log=='daily'? <CustomTableHead>Status</CustomTableHead>:""}
-              {/* <CustomTableHead></CustomTableHead> */}
+             {log=='daily' ? <CustomTableHead>Status</CustomTableHead>:""}
               {log === "daily" ? <CustomTableHead></CustomTableHead> : ""}
 
               {log === "weekly"
