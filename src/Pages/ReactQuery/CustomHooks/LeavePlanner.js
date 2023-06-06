@@ -157,3 +157,18 @@ export const UpdateProfileDetails = (data) => {
   });
   return result;
 };
+
+const updateLeaveStatus = (data)=>{
+  const id = data._id;
+  return axiosInstance.patch(`http://localhost:5233/update-leave-status/${id}`,data)
+}
+
+export const UpdateLeaveStatus = (data) => {
+  const queryClients = useQueryClient();
+  const result = useMutation(updateLeaveStatus, {
+    onSuccess() {
+      queryClients.invalidateQueries("get-leave-data-id");
+    },
+  });
+  return result;
+};
