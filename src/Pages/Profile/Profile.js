@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Formik } from "formik";
-import { Input, Grid, Typography, Box, Avatar, Button } from "@mui/material";
+import React, { useEffect } from "react";
+import { Typography, Box, Avatar, Button } from "@mui/material";
 import { LoginUserProfileDetails } from "../ReactQuery/CustomHooks/LeavePlanner";
-import {
-  KeyboardArrowLeft,
-  KeyboardArrowLeftOutlined,
-} from "@mui/icons-material";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
 
 function ProfileComponent() {
   const userValues = localStorage.getItem("value");
   const finalUserValues = JSON.parse(userValues);
-  console.log(finalUserValues, "finalUserValues");
 
   const navigate = useNavigate();
 
@@ -23,6 +17,12 @@ function ProfileComponent() {
   const createdAtDate = new Date(profileDetails?.createdAt);
 
   useEffect(() => {
+    if (profileDetails) {
+      localStorage.setItem("value", JSON.stringify(profileDetails));
+    }
+  }, [profileDetails]);
+
+  useEffect(() => {
     refetch();
   }, []);
   return (
@@ -30,8 +30,6 @@ function ProfileComponent() {
       {isFetching ? <Loader /> : ""}
       <Box
         sx={{
-          // background:
-          //   " linear-gradient(to left top,  rgba(51, 51, 51, 1) 0%,  rgb(0 0 0 / 90%)  ,rgba(85 173 136), rgba(51, 51, 51, 1)   100% )",
           background:
             "linear-gradient(to right bottom, rgb(81, 155, 99), rgba(0, 0, 0, 0.95))",
           width: "100vw",
