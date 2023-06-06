@@ -161,15 +161,10 @@ function LeaveComponent() {
                   <Grid sx={popupFieldsParent}>
                     <Grid
                       style={{
-                        width: "75%",
-                        marginBottom: "10px",
-                        maxWidth: "75%",
-                        minHeight: "27px",
-                        minWidth: "75%",
-                        maxHeight: "27px",
-                        padding: "15px 0 13px 15px",
-                        fontSize: "16px",
-                        borderRadius: "5px",
+                        width: "70%",
+                        display: "flex",
+                        justifyContent: "center",
+                        paddingTop:'20px',
                       }}
                     >
                       <Select
