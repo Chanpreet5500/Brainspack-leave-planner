@@ -58,7 +58,7 @@ function LeaveComponent() {
     placeItems: "center",
   };
 
-  const selectLeaveType ={
+  const selectLeaveType = {
     width: "80%",
     boxShadow: "none",
 
@@ -67,11 +67,10 @@ function LeaveComponent() {
       borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
       borderRadius: "0px",
     },
-    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-      {
-        border: 0,
-        borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
-      },
+    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: 0,
+      borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+    },
     textAlign: "left",
     "& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input ":
       {
@@ -80,9 +79,7 @@ function LeaveComponent() {
     "& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon": {
       top: "calc(60% - 0.5em)",
     },
-  }
-
-  
+  };
 
   const x = LeaveValues();
 
@@ -136,7 +133,7 @@ function LeaveComponent() {
       <Grid sx={dashboardParent}>
         <Paper
           style={{
-            height: "380px",
+            height: "430px",
             width: "30%",
           }}
         >
@@ -260,7 +257,10 @@ function LeaveComponent() {
                       style={{
                         width: "75%",
                         marginBottom: "10px",
-
+                        maxWidth: "75%",
+                        minHeight: "27px",
+                        minWidth: "75%",
+                        maxHeight: "27px",
                         padding: "15px 0 13px 15px",
                         fontSize: "16px",
                         borderRadius: "5px",

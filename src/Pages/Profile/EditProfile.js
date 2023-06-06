@@ -61,14 +61,22 @@ const navigate = useNavigate()
   };
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      {/* <Container component="main" maxWidth="xs"> */}
         <CssBaseline />
+        <Box sx={{width:'100%',height:'90vh',display:"grid",placeItems:"center",
+        background: "linear-gradient(90deg, rgba(85,173,136,1) 31%, rgba(17,98,64,1) 62%)"}}>
+
         <Box
           sx={{
-            marginTop: 8,
+            width:"30%",
+            // marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            backgroundColor:"#fff",
+            p:3.5,
+            borderRadius:"8px",
+            boxShadow: "0px 0px 2px 0px",
           }}
         >
           <Typography component="h1" variant="h5">
@@ -156,7 +164,8 @@ const navigate = useNavigate()
             </Button>
           </Box>
         </Box>
-      </Container>
+        </Box>
+      {/* </Container> */}
     </ThemeProvider>
   );
 }
