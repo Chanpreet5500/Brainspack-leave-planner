@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios, { AdminInstance } from "axios";
 
 const axiosInstance = axios.create();
@@ -72,6 +72,9 @@ const deleteUserEventById = async (id) => {
   return await axiosInstance.delete(`http://localhost:5233/delete-event/${id}`);
 };
 
+const loginUserDetails = async (id) => {
+  return await axiosInstance.get(`http://localhost:5233/login-profile/${id}`);
+};
 export const LoginData = () => {
   return useMutation(loginUrl);
 };
@@ -107,7 +110,7 @@ export const GetLeaveDataById = (id, userType) => {
     () => getLeaveDataById(id, userType),
     {
       refetchOnMount: true,
-      retry: false
+      retry: false,
     }
   );
 };
@@ -118,7 +121,7 @@ export const GetLeaveDataForAdmin = (id) => {
     () => getLeaveDataForAdmin(id),
     {
       // refetchOnMount: true,
-      retry: false
+      retry: false,
     }
   );
 };
@@ -129,4 +132,24 @@ export const CreatingNewPassword = () => {
 
 export const DeleteUserEventById = () => {
   return useMutation((id) => deleteUserEventById(id));
+};
+
+export const LoginUserProfileDetails = (id) => {
+  return useQuery("login-user-profile-details", ()=>loginUserDetails(id));
+};
+
+const updateProfile = (data)=>{
+  const id = data._id;
+  console.log(data)
+  return axiosInstance.patch(`http://localhost:5233/update-profile/${id}`,data)
+}
+
+export const UpdateProfileDetails = (data) => {
+  const queryClients = useQueryClient();
+  const result = useMutation(updateProfile, {
+    onSuccess() {
+      queryClients.invalidateQueries("login-user-profile-details");
+    },
+  });
+  return result;
 };

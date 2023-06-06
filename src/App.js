@@ -39,6 +39,7 @@ import EmployeeDetails from "./Pages/AdmilLayout/EmployeeDetails";
 import PrivateRouteComponent from "../src/PrivateRouting/PrivateRoute";
 import PrivateDashboard from "../src/PrivateRouting/PrivateDashboard";
 import { AdminCalenderView } from "./Pages/AdmilLayout/calenderView/AdminCalenderView";
+import EditProfile from "./Pages/Profile/EditProfile";
 const font = "'Raleway', sans-serif";
 
 function App() {
@@ -155,6 +156,12 @@ function App() {
                   path="/edituserdata"
                   element={
                     <PrivateRouteComponent Component={EditCalendarTask} />
+                  }
+                />
+                <Route
+                  path="/edit-profile"
+                  element={
+                    <PrivateRouteComponent Component={EditProfile} />
                   }
                 />
                 <Route
