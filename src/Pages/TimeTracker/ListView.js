@@ -280,7 +280,7 @@ const ListView = () => {
                 ""
               )}
 
-              <CustomTableHead>Status</CustomTableHead>
+              {log === "daily" ? <CustomTableHead>Status</CustomTableHead> : ""}
               {log === "weekly"
                 ? weekCleander.map((element) => {
                     return (
@@ -331,9 +331,17 @@ const ListView = () => {
                     ""
                   )}
 
-                  <CustomTableCell>
-                    {row.status === 0 ? "Pending" : row.status === 1 ? "Approved" : "Cancelled"}
-                  </CustomTableCell>
+                  {log === "daily" ? (
+                    <CustomTableCell>
+                      {row.status === 0
+                        ? "Pending"
+                        : row.status === 1
+                        ? "Approved"
+                        : "Cancelled"}
+                    </CustomTableCell>
+                  ) : (
+                    ""
+                  )}
                   {log === "weekly"
                     ? weekCleander.map((element, index) => {
                         const dateCheck = checkHours(row, element);
@@ -413,10 +421,10 @@ const ListView = () => {
               <>
                 <CustomTableCell
                   sx={{ border: "none", fontWeight: "bold" }}
-                  colSpan={4}
+                  colSpan={log === "daily" ? 4:3}
                   align="left"
                 ></CustomTableCell>
-                <CustomTableCell sx={{padding:'12px 0px'}}>
+                <CustomTableCell sx={{ padding: "12px 0px" }}>
                   <CustomTableHead
                     sx={{ border: "none", fontWeight: "bold", color: "black" }}
                     align="left"
@@ -430,7 +438,7 @@ const ListView = () => {
                     sx={{
                       padding: "0px !important",
                       "& .css-aunawj-MuiTableCell-root": {
-                        backgroundColor:'black'
+                        backgroundColor: "black",
                       },
                     }}
                   >
