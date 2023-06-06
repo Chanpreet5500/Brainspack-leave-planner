@@ -14,158 +14,156 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UpdateProfileDetails } from "../ReactQuery/CustomHooks/LeavePlanner";
+import { Field, Form, Formik } from "formik";
+import validationSchema from "./validationSchema";
+import { ErrorText } from "../TimeTracker/AddTask/EditStyled";
 
 const defaultTheme = createTheme();
 
 export default function EditProfile() {
-  const [userDetails, setUserDetails] = React.useState({});
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
   const location = useLocation();
-  const { data: profileDetails } = location.state;
-  console.log(profileDetails, "location");
+  const data = location?.state?.data;
 
-  React.useEffect(() => {
-    setUserDetails(profileDetails);
-  }, [profileDetails]);
-
-  const handleChange = (event) => {
-    setUserDetails({
-      ...userDetails,
-      [event.target.name]: event.target.value,
-    });
+  const initialValues = {
+    firstName: data?.firstName,
+    lastName: data?.lastName,
+    email: data?.email,
+    phoneNumber: data?.phoneNumber,
+    designation: data?.designation,
+    _id: data?._id,
   };
-  console.log(userDetails, "userDetails");
 
   const { mutate } = UpdateProfileDetails();
-const navigate = useNavigate()
-  const updateUserDetails = () => {
-    if (
-      (userDetails.firstName != "" &&
-        userDetails.lastName != "" &&
-        userDetails.email != "" &&
-        userDetails.designation != "",
-      userDetails.phoneNumber != "")
-    ){
+  const navigate = useNavigate();
 
-        mutate(userDetails);
-        navigate('/profile')
-    }
+  const updateUserDetails = (values) => {
+    mutate(values);
+    navigate("/profile");
   };
+
   return (
     <ThemeProvider theme={defaultTheme}>
-      {/* <Container component="main" maxWidth="xs"> */}
-        <CssBaseline />
-        <Box sx={{width:'100%',height:'90vh',display:"grid",placeItems:"center",
-        background: "linear-gradient(90deg, rgba(85,173,136,1) 31%, rgba(17,98,64,1) 62%)"}}>
-
+      <CssBaseline />
+      <Box
+        sx={{
+          width: "100%",
+          height: "90vh",
+          display: "grid",
+          placeItems: "center",
+          background:
+            "linear-gradient(90deg, rgba(85,173,136,1) 31%, rgba(17,98,64,1) 62%)",
+        }}
+      >
         <Box
           sx={{
-            width:"30%",
-            // marginTop: 8,
+            width: "30%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            backgroundColor:"#fff",
-            p:3.5,
-            borderRadius:"8px",
+            backgroundColor: "#fff",
+            p: 3.5,
+            borderRadius: "8px",
             boxShadow: "0px 0px 2px 0px",
           }}
         >
           <Typography component="h1" variant="h5">
             Edit User Details
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value={userDetails?.firstName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={userDetails?.lastName}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={userDetails?.email}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="phoneNumber"
-                  label="Phone Number"
-                  type="number"
-                  id="number"
-                  autoComplete="phone-number"
-                  value={userDetails?.phoneNumber}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="designation"
-                  label="Designation"
-                  type="text"
-                  id="designation"
-                  autoComplete="designation"
-                  value={userDetails?.designation}
-                  onChange={handleChange}
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={updateUserDetails}
+          <Box component="form" noValidate sx={{ mt: 3 }}>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={(values) => updateUserDetails(values)}
             >
-              Update
-            </Button>
+              {(props) => {
+                console.log(props.values, "props of form");
+                return (
+                  <>
+                    <Form>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                          <Field
+                            as={TextField}
+                            name="firstName"
+                            label="First Name"
+                            value={props.values.firstName}
+                            onChange={props.handleChange}
+                          />
+                          {props.errors.firstName && props.touched.firstName ? (
+                            <ErrorText>{props.errors.firstName}</ErrorText>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <Field
+                            as={TextField}
+                            label="Last Name"
+                            name="lastName"
+                            value={props.values.lastName}
+                            onChange={props.handleChange}
+                          />
+                          {props.errors.lastName && props.touched.lastName ? (
+                            <ErrorText>{props.errors.lastName}</ErrorText>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            label="Email Address"
+                            name="email"
+                            fullWidth
+                            value={props.values.email}
+                            onChange={props.handleChange}
+                          />
+                          {props.errors.email && props.touched.email ? (
+                            <ErrorText>{props.errors.email}</ErrorText>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            name="phoneNumber"
+                            label="Phone Number"
+                            fullWidth
+                            value={props.values.phoneNumber}
+                            onChange={props.handleChange}
+                          />
+                          {props.errors.phoneNumber &&
+                          props.touched.phoneNumber ? (
+                            <ErrorText>{props.errors.phoneNumber}</ErrorText>
+                          ) : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            as={TextField}
+                            name="designation"
+                            label="Designation"
+                            fullWidth
+                            value={props.values.designation}
+                            onChange={props.handleChange}
+                          />
+                          {props.errors.designation &&
+                          props.touched.designation ? (
+                            <ErrorText>{props.errors.designation}</ErrorText>
+                          ) : null}
+                        </Grid>
+                      </Grid>
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        onClick={props.handleSubmit}
+                        sx={{ mt: 3, mb: 2 }}
+                      >
+                        Update
+                      </Button>
+                    </Form>
+                  </>
+                );
+              }}
+            </Formik>
           </Box>
         </Box>
-        </Box>
-      {/* </Container> */}
+      </Box>
     </ThemeProvider>
   );
 }
