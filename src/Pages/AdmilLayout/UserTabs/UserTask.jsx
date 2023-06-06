@@ -23,7 +23,12 @@ import {
   WeekDayBox,
 } from "../../TimeTracker/styled";
 import { UpdateStatus } from "../../ReactQuery/CustomHooks/TimeTracker";
-import { ButtonContainer, ButtonWrapper, HeadingModal, MainContainer } from "../../TimeTracker/CalendarView/CalenderStyled";
+import {
+  ButtonContainer,
+  ButtonWrapper,
+  HeadingModal,
+  MainContainer,
+} from "../../TimeTracker/CalendarView/CalenderStyled";
 import Loader from "../../Loader/Loader";
 
 const months = [
@@ -73,7 +78,11 @@ export const UserTask = (props) => {
     date: "Today",
   });
 
-  const { data: weekDataUser, refetch ,isFetching} = FetchFilterdWeekData({
+  const {
+    data: weekDataUser,
+    refetch,
+    isFetching,
+  } = FetchFilterdWeekData({
     userId,
     weekFIrstDay,
     weekLastDay,
@@ -138,9 +147,6 @@ export const UserTask = (props) => {
     if (checkYear === year2 && checkMonth === month2 && checkDate === date2) {
       return true;
     }
-
-
-   
   };
 
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thru", "Fri", "Sat"];
@@ -209,18 +215,14 @@ export const UserTask = (props) => {
   const confirmReject = () => {
     mutate({
       id: approveUserId,
-      status: 2
+      status: 2,
     });
     setOpen(false);
-  }
+  };
   return (
     <>
-    {isFetching?<Loader/>:''}
-       <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        sx={{ width: "100%" }}
-      >
+      {isFetching ? <Loader /> : ""}
+      <Modal open={open} onClose={() => setOpen(false)} sx={{ width: "100%" }}>
         <MainContainer>
           <HeadingModal id="modal-modal-title" component="h4">
             Confirm?
@@ -329,7 +331,11 @@ export const UserTask = (props) => {
                   )}
 
                   <CustomTableCell>
-                    {row.status === 0 ? "Pending" : row.status === 1 ? "Approved" : "Cancelled"}
+                    {row.status === 0
+                      ? "Pending"
+                      : row.status === 1
+                      ? "Approved"
+                      : "Cancelled"}
                   </CustomTableCell>
                   {log === "weekly"
                     ? weekCleander.map((element, index) => {
