@@ -3,6 +3,7 @@ import { Typography, Box, Avatar, Button } from "@mui/material";
 import { LoginUserProfileDetails } from "../ReactQuery/CustomHooks/LeavePlanner";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { LocalPhone, MailOutlineOutlined } from "@mui/icons-material";
 
 function ProfileComponent() {
   const userValues = localStorage.getItem("value");
