@@ -15,7 +15,6 @@ function useOutsideAlerter(ref, setLogoutButton, logoutButton) {
 }
 
 export default function OutsideAlerter(props) {
-  console.log(props);
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, props.setLogoutButton, props.logoutButton);
 

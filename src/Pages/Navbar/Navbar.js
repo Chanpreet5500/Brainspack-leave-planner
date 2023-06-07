@@ -67,7 +67,6 @@ function NavbarComponent(props) {
   }
 
   const localStorageValue = JSON.parse(localStorage.getItem("value"));
-  console.log(localStorageValue, "localStorageValue");
   function logoutUser() {
     localStorage.clear();
     navigate("/");
@@ -193,8 +192,6 @@ function NavbarComponent(props) {
                         return (
                           <ListItem
                             onClick={() => {
-                              console.log(e.value,'client')
-
                               setIsOpen(false);
                               navigatePage(e.value);
                             }}
@@ -220,7 +217,6 @@ function NavbarComponent(props) {
                         return (
                           <ListItem
                             onClick={() => {
-                              console.log(e.value,'admin')
                               setIsOpen(false);
                               navigatePage(e.value);
                             }}

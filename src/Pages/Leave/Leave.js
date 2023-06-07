@@ -30,7 +30,6 @@ function LeaveComponent() {
   const userData = localStorage.getItem("value");
   const id = JSON.parse(userData);
   const finalUserId = id._id;
-  console.log(finalUserId);
 
   const holidayType = ["Sick Leave", "Travel Leave", "Ocassional Leave"];
 
