@@ -10,6 +10,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Box,
 } from "@mui/material";
 import { Formik } from "formik";
 import { RegisterData } from "../ReactQuery/CustomHooks/LeavePlanner";
@@ -32,7 +33,7 @@ function RegisterComponent() {
     backgroundColor: "#c9c9c9e0;",
     paddingTop: "30px",
     paddingLeft: "17px",
-    height: "566px",
+    height: "630px",
     position: "relative",
     zIndex: 10,
   };
@@ -49,7 +50,7 @@ function RegisterComponent() {
   };
 
   const imageParent = {
-    height: "566px",
+    height: "630px",
     width: "30%",
     position: "absolute",
     zIndex: 11,
@@ -62,6 +63,7 @@ function RegisterComponent() {
     backgroundColor: "black",
     color: "White",
     margin: "140px 0 0 50px",
+   
   };
 
   const mainImage = {
@@ -79,12 +81,15 @@ function RegisterComponent() {
     left: "47px",
     marginTop: "-24px",
   };
-
-  const leftFullStop = {
+  const rightFullStop2 = {
     fontSize: "60px",
-    color: "white",
+    position: "absolute",
+    zIndex: 11,
+    left: "47px",
+    marginTop: "-71px",
   };
 
+ 
   const leftDot = {
     position: "absolute",
     zIndex: 12,
@@ -162,8 +167,7 @@ function RegisterComponent() {
   const { mutate, data, isSuccess } = RegisterData();
 
   const RegisterDataValues = (props) => {
-    // const stringifyDate = date.toString()
-    // const finalDate = stringifyDate.slice(4,15)
+   
 
     const date = props.values.birthDate.$d;
     const finalBirthdate = format(date, "MM/dd/yyyy");
@@ -185,6 +189,29 @@ function RegisterComponent() {
   if (data && isSuccess) {
     navigate("/");
   }
+  const selectLeaveType = {
+   
+    width: "100%",
+    boxShadow: "none",
+
+    ".MuiOutlinedInput-notchedOutline": {
+      border: 0,
+      borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+      borderRadius: "0px",
+    },
+    "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: 0,
+      borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+    },
+    textAlign: "left",
+    "& .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input ":
+      {
+        padding: "11px 1px",
+      },
+    "& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon": {
+      top: "calc(60% - 0.5em)",
+    },
+  };
 
   return (
     <>
@@ -192,7 +219,7 @@ function RegisterComponent() {
         style={{
           background:
             "linear-gradient(to right bottom, rgb(81 155 99), rgb(0 0 0 / 95%))",
-          height: "636px",
+          height: "100vh",
           paddingTop: "1px",
         }}
       >
@@ -229,8 +256,8 @@ function RegisterComponent() {
             </Typography>
           </Grid>
 
-          <Grid>
-            <Grid>
+          <Grid style={{ height:'630px' }}>
+            <Grid >
               <Typography variant="span" sx={leftDot}>
                 .
               </Typography>
@@ -561,27 +588,42 @@ function RegisterComponent() {
                       {props.errors.lastName}
                     </Typography>
                   </Grid>
-                  <Grid>
-                    <FormControl
-                      sx={{
-                        width: "80%",
+                  <Grid
+                    style={{
+                      width: "70%",
+                      display: "flex",
+                      justifyContent: "center",
+                      marginLeft:'112px',
+                    }}
+                  >
+                    <Select
+                      labelId="gender"
+                      defaultValue=""
+                      label="Gender"
+                      value={props.values.gender}
+                      onChange={props.handleChange}
+                      name="gender"
+                      renderValue={(selected) => {
+                        if (selected.length === 0) {
+                          return <Box component="span">Select Gender</Box>;
+                        }
+
+                        return selected;
                       }}
+                      displayEmpty
+                      sx={selectLeaveType}
                     >
-                      <InputLabel>Gender</InputLabel>
-                      <Select
-                        defaultValue=""
-                        label="Gender"
-                        onChange={props.handleChange}
-                        name="gender"
-                      >
-                        <MenuItem value="male">Male</MenuItem>
-                        <MenuItem value="female">Female</MenuItem>
-                      </Select>
-                    </FormControl>
+                      {" "}
+                      <MenuItem disabled value="">
+                        Select Gender
+                      </MenuItem>
+                      <MenuItem value="male">Male</MenuItem>
+                      <MenuItem value="female">Female</MenuItem>
+                    </Select>
                   </Grid>
                   <Grid>
                     <Grid>
-                      <Typography variant="span" sx={rightFullStop}>
+                      <Typography variant="span" sx={rightFullStop2}>
                         .
                       </Typography>
 
@@ -619,7 +661,7 @@ function RegisterComponent() {
                       {props.errors.phoneNumber}
                     </Typography>
                     <Grid>
-                      <Typography variant="span" sx={rightFullStop}>
+                      <Typography variant="span" sx={rightFullStop2}>
                         .
                       </Typography>
                       <Typography
@@ -659,7 +701,7 @@ function RegisterComponent() {
                   </Grid>
 
                   <Grid>
-                    <Typography variant="span" sx={rightFullStop}>
+                    <Typography variant="span" sx={rightFullStop2}>
                       .
                     </Typography>
                     <Typography
@@ -676,20 +718,12 @@ function RegisterComponent() {
                     </Typography>
                   </Grid>
 
-                  {/* <Input
-                      name="birthDate"
-                      onChange={props.handleChange}
-                      placeholder="Enter Your Birthdate"
-                      sx={textFieldEmail}
-                    /> */}
+               
                   <Grid style={{ marginBottom: "10px" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      {/* <Box style={{ height: "20px" }}></Box> */}
-
                       <DatePicker
                         name="birthDate"
                         label="Enter Your Birthday"
-                        // minDate={props.values.startDateValue}
                         value={props.values.birthDate}
                         onChange={(value) =>
                           props.setFieldValue("birthDate", value, "true")

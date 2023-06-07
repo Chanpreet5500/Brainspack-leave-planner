@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import RegisterComponent from "./Pages/Register/Register";
 import LoginComponent from "./Pages/Login/Login";
@@ -44,7 +39,6 @@ const font = "'Raleway', sans-serif";
 function App() {
   const theme = createTheme({
     palette: {
-      
       typography: {
         fontFamily: font,
       },
@@ -77,14 +71,13 @@ function App() {
                   }
                 />
                 <Route
-                  path="/edit-profile"
+                  path="/admin-edit-profile"
                   element={<PrivateDashboard Component={EditProfile} />}
                 />
-                 <Route
-                  path="/profile"
-                  element={
-                    <PrivateDashboard Component={ProfileComponent} />
-                  }
+                <Route
+                  exact
+                  path="/admin-profile"
+                  element={<PrivateDashboard Component={ProfileComponent} />}
                 />
                 <Route
                   path="/manage-employees"
@@ -146,6 +139,7 @@ function App() {
                   }
                 />
                 <Route
+                  exact
                   path="/profile"
                   element={
                     <PrivateRouteComponent Component={ProfileComponent} />
@@ -173,7 +167,6 @@ function App() {
                   path="/reset-password/:token"
                   element={<CreateNewPasswordComponent />}
                 />
-              
               </Routes>
             </ThemeProvider>
           </ErrorBoundaries>

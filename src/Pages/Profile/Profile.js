@@ -26,7 +26,12 @@ function ProfileComponent() {
   useEffect(() => {
     refetch();
   }, []);
-
+  const navigateToEditPage = () => {
+    if (profileDetails.role == "client") {
+      navigate("/edit-profile", { state: { data: profileDetails } });
+    } else if (profileDetails.role == "admin")
+      navigate("/admin-edit-profile", { state: { data: profileDetails } });
+  };
   return (
     <>
       {isFetching ? <Loader /> : ""}
@@ -196,9 +201,7 @@ function ProfileComponent() {
                   textTransform: "capitalize",
                 }}
                 variant="contained"
-                onClick={() =>
-                  navigate("/edit-profile", { state: { data: profileDetails } })
-                }
+                onClick={() => navigateToEditPage()}
               >
                 Edit Details
               </Button>
