@@ -147,3 +147,31 @@ export const FormControlPannel = styled(FormControl)(({ theme }) => ({
   width: "100%",
   paddingRight: "15px",
 }));
+
+export const CustomRejectedButton = styled(Button)(({ theme }) => ({
+  background: "#c94328",
+  fontSize: "16px",
+  marginRight: "5%",
+  color: "#fff",
+  padding: "5px 10px",
+  minWidth: "0px",
+  textTransform: "capitalize",
+  cursor: "pointer",
+  "&:hover": {
+    background: "#ba351a !important",
+  },
+}));
+
+export const CustomApproveButton = styled(Button)(({ theme }) => ({
+  background: "#15b72b",
+  fontSize: "16px",
+  marginRight: "5%",
+  color: "#fff",
+  padding: "5px 10px",
+  minWidth: "0px",
+  textTransform: "capitalize",
+  cursor: "pointer",
+  "&:hover": {
+    background: "#3bb715 !important",
+  },
+}));

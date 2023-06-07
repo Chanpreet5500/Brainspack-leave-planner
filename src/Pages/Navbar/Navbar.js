@@ -67,7 +67,6 @@ function NavbarComponent(props) {
   }
 
   const localStorageValue = JSON.parse(localStorage.getItem("value"));
-  console.log(localStorageValue, "localStorageValue");
   function logoutUser() {
     localStorage.clear();
     navigate("/");

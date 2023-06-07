@@ -31,6 +31,7 @@ export const AdminCalenderView = () => {
   const { data, isFetching } = useQuery("employee-list", () => {
     return axios.get("http://localhost:5233/getEmpList");
   });
+  
   const employeeList = data?.data?.userList;
   const { data: apiData, refetch: refetedUser } = GetLeaveDataForAdmin(userId);
 

@@ -1,7 +1,12 @@
 import React from "react";
 import { format, getDay } from "date-fns";
 import EditIcon from "@mui/icons-material/Edit";
-import { CustomDeleteButton, CustomEditButton } from "../styled";
+import {
+  CustomApproveButton,
+  CustomDeleteButton,
+  CustomEditButton,
+  CustomRejectedButton,
+} from "../styled";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ButtonContainer, ButtonWrapper, Text } from "./CalenderStyled";
@@ -22,13 +27,12 @@ function CalendarModalComponent(props) {
     status,
   } = eventVal;
   const formattedDate = format(new Date(start), "yyyy-dd-MM");
-console.log(status,'hdfjhfjdh')
   const { mutate } = UpdateLeaveStatus();
 
-  const updateStaus=(status)=>{
-    mutate({_id:eventId,status})
-    setShowModal(false)
-  }
+  const updateStaus = (status) => {
+    mutate({ _id: eventId, status });
+    setShowModal(false);
+  };
 
   const handleEdit = () => {
     navigate("/edituserdata", { state: { eventId } });
@@ -77,16 +81,21 @@ console.log(status,'hdfjhfjdh')
           <Text variant="h5">Leave Type :- {type}</Text>
           {status != 0 ? (
             <Text varient="h5">
-              Status :-  {status == 1 ? "Approved" : "Rejected"}
+              Status :-{" "}
+              {status == 3
+                ? " Cancel By Client"
+                : status == 1
+                ? "Approved"
+                : "Rejected"}
             </Text>
           ) : (
             <ButtonContainer>
-              <CustomEditButton onClick={() => updateStaus(2)}>
+              <CustomRejectedButton onClick={() => updateStaus(2)}>
                 <ButtonWrapper component="span">Reject</ButtonWrapper>
-              </CustomEditButton>
-              <CustomDeleteButton onClick={() => updateStaus(1)}>
+              </CustomRejectedButton>
+              <CustomApproveButton onClick={() => updateStaus(1)}>
                 <ButtonWrapper component="span">Appove</ButtonWrapper>
-              </CustomDeleteButton>
+              </CustomApproveButton>
             </ButtonContainer>
           )}
         </>
