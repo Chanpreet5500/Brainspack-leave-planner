@@ -77,7 +77,7 @@ function CalendarModalComponent(props) {
           <Text variant="h5">Leave Type :- {type}</Text>
           {status !== 0 ? (
             <Text varient="h5">
-              Status :- {status == 1 ? "Approved" : "Rejected"}
+              Status :-  {status == 1 ? "Approved" : "Rejected"}
             </Text>
           ) : (
             <ButtonContainer>
