@@ -81,6 +81,14 @@ function NavbarComponent(props) {
     }
   }
 
+  function navigatePage(value) {
+   if(value){
+
+     navigate(`/${value}`);
+   }
+    
+  }
+
   const navbarParent = {
     display: "flex",
     justifyContent: "space-between",
@@ -185,8 +193,10 @@ function NavbarComponent(props) {
                         return (
                           <ListItem
                             onClick={() => {
+                              console.log(e.value,'client')
+
                               setIsOpen(false);
-                              navigation(e.value);
+                              navigatePage(e.value);
                             }}
                             key={i}
                           >
@@ -210,8 +220,9 @@ function NavbarComponent(props) {
                         return (
                           <ListItem
                             onClick={() => {
+                              console.log(e.value,'admin')
                               setIsOpen(false);
-                              navigation(e.value);
+                              navigatePage(e.value);
                             }}
                             key={i}
                           >
