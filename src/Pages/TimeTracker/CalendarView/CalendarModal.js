@@ -22,7 +22,7 @@ function CalendarModalComponent(props) {
     status,
   } = eventVal;
   const formattedDate = format(new Date(start), "yyyy-dd-MM");
-
+console.log(status,'hdfjhfjdh')
   const { mutate } = UpdateLeaveStatus();
 
   const updateStaus=(status)=>{
@@ -75,7 +75,7 @@ function CalendarModalComponent(props) {
           <Text variant="h5">Name :- {firstName + " " + lastName}</Text>
           <Text variant="h5">Date :- {formattedDate}</Text>
           <Text variant="h5">Leave Type :- {type}</Text>
-          {status !== 0 ? (
+          {status != 0 ? (
             <Text varient="h5">
               Status :-  {status == 1 ? "Approved" : "Rejected"}
             </Text>

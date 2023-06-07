@@ -168,6 +168,7 @@ export const UpdateLeaveStatus = (data) => {
   const result = useMutation(updateLeaveStatus, {
     onSuccess() {
       queryClients.invalidateQueries("get-leave-data-id");
+      queryClients.invalidateQueries("get-leave-data-admin");
     },
   });
   return result;

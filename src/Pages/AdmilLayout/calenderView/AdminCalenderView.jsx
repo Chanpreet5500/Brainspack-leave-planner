@@ -75,6 +75,7 @@ export const AdminCalenderView = () => {
             type: e.leaveType,
             firstName: e.userId?.firstName,
             lastName: e.userId?.lastName,
+            status:e.status,
           },
         };
       });
@@ -95,6 +96,7 @@ export const AdminCalenderView = () => {
       type: events.event.extendedProps.type,
       firstName: events.event.extendedProps.firstName,
       lastName: events.event.extendedProps.lastName,
+      status: events.event.extendedProps.status,
     });
   }
   const setRandomColor = () => {
@@ -152,7 +154,7 @@ export const AdminCalenderView = () => {
             <Heading id="modal-modal-title" variant="h4" component="h2">
               Leaves Data
             </Heading>
-            <CalendarModalComponent eventVal={event} admin={true} />
+            <CalendarModalComponent eventVal={event} admin={true} setShowModal={setShowModal} />
           </MainContainer>
         </Modal>
       </MainContainerCalender>
