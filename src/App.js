@@ -80,6 +80,16 @@ function App() {
                   }
                 />
                 <Route
+                  path="/edit-profile"
+                  element={<PrivateDashboard Component={EditProfile} />}
+                />
+                 <Route
+                  path="/profile"
+                  element={
+                    <PrivateDashboard Component={ProfileComponent} />
+                  }
+                />
+                <Route
                   path="/manage-employees"
                   element={<PrivateDashboard Component={ManageEmployees} />}
                 />
@@ -160,9 +170,7 @@ function App() {
                 />
                 <Route
                   path="/edit-profile"
-                  element={
-                    <PrivateRouteComponent Component={EditProfile} />
-                  }
+                  element={<PrivateRouteComponent Component={EditProfile} />}
                 />
                 <Route
                   path="/reset-password/:token"
