@@ -18,7 +18,8 @@ import {
   StaticDatePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { GetDashboardData } from "../ReactQuery/CustomHooks/LeavePlanner";
+
+
 import NavbarComponent from "../Navbar/Navbar";
 import { Formik } from "formik";
 import { LeaveValues } from "../ReactQuery/CustomHooks/LeavePlanner";
@@ -255,10 +256,15 @@ function LeaveComponent() {
                       variant="standard"
                       onChange={props.handleChange}
                       style={{
-                        width: "70%",
-                        display: "flex",
-                        justifyContent: "center",
-                        paddingTop:'20px',
+                        width: "75%",
+                        marginBottom: "10px",
+                        maxWidth: "75%",
+                        minHeight: "27px",
+                        minWidth: "75%",
+                        maxHeight: "27px",
+                        padding: "15px 0 13px 15px",
+                        fontSize: "16px",
+                        borderRadius: "5px",
                       }}
                     />
                   </Grid>

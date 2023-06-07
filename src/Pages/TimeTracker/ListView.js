@@ -394,7 +394,7 @@ const ListView = () => {
           </TableBody>
           <TableFooter sx={{ border: "1px solid #ededed" }}>
             {!apiData?.length ? (
-              <CustomTableCell colSpan={log === "daily" ? 8 : 11}>
+              <CustomTableCell colSpan={log === "daily" ? 8 : 10}>
                 <TableFooterNoRecord>
                   <Typography>NO RECORD TO DISPLAY.....</Typography>
                 </TableFooterNoRecord>
@@ -414,7 +414,7 @@ const ListView = () => {
                     Total
                   </CustomTableHead>
                 </CustomTableCell>
-                {log === "daily" && (
+                {log === "daily" ? (
                   <CustomTableCell
                     align="left"
                     sx={{
@@ -437,10 +437,9 @@ const ListView = () => {
                         totalHours.minutes?.toString().padStart(2, "0")}
                     </CustomTableHead>
                   </CustomTableCell>
-                )}
-                {log === "weekly" && (
+                ):(
                   <>
-                    {totalHoursWeeks.map((element) => {
+                  {totalHoursWeeks.map((element) => {
                       return (
                         <CustomTableHead
                           sx={{
@@ -459,10 +458,7 @@ const ListView = () => {
                         </CustomTableHead>
                       );
                     })}
-                  </>
-                )}
-                {log === "weekly" && (
-                  <>
+
                     <CustomTableCell
                       sx={{
                         border: "none",
@@ -476,6 +472,7 @@ const ListView = () => {
                     </CustomTableCell>
                   </>
                 )}
+               
               </>
             )}
           </TableFooter>

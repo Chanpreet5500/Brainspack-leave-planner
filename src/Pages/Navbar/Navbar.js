@@ -66,15 +66,27 @@ function NavbarComponent(props) {
     }
   }
 
+  const localStorageValue = JSON.parse(localStorage.getItem("value"));
+  console.log(localStorageValue, "localStorageValue");
   function logoutUser() {
     localStorage.clear();
     navigate("/");
   }
 
-  function navigation(value) {
-    if (value) {
-      navigate(`/${value}`);
+  function navigation() {
+    if (localStorageValue.role == "client") {
+      navigate(`/profile`);
+    } else if (localStorageValue.role == "admin") {
+      navigate(`/admin-profile`);
     }
+  }
+
+  function navigatePage(value) {
+   if(value){
+
+     navigate(`/${value}`);
+   }
+    
   }
 
   const navbarParent = {
@@ -181,8 +193,10 @@ function NavbarComponent(props) {
                         return (
                           <ListItem
                             onClick={() => {
+                              console.log(e.value,'client')
+
                               setIsOpen(false);
-                              navigation(e.value);
+                              navigatePage(e.value);
                             }}
                             key={i}
                           >
@@ -206,8 +220,9 @@ function NavbarComponent(props) {
                         return (
                           <ListItem
                             onClick={() => {
+                              console.log(e.value,'admin')
                               setIsOpen(false);
-                              navigation(e.value);
+                              navigatePage(e.value);
                             }}
                             key={i}
                           >
@@ -268,7 +283,7 @@ function NavbarComponent(props) {
                         Logout
                       </Typography>
                     </ListItemButton>
-                    <ListItemButton onClick={() => navigation("profile")}>
+                    <ListItemButton onClick={() => navigation()}>
                       <PersonOutlineIcon style={{ marginRight: "8px" }} />
                       <Typography variant="h5" style={{ margin: "0 0 0 13px" }}>
                         {" "}
