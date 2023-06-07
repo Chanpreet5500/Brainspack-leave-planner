@@ -1,11 +1,5 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  Outlet,
-} from "react-router-dom";
-// import DashboardPage from './pages/dashboard/dashboard';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import RegisterComponent from "./Pages/Register/Register";
 import LoginComponent from "./Pages/Login/Login";
 import ForgotComponent from "./Pages/Forgot/Forgot";
@@ -45,9 +39,6 @@ const font = "'Raleway', sans-serif";
 function App() {
   const theme = createTheme({
     palette: {
-      text: {
-        // primary : "#c3217a"
-      },
       typography: {
         fontFamily: font,
       },
@@ -80,14 +71,13 @@ function App() {
                   }
                 />
                 <Route
-                  path="/edit-profile"
+                  path="/admin-edit-profile"
                   element={<PrivateDashboard Component={EditProfile} />}
                 />
-                 <Route
-                  path="/profile"
-                  element={
-                    <PrivateDashboard Component={ProfileComponent} />
-                  }
+                <Route
+                  exact
+                  path="/admin-profile"
+                  element={<PrivateDashboard Component={ProfileComponent} />}
                 />
                 <Route
                   path="/manage-employees"
@@ -149,6 +139,7 @@ function App() {
                   }
                 />
                 <Route
+                  exact
                   path="/profile"
                   element={
                     <PrivateRouteComponent Component={ProfileComponent} />
@@ -176,19 +167,6 @@ function App() {
                   path="/reset-password/:token"
                   element={<CreateNewPasswordComponent />}
                 />
-                {/* <Route
-                  path='/manage-employees'
-                  element={
-                    <PrivateRouteComponent Component={ManageEmployees} />
-                  }
-                /> */}
-
-                {/* <Route
-                  path='/employe-details'
-                  element={
-                    <PrivateRouteComponent Component={EmployeeDetails} />
-                  }
-                /> */}
               </Routes>
             </ThemeProvider>
           </ErrorBoundaries>
